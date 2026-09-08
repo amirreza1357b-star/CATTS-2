@@ -4126,7 +4126,7 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
 }
 </style>
 </head>
-<body class="app-locked">
+<body>
 <div id="app-auth-gate">
   <div id="app-auth-gate-card">
     <div class="login-anim-stage" aria-hidden="true">
@@ -4890,7 +4890,24 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
             <div class="glass-card">
                 <div class="section-title">🗒️ پاسخ‌برگ دیجیتال (AS)</div>
                 <input type="text" id="as-exam-name" placeholder="نام آزمون (مثلاً: آزمون جامع قلمچی ۱۲ شهریور)">
-                <input type="number" id="as-question-count" min="1" max="300" placeholder="تعداد سوالات (مثلاً ۴۰)" oninput="asCalcSmartTime()">
+
+                <div class="as-toggle-row">
+                    <button type="button" class="as-toggle-btn active" id="as-qmode-btn-normal" onclick="asSetQuestionMode('normal')">🔢 شماره‌گذاری عادی</button>
+                    <button type="button" class="as-toggle-btn" id="as-qmode-btn-range" onclick="asSetQuestionMode('range')">📖 بازه‌ی شماره کتاب</button>
+                </div>
+
+                <div id="as-qmode-normal-box" class="as-sub-box show">
+                    <input type="number" id="as-question-count" min="1" max="300" placeholder="تعداد سوالات (مثلاً ۴۰)" oninput="asCalcSmartTime()">
+                </div>
+
+                <div id="as-qmode-range-box" class="as-sub-box">
+                    <div class="input-group">
+                        <input type="number" id="as-range-start" placeholder="از شماره (مثلاً ۲۰۰)" min="1" oninput="asUpdateRangePreview()">
+                        <input type="number" id="as-range-end" placeholder="تا شماره (مثلاً ۲۱۵)" min="1" oninput="asUpdateRangePreview()">
+                    </div>
+                    <input type="number" id="as-range-ratio" placeholder="ضریب (مثلاً ۳ یعنی هر سوالِ سوم)" min="1" value="1" oninput="asUpdateRangePreview()">
+                    <div class="rate-hint" id="as-range-preview">شماره‌ی شروع، پایان و ضریب را وارد کن تا لیست سوالات مشخص شود.</div>
+                </div>
 
                 <div class="as-toggle-row">
                     <button type="button" class="as-toggle-btn active" id="as-mode-btn-none" onclick="asSetTimerMode('none')">🚫 بدون تایمر</button>
@@ -7515,6 +7532,8 @@ function safeRunAS(fn, label){ try{ fn(); }catch(e){ console.error('خطا در 
 const AS_HISTORY_KEY = 'as_history_v1';
 let asState = {
     examName: '', count: 0,
+    questionMode: 'normal',  // normal | range
+    qNumbers: [],            // شماره‌ی واقعی هر سوال (در حالت normal برابر است با ۱..count)
     timerMode: 'none',       // none | manual | smart
     timerSeconds: 0,
     userAnswers: {},
@@ -7549,6 +7568,49 @@ function asSetTimerMode(mode){
     if(smartBox) smartBox.classList.toggle('show', mode === 'smart');
     if(mode === 'smart') asUpdateSubjects();
 }
+/* ---------- شماره‌گذاری سوالات: عادی (۱..N) یا بازه‌ی شماره‌ی کتاب با ضریب ---------- */
+function asSetQuestionMode(mode){
+    asState.questionMode = mode;
+    ['normal','range'].forEach(m => {
+        const btn = document.getElementById('as-qmode-btn-' + m);
+        if(btn) btn.classList.toggle('active', m === mode);
+    });
+    const normalBox = document.getElementById('as-qmode-normal-box');
+    const rangeBox = document.getElementById('as-qmode-range-box');
+    if(normalBox) normalBox.classList.toggle('show', mode === 'normal');
+    if(rangeBox) rangeBox.classList.toggle('show', mode === 'range');
+    asUpdateRangePreview();
+    asCalcSmartTime();
+}
+/* می‌سازد لیست شماره‌سوال‌های واقعی را طبق «از شماره»، «تا شماره» و «ضریب»؛
+   مثلاً بازه‌ی ۲۰۰ تا ۲۱۵ با ضریب ۳ → ۲۰۱، ۲۰۴، ۲۰۷، ۲۱۰، ۲۱۳ (مضرب‌های ۳ داخل بازه) */
+function asBuildRangeNumbers(){
+    const start = Number(document.getElementById('as-range-start')?.value) || 0;
+    const end = Number(document.getElementById('as-range-end')?.value) || 0;
+    const ratio = Math.max(1, Number(document.getElementById('as-range-ratio')?.value) || 1);
+    if(start < 1 || end < start) return [];
+    const nums = [];
+    let first = Math.ceil(start / ratio) * ratio;
+    if(first < start) first += ratio;
+    for(let n = first; n <= end; n += ratio) nums.push(n);
+    return nums;
+}
+function asUpdateRangePreview(){
+    const el = document.getElementById('as-range-preview');
+    if(!el) return;
+    const nums = asBuildRangeNumbers();
+    if(!nums.length){ el.textContent = 'شماره‌ی شروع، پایان و ضریب را درست وارد کن.'; return; }
+    const preview = nums.slice(0, 6).map(faNum).join('، ') + (nums.length > 6 ? ' ...' : '');
+    el.textContent = `${faNum(nums.length)} سوال: ${preview}`;
+}
+/* لیست نهایی شماره‌سوال‌ها را برمی‌گرداند؛ در حالت عادی همان ۱..تعداد است */
+function asGetQuestionNumbers(){
+    if(asState.questionMode === 'range') return asBuildRangeNumbers();
+    const count = Number(document.getElementById('as-question-count')?.value) || 0;
+    const arr = [];
+    for(let i = 1; i <= count; i++) arr.push(i);
+    return arr;
+}
 function asUpdateSubjects(){
     const track = document.getElementById('as-track-select')?.value || 'تجربی';
     const select = document.getElementById('as-subject-select'); if(!select) return;
@@ -7562,7 +7624,7 @@ function asCalcSmartTime(){
     if(asState.timerMode !== 'smart') return;
     const track = document.getElementById('as-track-select')?.value || 'تجربی';
     const subject = document.getElementById('as-subject-select')?.value || '';
-    const q = Number(document.getElementById('as-question-count')?.value) || 0;
+    const q = asGetQuestionNumbers().length;
     const hint = document.getElementById('as-rate-hint'), badge = document.getElementById('as-smart-badge');
     const rate = (SUBJECT_RATES[track] || {})[subject];
     if(!subject || !rate){ if(hint) hint.textContent = 'یک درس را انتخاب کن.'; if(badge) badge.textContent = '⏱️'; return; }
@@ -7576,8 +7638,13 @@ function asCalcSmartTime(){
 }
 function asStartExam(){
     const name = (document.getElementById('as-exam-name')?.value || '').trim() || 'آزمون بدون‌نام';
-    const count = Number(document.getElementById('as-question-count')?.value) || 0;
-    if(count < 1){ alert('لطفاً تعداد سوالات را وارد کن.'); return; }
+    const qNumbers = asGetQuestionNumbers();
+    const count = qNumbers.length;
+    if(count < 1){
+        if(asState.questionMode === 'range') alert('لطفاً بازه‌ی شماره (از/تا) و ضریب را درست وارد کن.');
+        else alert('لطفاً تعداد سوالات را وارد کن.');
+        return;
+    }
     if(count > 300){ alert('حداکثر ۳۰۰ سوال پشتیبانی می‌شود.'); return; }
 
     let seconds = 0;
@@ -7595,7 +7662,8 @@ function asStartExam(){
     }
 
     asState = {
-        examName: name, count: count, timerMode: asState.timerMode, timerSeconds: seconds,
+        examName: name, count: count, questionMode: asState.questionMode, qNumbers: qNumbers,
+        timerMode: asState.timerMode, timerSeconds: seconds,
         userAnswers: {}, correctAnswers: {}, notes: [], lastResult: null, viewingHistoryId: null
     };
 
@@ -7622,13 +7690,13 @@ function asRenderGrid(containerId, mode){
     const wrap = document.getElementById(containerId);
     if(!wrap) return;
     let html = '';
-    for(let q = 1; q <= asState.count; q++){
+    (asState.qNumbers && asState.qNumbers.length ? asState.qNumbers : []).forEach(q => {
         html += `<div class="as-qrow" data-q="${q}"><span class="as-qnum">${faNum(q)}</span><span class="as-opts">`;
         for(let o = 1; o <= 4; o++){
             html += `<button type="button" class="as-bubble" data-opt="${o}" onclick="asSelectAnswer('${mode}', ${q}, ${o}, this)">${faNum(o)}</button>`;
         }
         html += `</span></div>`;
-    }
+    });
     wrap.innerHTML = html;
 }
 function asSelectAnswer(mode, q, opt, el){
@@ -7695,7 +7763,7 @@ function asSubmitSheet(){
 function asComputeStats(){
     let correct = 0, wrong = 0, empty = 0, removed = 0;
     const statuses = {};
-    for(let q = 1; q <= asState.count; q++){
+    (asState.qNumbers && asState.qNumbers.length ? asState.qNumbers : []).forEach(q => {
         const key = asState.correctAnswers[q] || null;
         const user = asState.userAnswers[q] || null;
         let status;
@@ -7708,7 +7776,7 @@ function asComputeStats(){
         else if(status === 'correct') correct++;
         else if(status === 'wrong') wrong++;
         else empty++;
-    }
+    });
     const considered = Math.max(1, asState.count - removed);
     const rawPercent = Math.round((correct / considered) * 1000) / 10;
     const negPercent = Math.round(((correct - (wrong / 3)) / considered) * 1000) / 10;
@@ -7734,7 +7802,7 @@ function asRenderReport(examName, dateStr, result, notes){
     document.getElementById('as-percent-value').textContent = faNum(result.percent) + '٪';
 
     let grid = '';
-    for(let q = 1; q <= asState.count; q++){
+    (asState.qNumbers && asState.qNumbers.length ? asState.qNumbers : []).forEach(q => {
         const st = result.statuses[q];
         const user = asState.userAnswers[q] || null;
         const key = asState.correctAnswers[q] || null;
@@ -7753,7 +7821,7 @@ function asRenderReport(examName, dateStr, result, notes){
             grid += `<span class="${cls}">${faNum(o)}</span>`;
         }
         grid += `</span><span class="as-status-icon">${icon}</span></div>`;
-    }
+    });
     document.getElementById('as-report-grid').innerHTML = grid;
     asRenderNotes(notes || []);
 }
@@ -7798,6 +7866,7 @@ function asSaveToHistory(result){
         id: String(Date.now()),
         examName: asState.examName,
         count: asState.count,
+        qNumbers: asState.qNumbers,
         dateIso: new Date().toISOString(),
         dateLabel: new Date().toLocaleDateString('fa-IR'),
         userAnswers: asState.userAnswers,
@@ -7833,6 +7902,7 @@ function asOpenHistoryItem(id){
     if(!rec) return;
     asState.examName = rec.examName;
     asState.count = rec.count;
+    asState.qNumbers = (rec.qNumbers && rec.qNumbers.length) ? rec.qNumbers : Array.from({length: rec.count}, (_, i) => i + 1);
     asState.userAnswers = rec.userAnswers;
     asState.correctAnswers = rec.correctAnswers;
     asState.notes = rec.notes || [];
@@ -7850,15 +7920,20 @@ function asDeleteHistoryItem(id){
 }
 function asNewExam(){
     asStopTimer();
-    asState = { examName:'', count:0, timerMode:'none', timerSeconds:0, userAnswers:{}, correctAnswers:{}, notes:[], lastResult:null, viewingHistoryId:null };
+    asState = { examName:'', count:0, questionMode:'normal', qNumbers:[], timerMode:'none', timerSeconds:0, userAnswers:{}, correctAnswers:{}, notes:[], lastResult:null, viewingHistoryId:null };
     const nameEl = document.getElementById('as-exam-name'); if(nameEl) nameEl.value = '';
     const countEl = document.getElementById('as-question-count'); if(countEl) countEl.value = '';
+    const rsEl = document.getElementById('as-range-start'); if(rsEl) rsEl.value = '';
+    const reEl = document.getElementById('as-range-end'); if(reEl) reEl.value = '';
+    const rrEl = document.getElementById('as-range-ratio'); if(rrEl) rrEl.value = '1';
+    asSetQuestionMode('normal');
     asSetTimerMode('none');
     asRenderHistory();
     asSwitchView('as-view-setup');
 }
 function asInit(){
     asUpdateSubjects();
+    asUpdateRangePreview();
     asRenderHistory();
 }
 
@@ -9472,7 +9547,7 @@ async function authRefreshUI(){
         setGateStatus('❌ اتصال به سرور در دسترس نیست؛ لطفاً اتصال اینترنت را بررسی کن.');
         const retryBtn = document.getElementById('gate-retry-btn');
         if(retryBtn) retryBtn.style.display = 'block';
-        lockApp();
+        unlockApp();
         return;
     }
     const retryBtnOk = document.getElementById('gate-retry-btn');
@@ -9496,7 +9571,7 @@ async function authRefreshUI(){
         if(dot) dot.classList.remove('on');
         setCloudStatus('☁️ هنوز وارد حساب نشده‌ای؛ اطلاعات فقط روی همین دستگاه است.');
         setGateStatus('برای استفاده از برنامه، ابتدا ثبت‌نام کن یا وارد شو.');
-        lockApp();
+        unlockApp();
         stopAutoSync();
     }
 }
