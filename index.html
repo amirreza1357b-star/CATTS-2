@@ -1468,6 +1468,13 @@ body.light-mode .planner-modal-box{background:linear-gradient(145deg,rgba(255,25
 .reminder-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .reminder-note{font-size:.72rem;color:var(--text-secondary);line-height:1.9;margin-top:9px;}
 .reminder-toast{position:fixed;right:18px;bottom:18px;z-index:99999999;width:min(390px,calc(100vw - 36px));padding:15px 17px;border-radius:18px;background:rgba(16,24,40,.96);border:1px solid rgba(72,188,236,.35);box-shadow:0 18px 50px rgba(0,0,0,.45);display:none;animation:fadeInUp .25s ease;}
+.study-focus-check{position:fixed;right:18px;bottom:18px;z-index:100000000;width:min(390px,calc(100vw - 36px));padding:16px 18px;border-radius:18px;background:rgba(16,24,40,.98);border:1px solid rgba(251,146,60,.55);box-shadow:0 18px 50px rgba(0,0,0,.5);display:none;animation:fadeInUp .25s ease;}
+body.light-mode .study-focus-check{background:rgba(255,252,245,.98);}
+.study-focus-check.show{display:block;}
+.study-focus-check strong{display:block;margin-bottom:6px;color:var(--warning);font-size:1rem;}
+.study-focus-check div{font-size:.82rem;line-height:1.8;color:var(--text-secondary);margin-bottom:10px;}
+.study-focus-check #study-focus-check-sec{color:var(--warning);font-weight:800;}
+.study-focus-check button{width:100%;border:none;border-radius:12px;padding:10px;font-weight:800;font-size:.88rem;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;}
 body.light-mode .reminder-toast{background:rgba(255,252,245,.97);}
 .reminder-toast.show{display:block;}
 .reminder-toast strong{display:block;margin-bottom:5px;color:var(--gold);}
@@ -4711,7 +4718,7 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
 
                 <div id="study-timer-panel" style="display:none;">
                 <div class="section-title">📖 تایمر مطالعه</div>
-                <p class="rate-hint" style="margin-bottom:10px;">هر بار «توقف» بزنی، زمان ذخیره می‌شود؛ با «شروع» دوباره از همان‌جا ادامه پیدا می‌کند. بعد از ساعت ۱۱ شب مجموع خالص مطالعه‌ی امروز اعلام می‌شود.</p>
+                <p class="rate-hint" style="margin-bottom:10px;">هر بار «توقف» بزنی، زمان ذخیره می‌شود؛ با «شروع» دوباره از همان‌جا ادامه پیدا می‌کند. بعد از ساعت ۱۱ شب مجموع خالص مطالعه‌ی امروز اعلام می‌شود. 🧠 هر چند دقیقه یک‌بار (نامنظم) یک پیام «هنوز پای درسی؟» می‌آید؛ اگر جواب ندی، همون بازه جزو «خالص» حساب نمی‌شه و تایمر خودش متوقف می‌شه — تا زمان واقعاً خوانده‌شده با زمانِ صرفاً «پای میز نشستن» قاطی نشه.</p>
 
                 <div class="timer-display" id="study-timer"><div class="timer-hud"><i class="timer-core-dot"></i><span class="timer-label">STUDY MODE</span><span class="timer-digits" id="study-timer-digits">۰۰:۰۰:۰۰</span><span class="timer-sub">ساعت · دقیقه · ثانیه</span></div></div>
 
@@ -4720,6 +4727,21 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
                     <button class="btn btn-danger" onclick="resetTodayStudyTime()">بازنشانی امروز</button>
                 </div>
                 <div class="rate-hint" id="study-today-total" style="text-align:center;margin-top:10px;font-weight:800;">مجموع خالص مطالعه‌ی امروز: ۰ دقیقه</div>
+
+                <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;">
+                    <div class="section-title" style="font-size:.92rem;">📌 بازه‌ی مطالعه رو دستی ثبت کن</div>
+                    <p class="rate-hint" style="margin:6px 0 10px;">اگه نمی‌تونی هنگام درس خوندن مرورگر رو روشن/وصل نگه داری (مثلاً گوشی قفله یا لپ‌تاپ بسته‌ست)، لازم نیست تایمر بالا روشن باشه؛ فقط ساعت شروع و پایانِ همون بازه رو بعداً اینجا بزن — زمان خالصش (منهای استراحت) خودش به مجموع همون روز اضافه می‌شه.</p>
+                    <div style="display:flex;gap:8px;">
+                        <button type="button" class="as-toggle-btn active" id="study-range-day-today" onclick="setStudyRangeDay('today')">امروز</button>
+                        <button type="button" class="as-toggle-btn" id="study-range-day-yesterday" onclick="setStudyRangeDay('yesterday')">دیروز</button>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+                        <div><label class="rate-hint" style="display:block;margin-bottom:4px;">ساعت شروع</label><input type="time" id="study-range-start"></div>
+                        <div><label class="rate-hint" style="display:block;margin-bottom:4px;">ساعت پایان</label><input type="time" id="study-range-end"></div>
+                    </div>
+                    <input type="number" id="study-range-break" placeholder="دقیقه استراحت وسط این بازه (اختیاری)" min="0" style="margin-top:8px;">
+                    <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="addManualStudyRange()">➕ افزودن این بازه به مطالعه‌ی خالص</button>
+                </div>
                 </div>
             </div>
 
@@ -8118,10 +8140,23 @@ function studyCheckpoint(){
     localStorage.setItem('study_stopwatch_running_since', String(studyStartTs));
     renderStudyStopwatch();
 }
+/* بازه‌ی جاری (از آخرین checkpoint تا الان) را بدون ذخیره در آمار خالص، دور می‌ریزد —
+   برای وقتی که کاربر به «چک حضور ذهن» پاسخ نداده، یعنی معلوم نیست واقعاً درس می‌خوانده. */
+function studyDiscardAndStop(){
+    const btn = document.getElementById('startStudyBtn');
+    studyState = 'idle';
+    studyStartTs = null;
+    localStorage.removeItem('study_stopwatch_running_since');
+    clearInterval(studyTickId); studyTickId = null;
+    if(btn){ btn.textContent = 'شروع'; btn.className = 'btn btn-success'; }
+    document.getElementById('study-timer')?.classList.remove('timer-running');
+    renderStudyStopwatch();
+}
 function toggleStudyStopwatch(){
     const btn = document.getElementById('startStudyBtn');
     if(studyState === 'running'){
-        // توقف: checkpoint نهایی بزن و کامل متوقف کن
+        // توقف دستی: یعنی خودِ کاربر آگاهانه دکمه رو زده، پس بازه‌ی تا همین الان تأییدشده حساب می‌شه
+        cancelFocusCheck();
         studyCheckpoint();
         studyState = 'idle';
         studyStartTs = null;
@@ -8136,10 +8171,8 @@ function toggleStudyStopwatch(){
         if(btn){ btn.textContent = 'توقف'; btn.className = 'btn btn-purple'; }
         document.getElementById('study-timer')?.classList.add('timer-running');
         clearInterval(studyTickId);
-        studyTickId = setInterval(() => {
-            renderStudyStopwatch();
-            if(Date.now() - studyStartTs >= 5000) studyCheckpoint();
-        }, 1000);
+        studyTickId = setInterval(() => { renderStudyStopwatch(); }, 1000);
+        scheduleFocusCheck();
     }
     renderStudyStopwatch();
 }
@@ -8159,8 +8192,9 @@ function resetTodayStudyTime(){
     renderStudyStopwatch();
 }
 /* اگر تایمر مطالعه هنگام بستن/رفرش صفحه در حال اجرا بوده، اینجا آن را
-   دوباره فعال می‌کنیم (بدون گم‌شدن دیتا، چون هر ۵ ثانیه checkpoint ذخیره
-   شده بود). */
+   دوباره فعال می‌کنیم. توجه: چون از این به بعد commit فقط با تأیید «چک
+   حضور ذهن» یا توقف دستی انجام می‌شود (نه هر ۵ ثانیه به‌طور خودکار)، بازه‌ی
+   بین بستن صفحه و الان تأییدنشده باقی می‌ماند تا اولین چک بعدی. */
 function resumeStudyStopwatchIfActive(){
     const since = Number(localStorage.getItem('study_stopwatch_running_since') || 0);
     if(!since) { renderStudyStopwatch(); return; }
@@ -8170,12 +8204,92 @@ function resumeStudyStopwatchIfActive(){
     if(btn){ btn.textContent = 'توقف'; btn.className = 'btn btn-purple'; }
     document.getElementById('study-timer')?.classList.add('timer-running');
     clearInterval(studyTickId);
-    studyTickId = setInterval(() => {
-        renderStudyStopwatch();
-        if(Date.now() - studyStartTs >= 5000) studyCheckpoint();
-    }, 1000);
+    studyTickId = setInterval(() => { renderStudyStopwatch(); }, 1000);
+    scheduleFocusCheck();
     renderStudyStopwatch();
 }
+
+/* ---------------------------------------------------------------------- */
+/* 7-ج) چک حضور ذهن هنگام مطالعه (Focus Check)                              */
+/* ---------------------------------------------------------------------- */
+/* چون نرم‌افزار نمی‌تونه واقعاً به مغز کاربر وصل بشه و بفهمه اون داره واقعاً
+   درس می‌خونه یا فقط کتاب بازه جلوش، تنها راه صادقانه این است که هر چند
+   دقیقه یک‌بار (با فاصله‌ی تصادفی، تا قابل پیش‌بینی نباشه) ازش بخوایم با
+   یک لمس/کلیک ساده تأیید کنه که هنوز پای درسه. تا وقتی این تأیید انجام
+   نشه، اون بازه به «مطالعه‌ی خالص» اضافه نمی‌شه. یعنی اگه کسی یک ساعت پای
+   میز نشسته ولی حواسش پرت بوده و به چک‌ها پاسخ نداده، فقط بازه‌های واقعاً
+   تأییدشده (مثلاً همون ۱۰ دقیقه) در آمار خالص حساب می‌شه، نه کل یک ساعت. */
+/* ========================================================================== */
+/* MODULE: STUDY FOCUS CHECK
+/* ========================================================================== */
+const FOCUS_CHECK_MIN_MS = 3 * 60 * 1000;   // حداقل ۳ دقیقه
+const FOCUS_CHECK_MAX_MS = 8 * 60 * 1000;   // حداکثر ۸ دقیقه — فاصله‌ی تصادفی بین این دو
+const FOCUS_CHECK_RESPONSE_MS = 20 * 1000;  // ۲۰ ثانیه فرصت برای پاسخ دادن
+let focusCheckTimer = null, focusCheckResponseTimer = null, focusCheckCountdownId = null, focusCheckDue = false;
+
+function scheduleFocusCheck(){
+    clearTimeout(focusCheckTimer);
+    if(studyState !== 'running') return;
+    const delay = FOCUS_CHECK_MIN_MS + Math.random() * (FOCUS_CHECK_MAX_MS - FOCUS_CHECK_MIN_MS);
+    focusCheckTimer = setTimeout(triggerFocusCheck, delay);
+}
+function cancelFocusCheck(){
+    clearTimeout(focusCheckTimer); focusCheckTimer = null;
+    clearTimeout(focusCheckResponseTimer); focusCheckResponseTimer = null;
+    clearInterval(focusCheckCountdownId); focusCheckCountdownId = null;
+    focusCheckDue = false;
+    document.getElementById('study-focus-check')?.classList.remove('show');
+}
+function ensureFocusCheckEl(){
+    let el = document.getElementById('study-focus-check');
+    if(!el){
+        el = document.createElement('div');
+        el.id = 'study-focus-check';
+        el.className = 'study-focus-check';
+        el.innerHTML = '<strong>🧠 هنوز پای درسی؟</strong>' +
+            '<div>برای اینکه این بازه جزو مطالعه‌ی خالص حساب بشه، تا <span id="study-focus-check-sec">۲۰</span> ثانیه دیگه لمس/کلیک کن.</div>' +
+            '<button type="button" onclick="confirmFocusCheck()">✅ بله، اینجام</button>';
+        document.body.appendChild(el);
+    }
+    return el;
+}
+function triggerFocusCheck(){
+    if(studyState !== 'running') return;
+    focusCheckDue = true;
+    const el = ensureFocusCheckEl();
+    const secEl = document.getElementById('study-focus-check-sec');
+    el.classList.add('show');
+    let secLeft = Math.floor(FOCUS_CHECK_RESPONSE_MS / 1000);
+    if(secEl) secEl.textContent = faNum(secLeft);
+    clearInterval(focusCheckCountdownId);
+    focusCheckCountdownId = setInterval(() => {
+        secLeft--;
+        if(secEl) secEl.textContent = faNum(Math.max(0, secLeft));
+        if(secLeft <= 0) clearInterval(focusCheckCountdownId);
+    }, 1000);
+    clearTimeout(focusCheckResponseTimer);
+    focusCheckResponseTimer = setTimeout(focusCheckMissed, FOCUS_CHECK_RESPONSE_MS);
+    try{ if(navigator.vibrate) navigator.vibrate(120); }catch(e){}
+}
+function confirmFocusCheck(){
+    if(!focusCheckDue) return;
+    focusCheckDue = false;
+    clearTimeout(focusCheckResponseTimer);
+    clearInterval(focusCheckCountdownId);
+    document.getElementById('study-focus-check')?.classList.remove('show');
+    studyCheckpoint(); // بازه‌ی تا همین الان، چون تأیید شد، به خالص اضافه می‌شه
+    scheduleFocusCheck(); // چک بعدی با فاصله‌ی تصادفی جدید
+}
+window.confirmFocusCheck = confirmFocusCheck;
+function focusCheckMissed(){
+    if(!focusCheckDue) return;
+    focusCheckDue = false;
+    clearInterval(focusCheckCountdownId);
+    document.getElementById('study-focus-check')?.classList.remove('show');
+    studyDiscardAndStop(); // بازه‌ی تأییدنشده دور ریخته می‌شه و تایمر کامل متوقف می‌شه
+    showReminderToast('⏸ تایمر مطالعه متوقف شد', 'چون به چک حضور پاسخ ندادی، آخرین بازه به‌عنوان مطالعه‌ی خالص ثبت نشد. هر وقت آماده بودی، دوباره «شروع» بزن.');
+}
+
 /* جابه‌جایی بین حالت «تست» و «مطالعه» */
 function switchTimerMode(mode){
     const examPanel = document.getElementById('exam-timer-panel');
@@ -8208,6 +8322,45 @@ function checkStudyNightWrapup(){
     const totalToday = getTodayStudySeconds() + (studyState === 'running' && studyStartTs ? Math.floor((Date.now() - studyStartTs)/1000) : 0);
     showReminderToast('🌙 جمع‌بندی امروز', 'امروز در مجموع ' + formatHoursMinutesFa(totalToday) + ' خالص مطالعه کردی. آفرین! 👏');
 }
+
+/* ---------------------------------------------------------------------- */
+/* 7-ب) ثبت دستیِ بازه‌ی مطالعه (برای وقتی نمی‌شه به تایمر زنده وصل موند)    */
+/* ---------------------------------------------------------------------- */
+/* ========================================================================== */
+/* MODULE: MANUAL STUDY RANGE ENTRY
+/* ========================================================================== */
+let studyRangeTargetDay = 'today';
+function setStudyRangeDay(which){
+    studyRangeTargetDay = which;
+    document.getElementById('study-range-day-today')?.classList.toggle('active', which === 'today');
+    document.getElementById('study-range-day-yesterday')?.classList.toggle('active', which === 'yesterday');
+}
+window.setStudyRangeDay = setStudyRangeDay;
+function addManualStudyRange(){
+    const startVal = document.getElementById('study-range-start')?.value;
+    const endVal = document.getElementById('study-range-end')?.value;
+    const breakMin = Number(document.getElementById('study-range-break')?.value) || 0;
+    if(!startVal || !endVal){ alert('ساعت شروع و پایانِ بازه‌ی مطالعه رو وارد کن.'); return; }
+    const base = new Date();
+    if(studyRangeTargetDay === 'yesterday') base.setDate(base.getDate() - 1);
+    const [sh, sm] = startVal.split(':').map(Number);
+    const [eh, em] = endVal.split(':').map(Number);
+    const startD = new Date(base.getFullYear(), base.getMonth(), base.getDate(), sh, sm, 0, 0);
+    let endD = new Date(base.getFullYear(), base.getMonth(), base.getDate(), eh, em, 0, 0);
+    if(endD <= startD) endD = new Date(endD.getTime() + 24*60*60*1000); // بازه‌ای که از نیمه‌شب رد شده (مثلاً ۲۲:۰۰ تا ۰۱:۰۰)
+    const rawSeconds = Math.round((endD.getTime() - startD.getTime()) / 1000);
+    const seconds = rawSeconds - breakMin * 60;
+    if(seconds <= 0){ alert('بازه‌ی معتبر وارد کن؛ زمان پایان باید بعد از شروع باشد و استراحت نباید از کل بازه بیشتر باشد.'); return; }
+    const dateKey = localDateKey(base);
+    addStudySeconds(dateKey, seconds);
+    document.getElementById('study-range-start').value = '';
+    document.getElementById('study-range-end').value = '';
+    document.getElementById('study-range-break').value = '';
+    renderStudyStopwatch();
+    scheduleCloudSync();
+    alert(`✅ ${formatHoursMinutesFa(seconds)} به مطالعه‌ی خالصِ «${studyRangeTargetDay === 'today' ? 'امروز' : 'دیروز'}» اضافه شد.`);
+}
+window.addManualStudyRange = addManualStudyRange;
 
 /* ---------------------------------------------------------------------- */
 /* 8) تم روز/شب و تب‌ها                                                    */
