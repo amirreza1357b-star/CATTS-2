@@ -1585,6 +1585,11 @@ header{margin-bottom:22px;}
 
 .date-settings-panel{position:fixed;inset:0;z-index:1500;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,5,12,.68);backdrop-filter:blur(9px)}.date-settings-panel.show{display:flex}.date-settings-box{width:min(430px,100%);padding:22px;border-radius:24px;background:linear-gradient(145deg,#121b2d,#080d17);border:1px solid rgba(34,211,238,.24);box-shadow:0 25px 80px rgba(0,0,0,.55)}.date-settings-box h3{font-size:1.15rem;margin-bottom:8px}.date-settings-box p{color:var(--text-secondary);font-size:.78rem;line-height:1.9;margin-bottom:14px}.date-setting-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.date-setting-grid input{margin:0}.date-setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .daily-vitals-card{background:linear-gradient(145deg,rgba(34,211,238,.065),rgba(99,139,241,.045),rgba(251,146,60,.04));border-color:rgba(34,211,238,.16)}.daily-vitals-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.mini-date-btn{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text-primary);border-radius:11px;padding:8px 11px;cursor:pointer;font-weight:800}.daily-vitals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}.daily-ring-card{text-align:center;padding:14px 10px;border-radius:18px;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.07)}.daily-ring{width:128px;height:128px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--ring-color) var(--p),rgba(255,255,255,.065) 0);box-shadow:0 0 28px color-mix(in srgb,var(--ring-color) 13%,transparent)}.daily-ring::after{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--bg-solid);box-shadow:inset 0 0 24px rgba(0,0,0,.22)}.daily-ring>div{position:relative;z-index:1}.daily-ring b{display:block;font-size:1.35rem}.daily-ring span{font-size:.65rem;color:var(--text-secondary)}.daily-ring.study{--ring-color:#22d3ee}.daily-ring.action{--ring-color:#fb923c}.daily-ring.hours{--ring-color:#84b7fc}.daily-ring-card strong{display:block;font-size:.88rem}.daily-ring-card small{display:block;color:var(--text-secondary);font-size:.68rem;margin-top:4px}
+.dash-todo-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.dash-todo-row input[type="checkbox"]{width:19px;height:19px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
+.dash-todo-row span{flex:1;font-size:.86rem;line-height:1.7;word-break:break-word}
+.dash-todo-row.done span{text-decoration:line-through;color:var(--text-secondary);opacity:.75}
+.dash-todo-del{background:none;border:none;color:var(--danger);cursor:pointer;font-size:.95rem;padding:2px 6px;flex-shrink:0}
 .planner-archive-wrap{margin-top:18px}.planner-archive-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.planner-archives{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.planner-archive-card{position:relative;overflow:hidden;padding:16px;border-radius:20px;background:linear-gradient(145deg,rgba(34,211,238,.08),rgba(99,139,241,.08),rgba(251,146,60,.06));border:1px solid rgba(99,139,241,.22);box-shadow:0 12px 28px rgba(0,0,0,.18)}.planner-archive-card::before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:4px;background:linear-gradient(90deg,#22d3ee,#638bf1,#fb923c)}.planner-archive-title{font-weight:900;font-size:1rem}.planner-archive-meta{font-size:.72rem;color:var(--text-secondary);line-height:1.8;margin:6px 0 11px}.planner-archive-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.planner-archive-actions button{min-height:40px;padding:7px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);color:var(--text-primary);cursor:pointer;font-weight:800}.planner-archive-actions button.primary{background:linear-gradient(135deg,#22d3ee,#638bf1);border:0;color:#07111b}.planner-archive-empty{padding:20px;text-align:center;color:var(--text-secondary);border:1px dashed rgba(255,255,255,.12);border-radius:16px}@media(max-width:650px){.daily-vitals-grid{gap:8px;grid-template-columns:1fr 1fr}.daily-vitals-grid .daily-ring-card:nth-child(3){grid-column:1/-1}.daily-ring{width:108px;height:108px}.date-setting-grid{grid-template-columns:1fr 1fr}.planner-archive-actions{grid-template-columns:1fr}.daily-vitals-head{flex-direction:column}.mini-date-btn{width:100%}}
 
 /* ===== تایمر نهایی: HUD مداری، سبک و بدون درایفت ===== */
@@ -4246,24 +4251,10 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
     <span id="focus-mini-timer-digits">۰۰:۰۰</span><span class="fmt-exit">خروج</span>
 </div>
 
-<button id="ai-panda-fab" class="ai-panda-fab" data-adm-floatable="ai" onclick="toggleAIPanel(true)" title="دستیار هوشمند">🐼</button>
+<!-- دکمه‌ی شناور پایین‌راست «دستیار هوشمند» حذف شد؛ چون همین دستیار از دکمه‌ی
+     بالای صفحه (chatgpt-badge در نوار بالا) هم در دسترسه و تکراری بود. -->
 
-<!-- ===================== لیدربورد رقابتی گروه ===================== -->
-<button id="lb-fab" class="lb-fab" data-adm-floatable="leaderboard" onclick="toggleLeaderboardPanel(true)" title="لیدربورد گروه">
-    🏆<span class="lb-fab-dot"></span>
-</button>
-<div id="lb-overlay" onclick="if(event.target===this) toggleLeaderboardPanel(false)">
-    <div id="lb-panel">
-        <div class="lb-header">
-            <h3>🏆 لیدربورد گروه</h3>
-            <button class="lb-close-btn" onclick="toggleLeaderboardPanel(false)">✕</button>
-        </div>
-        <div id="lb-group-tabs" class="lb-group-tabs"></div>
-        <div id="lb-body" class="lb-body">
-            <div class="lb-empty">در حال بارگذاری…</div>
-        </div>
-    </div>
-</div>
+<!-- بخش «لیدربورد رقابتی گروه» (دکمه‌ی 🏆 بالای سمت راست) طبق درخواست حذف شد. -->
 
 <div id="ai-panel-overlay" onclick="if(event.target===this) toggleAIPanel(false)">
   <div id="ai-panel">
@@ -4653,6 +4644,18 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
                 <div class="daily-ring-card"><div class="daily-ring action" id="daily-action-ring" style="--p:0%"><div><b id="daily-action-percent">۰٪</b><span>عملکرد</span></div></div><strong>عملکرد امروز</strong><small id="daily-action-caption">۰ تست ثبت شده</small></div>
                 <div class="daily-ring-card"><div class="daily-ring hours" id="daily-hours-ring" style="--p:0%"><div><b id="daily-hours-percent">۰</b><span>ساعت</span></div></div><strong>ساعت مطالعه امروز</strong><small id="daily-hours-caption">هنوز چیزی ثبت نشده</small></div>
             </div>
+        </div>
+
+        <div class="glass-card" id="dashboard-todo-card">
+            <div class="section-title">📝 برنامه‌ی امروز من</div>
+            <div class="goal-subtitle" style="margin-bottom:10px;">هر کاری امروز می‌خوای انجام بدی رو اینجا بنویس؛ وقتی انجامش دادی، تیکش بزن. این بخش جدا از «برنامه هفتگی» و «اهداف» است — فقط یک چک‌لیست ساده برای همین امروز.</div>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="dash-todo-input" placeholder="مثلاً: ۲۰ تست فیزیک فصل ۳" style="flex:1;" onkeydown="if(event.key==='Enter') addDashTodo();">
+                <button class="btn btn-primary" style="width:auto;padding:0 16px;" onclick="addDashTodo()">➕ افزودن</button>
+            </div>
+            <div id="dash-todo-list" style="margin-top:12px;display:flex;flex-direction:column;gap:8px;"></div>
+            <div id="dash-todo-empty" class="rate-hint" style="text-align:center;margin-top:8px;">هنوز کاری برای امروز اضافه نکردی.</div>
+            <div id="dash-todo-progress" class="rate-hint" style="text-align:center;margin-top:8px;display:none;"></div>
         </div>
 
         <div class="glass-card" id="dashboard-goals-card" style="display:none;">
@@ -5682,7 +5685,7 @@ body.adm-drag-mode #adm-drag-confirm-bar{ display:flex; }
           <div class="adm-card">
             <p class="adm-card-title">جابه‌جایی آزاد دکمه‌های شناور</p>
             <p style="font-size:.76rem;color:var(--adm-text-dim);line-height:1.9;">
-              دکمه «شروع جابه‌جایی» رو بزن، پنل موقتاً کنار می‌ره، هر دکمه‌ی شناور (پاندا 🐼، دستیار هوشمند، لیدربورد، چت) رو با موس بکش و جای دلخواه رها کن. بعد دکمه‌ی «پایان و ذخیره» رو بزن.
+              دکمه «شروع جابه‌جایی» رو بزن، پنل موقتاً کنار می‌ره، هر دکمه‌ی شناور (چت، پاندای همراه) رو با موس بکش و جای دلخواه رها کن. بعد دکمه‌ی «پایان و ذخیره» رو بزن.
             </p>
             <div class="adm-inline-actions">
               <button class="adm-btn adm-btn-block" id="adm-drag-start-btn" onclick="admStartDragMode()">🖱️ شروع جابه‌جایی</button>
@@ -8614,6 +8617,75 @@ function clearManualDate(){
 }
 
 /* ---------------------------------------------------------------------- */
+/* 11-ب) برنامه‌ی امروز (چک‌لیست ساده‌ی داشبورد — مجزا از برنامه هفتگی/اهداف) */
+/* ---------------------------------------------------------------------- */
+/* ========================================================================== */
+/* MODULE: DASHBOARD TODAY TODO
+/* ========================================================================== */
+function getDashTodos(){ return safeParse('dash_todo_list_v1', []); }
+function setDashTodos(list){ safeSet('dash_todo_list_v1', list); }
+function addDashTodo(){
+    const input = document.getElementById('dash-todo-input');
+    const text = (input?.value || '').trim();
+    if(!text){ alert('یک متن برای برنامه‌ات بنویس.'); return; }
+    const list = getDashTodos();
+    list.push({ id: nowTs() + '_' + Math.random().toString(36).slice(2,7), text, done: false, updatedAt: nowTs() });
+    setDashTodos(list);
+    input.value = '';
+    renderDashTodos();
+    scheduleCloudSync();
+}
+function toggleDashTodo(id){
+    const list = getDashTodos();
+    const item = list.find(x => x.id === id);
+    if(!item) return;
+    item.done = !item.done;
+    item.updatedAt = nowTs();
+    setDashTodos(list);
+    renderDashTodos();
+    scheduleCloudSync();
+}
+function deleteDashTodo(id){
+    const list = getDashTodos();
+    const idx = list.findIndex(x => x.id === id);
+    if(idx === -1) return;
+    list.splice(idx, 1);
+    setDashTodos(list);
+    addTombstone('deleted_dash_todo_ids', id);
+    renderDashTodos();
+    scheduleCloudSync();
+}
+function renderDashTodos(){
+    const wrap = document.getElementById('dash-todo-list');
+    const empty = document.getElementById('dash-todo-empty');
+    const progress = document.getElementById('dash-todo-progress');
+    if(!wrap) return;
+    const list = getDashTodos();
+    if(!list.length){
+        wrap.innerHTML = '';
+        if(empty) empty.style.display = 'block';
+        if(progress) progress.style.display = 'none';
+        return;
+    }
+    if(empty) empty.style.display = 'none';
+    const doneCount = list.filter(x => x.done).length;
+    if(progress){
+        progress.style.display = 'block';
+        progress.textContent = `${faNum(doneCount)} از ${faNum(list.length)} کار امروز انجام شده`;
+    }
+    wrap.innerHTML = list.map(item => `
+        <div class="dash-todo-row ${item.done ? 'done' : ''}">
+            <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleDashTodo('${item.id}')">
+            <span>${escapeHtml(item.text)}</span>
+            <button class="dash-todo-del" onclick="deleteDashTodo('${item.id}')" title="حذف">✕</button>
+        </div>
+    `).join('');
+}
+window.addDashTodo = addDashTodo;
+window.toggleDashTodo = toggleDashTodo;
+window.deleteDashTodo = deleteDashTodo;
+
+/* ---------------------------------------------------------------------- */
 /* 12) داشبورد امروز (رینگ‌های مطالعه/عملکرد)                               */
 /* ---------------------------------------------------------------------- */
 /* ========================================================================== */
@@ -9222,6 +9294,8 @@ function collectBackupData(){
         dailyGoalLog: getDailyGoalLog(),
         weeklyPlannerStore: getWeeklyStore(),
         weeklyPlannerArchives: getWeeklyArchives(),
+        dashTodos: getDashTodos(),
+        deletedDashTodoIds: getTombstones('deleted_dash_todo_ids'),
         countdownTarget: getCountdownDate(),
         countdownTargetTs: localStorage.getItem('countdown_target_date_ts') || '',
         manualJDate: localStorage.getItem('manual_jdate') || '',
@@ -9306,6 +9380,8 @@ function applyBackupData(data, { merge } = { merge:false }){
         setWeeklyStore({ weekKey: wk, days: mergedDays }); safeSet('deleted_planner_days', pd.tomb);
         const ar = mergeArrayWithTombstones(getWeeklyArchives(), data.weeklyPlannerArchives||[], [], []);
         setWeeklyArchives(ar.merged);
+        const dt = mergeArrayWithTombstones(getDashTodos(), data.dashTodos||[], getTombstones('deleted_dash_todo_ids'), data.deletedDashTodoIds||[]);
+        setDashTodos(dt.merged); safeSet('deleted_dash_todo_ids', dt.tomb);
         const localTs = Number(localStorage.getItem('countdown_target_date_ts')||0);
         const remoteTs = Number(data.countdownTargetTs||0);
         if(data.countdownTarget && remoteTs >= localTs){
@@ -9330,6 +9406,8 @@ function applyBackupData(data, { merge } = { merge:false }){
         if(data.dailyGoalLog !== undefined) setDailyGoalLog(data.dailyGoalLog);
         if(data.weeklyPlannerStore !== undefined) setWeeklyStore(data.weeklyPlannerStore);
         if(data.weeklyPlannerArchives !== undefined) setWeeklyArchives(data.weeklyPlannerArchives);
+        if(data.dashTodos !== undefined) setDashTodos(data.dashTodos);
+        if(data.deletedDashTodoIds) safeSet('deleted_dash_todo_ids', data.deletedDashTodoIds);
         if(data.manualJDate) localStorage.setItem('manual_jdate', data.manualJDate);
         if(data.manualJDateAnchor) localStorage.setItem('manual_jdate_anchor', data.manualJDateAnchor);
         if(data.countdownTarget) localStorage.setItem('countdown_target_date', data.countdownTarget);
@@ -9363,7 +9441,7 @@ function importData(event){
 }
 function refreshEverything(){
     updateUI(); loadGoals(); loadErrors(); initWeeklyPlanner(); initCountdown();
-    renderSmartDate(); updateDailyVitals(); updateReminderStatus();
+    renderSmartDate(); updateDailyVitals(); updateReminderStatus(); renderDashTodos();
     if(myChart) updateChart();
     if(radarChart) updateRadarChart();
     renderTrashUI();
@@ -9556,6 +9634,18 @@ async function authRefreshUI(){
     const ub = document.getElementById('neo-user-box'), ab = document.getElementById('neo-auth-box'), em = document.getElementById('neo-auth-user-email');
     const dot = document.getElementById('cloud-account-dot');
     if(session?.user){
+        // رفع باگ اصلی: قبلاً این چک اصلاً بعد از ورود انجام نمی‌شد؛ کاربر
+        // مسدودشده می‌تونست دوباره ایمیل/رمزش رو بزنه و کامل وارد برنامه بشه.
+        // حالا قبل از unlockApp، هم user_id و هم device_id همین مرورگر چک می‌شه.
+        const isBanned = (typeof admEnforceBanStatus === 'function') ? await admEnforceBanStatus() : false;
+        if(isBanned){
+            if(ub) ub.style.display = 'none';
+            if(ab) ab.style.display = 'grid';
+            if(dot) dot.classList.remove('on');
+            setCloudStatus('⛔ این حساب/دستگاه مسدود شده است.');
+            setGateStatus('⛔ این حساب/دستگاه مسدود شده است.');
+            return;
+        }
         if(ub) ub.style.display = 'flex';
         if(ab) ab.style.display = 'none';
         if(em) em.textContent = session.user.email || '';
@@ -9941,6 +10031,7 @@ window.onload = function(){
     safeRun(initCountdown, 'initCountdown');
     safeRun(renderSmartDate, 'renderSmartDate');
     safeRun(updateDailyVitals, 'updateDailyVitals');
+    safeRun(renderDashTodos, 'renderDashTodos');
     safeRun(updateReminderStatus, 'updateReminderStatus');
     safeRun(() => checkSmartReminder(false), 'checkSmartReminder');
     safeRun(initCloud, 'initCloud');
@@ -15134,6 +15225,78 @@ loadSmartNotes();
 const ADMIN_PASSWORD = 'Amirreza1388';
 const ADMIN_TABLE = 'app_theme_settings';
 const BANNED_TABLE = 'banned_users';
+/* ----------------------------------------------------------------------
+   مسدودسازی بر اساس دستگاه (نه فقط حساب کاربری)
+   ----------------------------------------------------------------------
+   مشکل قبلی: وقتی کاربری مسدود می‌شد، فقط user_id توی جدول banned_users
+   ثبت می‌شد. اگر همون کاربر صفحه رو رفرش می‌کرد و دوباره ایمیل/رمزش رو
+   وارد می‌کرد، عملاً هیچ‌جا (نه لحظه‌ی ورود، نه بعدش) چک نمی‌شد که این
+   حساب مسدوده؛ فقط توی admLoadInitial (که یک‌بار موقع لود اولیه صفحه
+   اجرا می‌شد) چک می‌شد، نه بعد از signIn. پس کاربر مسدود، وارد می‌شد و تا
+   رفرش بعدی هم داخل برنامه می‌موند.
+   راه‌حل اینجا دو لایه است:
+   ۱) چک مسدودی حالا هم موقع لود اولیه و هم بلافاصله بعد از هر signIn موفق
+      (در authRefreshUI، قبل از unlockApp) اجرا می‌شه؛ یعنی دیگه هیچ راهی
+      برای دور زدن با «دوباره وارد شدن» نیست.
+   ۲) علاوه بر user_id، شناسه‌ی دستگاه (device_id — یک شناسه‌ی تصادفی که
+      در همین مرورگر/دستگاه در localStorage ذخیره می‌شه) هم هر بار که کاربر
+      وارد می‌شه در جدول user_devices ثبت می‌شه. وقتی مدیر کسی رو مسدود
+      می‌کنه، همه‌ی device_idهایی که تا اون لحظه از همون کاربر دیده شده،
+      توی جدول banned_devices هم ثبت می‌شن. از اون به بعد، همون دستگاه
+      (همون مرورگر روی همون لپ‌تاپ) حتی با ساختن یک ایمیل/حساب کاملاً جدید
+      هم بلاک می‌مونه، چون قبل از ورود قطعی به برنامه، device_id همون
+      مرورگر رو هم چک می‌کنیم.
+   ⚠️ محدودیت صادقانه: این یک IP-block واقعی (سطح شبکه) نیست — چون این
+   محیط (یک صفحه‌ی استاتیک + Supabase) به زیرساخت سرور/پراکسی دسترسی نداره
+   که بشه واقعاً بر اساس IP بلاک کرد؛ IPها هم معمولاً متغیرن (وای‌فای خونه،
+   موبایل‌دیتا، VPN) و IP-block واقعی هم عملاً قابل دور زدن با عوض کردن
+   شبکه است. شناسه‌ی دستگاه (device_id) قابل‌اتکاتر از IP است چون به خودِ
+   مرورگر گره می‌خوره، ولی اگر کاربر localStorage مرورگرش رو پاک کنه یا از
+   مرورگر/دستگاه دیگه‌ای وارد بشه، بازم device_id عوض می‌شه. اگر بخوای
+   بلاک واقعاً سطح شبکه/IP هم داشته باشی، باید از یک سرویس واسط مثل
+   Cloudflare (قوانین فایروال بر اساس IP) جلوی همین صفحه استفاده کنی.
+
+   ⚠️ پیش‌نیاز دیتابیس (یک‌بار توی Supabase SQL Editor اجرا کن):
+
+   create table if not exists public.user_devices (
+     user_id    uuid not null references auth.users(id) on delete cascade,
+     device_id  text not null,
+     last_seen  timestamptz not null default now(),
+     primary key (user_id, device_id)
+   );
+   alter table public.user_devices enable row level security;
+   create policy "users can upsert their own device rows"
+     on public.user_devices for insert
+     with check (user_id = auth.uid());
+   create policy "users can update their own device rows"
+     on public.user_devices for update
+     using (user_id = auth.uid());
+   create policy "users can read their own device rows"
+     on public.user_devices for select
+     using (user_id = auth.uid());
+   -- مدیر (از طریق service role / پنل ادمین با کلید مناسب) هم باید بتونه
+   -- بخونه تا هنگام مسدودسازی، device_idهای یک کاربر رو پیدا کنه؛ اگر پنل
+   -- ادمین‌ات با کلید anon کار می‌کنه، این پالیسی رو هم اضافه کن (یا آن را
+   -- به شرط عضویت در جدول ادمین‌ها محدودتر کن):
+   create policy "any authenticated user can read devices (needed for admin ban lookup)"
+     on public.user_devices for select
+     using (auth.uid() is not null);
+
+   create table if not exists public.banned_devices (
+     device_id  text primary key,
+     reason     text,
+     banned_at  timestamptz not null default now()
+   );
+   alter table public.banned_devices enable row level security;
+   create policy "any authenticated user can check ban list"
+     on public.banned_devices for select
+     using (auth.uid() is not null);
+   create policy "any authenticated user can manage ban list (admin panel)"
+     on public.banned_devices for all
+     using (auth.uid() is not null) with check (auth.uid() is not null);
+   ============================================================================ */
+const DEVICES_TABLE = 'user_devices';
+const BANNED_DEVICES_TABLE = 'banned_devices';
 let admClickCount = 0, admClickTimer = null;
 let ADMIN_ANNOUNCEMENT_OVERRIDE = null;
 let admCurrentSettings = { colors:{}, font:'', texts:{}, layout:{} };
@@ -15805,27 +15968,71 @@ async function admToggleBan(userId, ban){
         if(ban){
             const reason = prompt('دلیل مسدودسازی (اختیاری):', '') || '';
             await client.from(BANNED_TABLE).upsert({ user_id: userId, reason, banned_at: new Date().toISOString() });
+            // همه‌ی دستگاه‌هایی که تا الان از این کاربر دیده شده رو هم مسدود کن
+            // تا با ساختن حساب جدید از همون لپ‌تاپ/مرورگر هم نتونه برگرده.
+            try{
+                const { data: devices } = await client.from(DEVICES_TABLE).select('device_id').eq('user_id', userId);
+                if(devices && devices.length){
+                    const rows = devices.map(d => ({ device_id: d.device_id, reason, banned_at: new Date().toISOString() }));
+                    await client.from(BANNED_DEVICES_TABLE).upsert(rows);
+                }
+            }catch(e){ console.warn('مسدودسازی دستگاه‌ها ممکن نشد (شاید جدول user_devices/banned_devices هنوز ساخته نشده):', e); }
         } else {
             await client.from(BANNED_TABLE).delete().eq('user_id', userId);
+            try{
+                const { data: devices } = await client.from(DEVICES_TABLE).select('device_id').eq('user_id', userId);
+                if(devices && devices.length){
+                    const ids = devices.map(d => d.device_id);
+                    await client.from(BANNED_DEVICES_TABLE).delete().in('device_id', ids);
+                }
+            }catch(e){ console.warn('رفع مسدودی دستگاه‌ها ممکن نشد:', e); }
         }
         admSearchUsers();
     }catch(e){ alert('خطا: ' + (e.message||'نامشخص')); }
 }
 window.admToggleBan = admToggleBan;
 
-async function admCheckIfBanned(){
+/* بلافاصله بعد از هر signIn موفق (و همچنین موقع لود اولیه) صدا زده می‌شه.
+   true برمی‌گردونه اگر کاربر/دستگاه مسدود باشه — در این صورت خودش overlay
+   رو نشون می‌ده، از حساب خارج می‌کنه، و کد صدازننده باید unlockApp/ادامه‌ی
+   ورود رو متوقف کنه. */
+async function admEnforceBanStatus(){
     try{
         const client = getSupabaseClient();
-        if(!client) return;
+        if(!client) return false;
         const { data: sessionData } = await client.auth.getSession();
         const uid = sessionData && sessionData.session && sessionData.session.user && sessionData.session.user.id;
-        if(!uid) return;
-        const { data } = await client.from(BANNED_TABLE).select('user_id').eq('user_id', uid).maybeSingle();
-        if(data){
-            document.getElementById('banned-overlay').classList.add('show');
+        const deviceId = (typeof getDeviceId === 'function') ? getDeviceId() : null;
+
+        let banned = false;
+        if(uid){
+            const { data } = await client.from(BANNED_TABLE).select('user_id').eq('user_id', uid).maybeSingle();
+            if(data) banned = true;
         }
-    }catch(e){ /* اگر جدول هنوز ساخته نشده، نادیده بگیر */ }
+        if(!banned && deviceId){
+            try{
+                const { data } = await client.from(BANNED_DEVICES_TABLE).select('device_id').eq('device_id', deviceId).maybeSingle();
+                if(data) banned = true;
+            }catch(e){ /* جدول banned_devices شاید هنوز ساخته نشده؛ نادیده بگیر */ }
+        }
+
+        if(banned){
+            document.getElementById('banned-overlay')?.classList.add('show');
+            try{ await client.auth.signOut(); }catch(e){}
+            return true;
+        }
+
+        // اگر مسدود نبود و کاربر لاگین است، دستگاه فعلی رو برای دفعات بعد ثبت کن
+        if(uid && deviceId){
+            try{ await client.from(DEVICES_TABLE).upsert({ user_id: uid, device_id: deviceId, last_seen: new Date().toISOString() }); }
+            catch(e){ /* جدول user_devices شاید هنوز ساخته نشده؛ نادیده بگیر */ }
+        }
+        return false;
+    }catch(e){ return false; }
 }
+window.admEnforceBanStatus = admEnforceBanStatus;
+// نام قدیمی برای سازگاری با جاهایی که هنوز admCheckIfBanned صدا می‌زنن
+async function admCheckIfBanned(){ await admEnforceBanStatus(); }
 window.admSignOutBanned = async function(){
     try{ const client = getSupabaseClient(); if(client) await client.auth.signOut(); }catch(e){}
     location.reload();
@@ -15896,7 +16103,10 @@ async function admLoadInitial(){
             });
         }
     }catch(e){ console.warn('عدم امکان بارگذاری تنظیمات پشتیبان:', e); }
-    admCheckIfBanned();
+    admEnforceBanStatus();
+    // هر ۹۰ ثانیه دوباره چک می‌کنه؛ اگر مدیر یک کاربر رو در حین اینکه همون
+    // لحظه داخل برنامه‌ست مسدود کنه، لازم نیست منتظر رفرش/ورود بعدی بمونه.
+    setInterval(() => { admEnforceBanStatus(); }, 90000);
 }
 admLoadInitial();
 
