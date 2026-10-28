@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "institute": "maz",
+    "year": "1405",
+    "name": "آزمون ۶ شهریور - مرور و تثبیت پایه",
+    "date": "1405/06/06",
+    "questions": ["maz/1405/shahrivar6-q1.pdf", "maz/1405/shahrivar6-q2.pdf"],
+    "answers": ["maz/1405/shahrivar6-a.pdf"]
+  }
+]
