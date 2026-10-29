@@ -16609,20 +16609,20 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </script>
 
 <style id="ui-liquid">
-:root{--bg-solid:#0a0e1c;--bg-gradient:radial-gradient(900px 560px at 85% -8%,rgba(71,118,255,.28),transparent 62%),radial-gradient(760px 520px at 8% 8%,rgba(145,115,255,.22),transparent 60%),radial-gradient(800px 500px at 50% 112%,rgba(34,211,238,.13),transparent 62%),#0a0e1c;
+:root,html body:not(.light-mode){--bg-solid:#0a0e1c;--bg-gradient:radial-gradient(900px 560px at 85% -8%,rgba(71,118,255,.28),transparent 62%),radial-gradient(760px 520px at 8% 8%,rgba(145,115,255,.22),transparent 60%),radial-gradient(800px 500px at 50% 112%,rgba(34,211,238,.13),transparent 62%),#0a0e1c;
 --glass:rgba(255,255,255,.06);--glass-2:rgba(255,255,255,.1);--glass-line:rgba(255,255,255,.13);--field:rgba(255,255,255,.07);
 --glass-shadow:0 10px 36px -8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(255,255,255,.03);--glass-shadow-lg:0 22px 54px -12px rgba(0,0,0,.6),0 0 44px -16px rgba(71,118,255,.5),inset 0 1px 0 rgba(255,255,255,.2);
 --card-bg:var(--glass);--card-bg-hover:var(--glass-2);--border:1px solid var(--glass-line);--border-accent:1px solid rgba(124,155,255,.55);
 --text-primary:#eef1ff;--text-secondary:#9aa5c7;--accent:#7c9bff;--gold:#7c9bff;--gold-dim:#5f82f5;--purple:#a78bfa;--primary:#7c9bff;--primary-2:#4776ff;--primary-3:#3b63e0;
 --page-bg:#0a0e1c;--surface:rgba(255,255,255,.06);--success:#34d3a0;--danger:#ff6584;--warning:#fbbf24;--grad:linear-gradient(135deg,#4776ff,#9173ff);--r:24px;--r-ctl:14px}
-body.light-mode{--bg-solid:#f5f7fb;--page-bg:#f5f7fb;--bg-gradient:radial-gradient(900px 560px at 88% -6%,rgba(71,118,255,.17),transparent 62%),radial-gradient(760px 520px at 6% 4%,rgba(145,115,255,.15),transparent 60%),radial-gradient(800px 520px at 55% 112%,rgba(34,211,238,.13),transparent 62%),#f5f7fb;
+html body.light-mode{--bg-solid:#f5f7fb;--page-bg:#f5f7fb;--bg-gradient:radial-gradient(900px 560px at 88% -6%,rgba(71,118,255,.17),transparent 62%),radial-gradient(760px 520px at 6% 4%,rgba(145,115,255,.15),transparent 60%),radial-gradient(800px 520px at 55% 112%,rgba(34,211,238,.13),transparent 62%),#f5f7fb;
 --glass:rgba(255,255,255,.55);--glass-2:rgba(255,255,255,.78);--glass-line:rgba(255,255,255,.75);--field:rgba(255,255,255,.62);
 --glass-shadow:0 8px 32px rgba(31,38,135,.08),inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(120,130,200,.08);--glass-shadow-lg:0 20px 48px -12px rgba(31,38,135,.2),0 0 40px -18px rgba(71,118,255,.5),inset 0 1px 0 #fff;
 --border:1px solid rgba(255,255,255,.75);--border-accent:1px solid rgba(71,118,255,.4);--text-primary:#182230;--text-secondary:#64748b;--accent:#4776ff;--gold:#4776ff;--gold-dim:#3b63e0;--purple:#9173ff;--primary:#4776ff;--primary-2:#3b63e0;--primary-3:#2f52c4;--surface:rgba(255,255,255,.7);
 --success:#10a37f;--danger:#ef4a6a;--warning:#e8920c}
 html{background:#0a0e1c!important}
 html:has(body.light-mode){background:#f5f7fb!important}
-html body,html body.light-mode{background:var(--bg-gradient) fixed,var(--bg-solid)!important;color:var(--text-primary);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+html body,html body.light-mode{background:var(--bg-gradient)!important;background-attachment:fixed!important;color:var(--text-primary);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 html body ::placeholder{color:var(--text-secondary);opacity:.7}
 html body ::selection{background:rgba(71,118,255,.28)}
 html body *{scrollbar-width:thin;scrollbar-color:rgba(124,140,190,.45) transparent}
@@ -16686,6 +16686,7 @@ html body .tabs .tab-btn.active::after,html body.light-mode .tabs .tab-btn.activ
 html body .em-rail-head .lg,html body.light-mode .em-rail-head .lg{background:var(--grad)!important}
 html body .em-rail-head b,html body.light-mode .em-rail-head b{color:var(--text-primary)}
 html body .chat-fab,html body.light-mode .chat-fab{background:var(--grad)!important;border:1px solid rgba(255,255,255,.45)!important;box-shadow:0 14px 30px -10px #4776ff,inset 0 1px 0 rgba(255,255,255,.6)!important}
+html body.light-mode{background-color:#f5f7fb!important;background-image:radial-gradient(900px 560px at 88% -6%,rgba(71,118,255,.17),transparent 62%),radial-gradient(760px 520px at 6% 4%,rgba(145,115,255,.15),transparent 60%),radial-gradient(800px 520px at 55% 112%,rgba(34,211,238,.13),transparent 62%)!important;background-attachment:fixed!important}
 @keyframes uiIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes uiPop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:none}}
 html body .tab-content.active{animation:uiIn .4s ease both}
