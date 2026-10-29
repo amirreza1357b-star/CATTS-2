@@ -4,23 +4,38 @@
     "year": "1405",
     "name": "آزمون ۶ شهریور - مرور و تثبیت پایه",
     "date": "1405/06/06",
-    "questions": ["maz/1405/shahrivar6-q1.pdf", "maz/1405/shahrivar6-q2.pdf"],
-    "answers": ["maz/1405/shahrivar6-a.pdf"]
+    "questions": [
+      "maz/1405/shahrivar6-q1.pdf",
+      "maz/1405/shahrivar6-q2.pdf"
+    ],
+    "answers": [
+      "maz/1405/shahrivar6-a.pdf"
+    ]
   },
   {
     "institute": "maz",
     "year": "1405",
     "name": "آزمون ۱۳ شهریور - مرور و تثبیت پایه",
     "date": "1405/06/13",
-    "questions": ["maz/1405/shahrivar13-q1.pdf", "maz/1405/shahrivar13-q2.pdf"],
-    "answers": ["maz/1405/shahrivar13-a.pdf"]
+    "questions": [
+      "maz/1405/shahrivar13-q1.pdf",
+      "maz/1405/shahrivar13-q2.pdf"
+    ],
+    "answers": [
+      "maz/1405/shahrivar13-a.pdf"
+    ]
   },
   {
     "institute": "maz",
     "year": "1404",
-    "name": "آزمون ۱۵ آبان - ریاضیات و شیمی",
+    "name": "آزمون ۱۵ آبان",
     "date": "1404/08/15",
-    "questions": ["maz/1404/aban15-math.pdf", "maz/1404/aban15-chem.pdf"],
-    "answers": ["maz/1404/aban15-a.pdf"]
+    "questions": [
+      "maz/1404/aban15-q1.pdf",
+      "maz/1404/aban15-q2.pdf"
+    ],
+    "answers": [
+      "maz/1404/aban15-a.pdf"
+    ]
   }
 ]
