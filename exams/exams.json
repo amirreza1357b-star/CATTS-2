@@ -6,5 +6,13 @@
     "date": "1405/06/06",
     "questions": ["maz/1405/shahrivar6-q1.pdf", "maz/1405/shahrivar6-q2.pdf"],
     "answers": ["maz/1405/shahrivar6-a.pdf"]
+  },
+  {
+    "institute": "maz",
+    "year": "1405",
+    "name": "آزمون ۱۳ شهریور - مرور و تثبیت پایه",
+    "date": "1405/06/13",
+    "questions": ["maz/1405/shahrivar13-q1.pdf", "maz/1405/shahrivar13-q2.pdf"],
+    "answers": ["maz/1405/shahrivar13-a.pdf"]
   }
 ]
