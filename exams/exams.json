@@ -37,5 +37,65 @@
     "answers": [
       "maz/1404/aban15-a.pdf"
     ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1399",
+    "name": "آزمون ۲۶ دی - اختصاصی دوازدهم ریاضی",
+    "date": "1399/10/26",
+    "questions": [
+      "ghalamchi/1399/dey26-q.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1399/dey26-a.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1400",
+    "name": "آزمون ۲۰ فروردین - اختصاصی دوازدهم ریاضی",
+    "date": "1400/01/20",
+    "questions": [
+      "ghalamchi/1400/farvardin20-q.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1400/farvardin20-a.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1400",
+    "name": "آزمون ۲۴ دی - اختصاصی دوازدهم ریاضی",
+    "date": "1400/10/24",
+    "questions": [
+      "ghalamchi/1400/dey24-q.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1400/dey24-a.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1401",
+    "name": "آزمون ۱۹ فروردین - اختصاصی دوازدهم ریاضی",
+    "date": "1401/01/19",
+    "questions": [
+      "ghalamchi/1401/farvardin19-q.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1401/farvardin19-a.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1401",
+    "name": "آزمون هدیه ۱۶ دی - اختصاصی دوازدهم ریاضی",
+    "date": "1401/10/16",
+    "questions": [
+      "ghalamchi/1401/dey16-q.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1401/dey16-a.pdf"
+    ]
   }
 ]
