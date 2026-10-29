@@ -14,5 +14,13 @@
     "date": "1405/06/13",
     "questions": ["maz/1405/shahrivar13-q1.pdf", "maz/1405/shahrivar13-q2.pdf"],
     "answers": ["maz/1405/shahrivar13-a.pdf"]
+  },
+  {
+    "institute": "maz",
+    "year": "1404",
+    "name": "آزمون ۱۵ آبان - ریاضیات و شیمی",
+    "date": "1404/08/15",
+    "questions": ["maz/1404/aban15-math.pdf", "maz/1404/aban15-chem.pdf"],
+    "answers": ["maz/1404/aban15-a.pdf"]
   }
 ]
