@@ -19275,7 +19275,10 @@ else{var gr={},ord=[];if(S.m==='note')tch(S.s).forEach(function(t){gr[t.id]=[];o
 b=ord.map(function(k){var t=null;D.t.forEach(function(q){if(q.id===k)t=q;});var nm=t?t.name:k||'استاد',ph=t&&t.photo;
 return '<div class="lib-grp" style="'+g(x.g)+'"><div class="lib-gh"><span class="lib-av">'+initial(nm)+(ph?'<img src="'+esc(url(ph))+'" alt="'+esc(nm)+'" loading="lazy" onerror="this.remove()">':'')+'</span><span><b>'+esc(nm)+'</b><small>'+(gr[k].length?fa(gr[k].length)+' جزوه':'جزوه‌ها به‌زودی اضافه می‌شوند')+'</small></span></div>'+gr[k].map(function(i){return '<button class="lib-row" type="button" data-a="open" data-i="'+i+'"><span class="lib-tile">'+sv(MODE.note.i,20)+'</span><b>'+esc(cur[i].title)+'</b><em>مشاهده</em></button>';}).join('')+'</div>';}).join('');}}
 hub.innerHTML='<div class="lib-box">'+h+'<div class="lib-body">'+b+'</div></div>';}
-function openFile(r){var u=url(r.file);viewer.querySelector('.lv-t').textContent=r.title;viewer.querySelector('iframe').src=u;var a=viewer.querySelector('.lv-x');a.href=u;var ck=viewer.querySelector('.lv-ck');ck.style.display=typeof window.openCheknevisUrl==='function'?'':'none';ck.onclick=function(){closeViewer();close();window.openCheknevisUrl(u,r.title);};viewer.classList.add('show');}
+function showFile(r,u){viewer.querySelector('.lv-t').textContent=r.title;viewer.querySelector('iframe').src=u;var a=viewer.querySelector('.lv-x');a.href=u;var ck=viewer.querySelector('.lv-ck');ck.style.display=typeof window.openCheknevisUrl==='function'?'':'none';ck.onclick=function(){closeViewer();close();window.openCheknevisUrl(u,r.title);};viewer.classList.add('show');}
+function note(m){try{window.toast?toast(m,''):alert(m);}catch(e){alert(m);}}
+function openFile(r){if(!r||!r.file){note('فایل این مورد هنوز اضافه نشده است.');return;}var u=url(r.file);if(/^https?:/i.test(r.file)){showFile(r,u);return;}
+fetch(u,{method:'HEAD'}).then(function(x){if(!x.ok)throw 0;showFile(r,u);}).catch(function(){note('فایل این مورد هنوز آپلود نشده است.');});}
 function closeViewer(){viewer.classList.remove('show');viewer.querySelector('iframe').src='about:blank';}
 function open(){load().then(function(){S={m:null,s:null};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function close(){hub.classList.remove('show');document.documentElement.style.overflow='';}
