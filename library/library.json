@@ -1,18 +1,157 @@
 {
   "teachers": [
-    { "id": "darabi",     "name": "کیوان دارابی",      "photo": "teachers/darabi.jpg",     "subjects": ["stat", "hendese"] },
-    { "id": "shojaei",    "name": "محمدرضا شجاعی",    "photo": "teachers/shojaei.jpg",    "subjects": ["physics"] },
-    { "id": "farahani",   "name": "پارسا فراهانی",    "photo": "teachers/farahani.jpg",   "subjects": ["chemistry"] },
-    { "id": "mosalaei",   "name": "امید مصلایی",      "photo": "teachers/mosalaei.jpg",   "subjects": ["chemistry"] },
-    { "id": "azizi",      "name": "مهدی عزیزی",       "photo": "teachers/azizi.jpg",      "subjects": ["hesaban"] },
-    { "id": "vaezin",     "name": "محمد واعزین",      "photo": "teachers/vaezin.jpg",     "subjects": ["hendese"] },
-    { "id": "karami",     "name": "معین کرمی",        "photo": "teachers/karami.jpg",     "subjects": ["hesaban"] },
-    { "id": "hadianfard", "name": "فرشاد هادیان‌فرد", "photo": "teachers/hadianfard.jpg", "subjects": ["chemistry"] }
+    {
+      "id": "darabi",
+      "name": "کیوان دارابی",
+      "photo": "teachers/darabi.jpg",
+      "subjects": [
+        "stat",
+        "hendese"
+      ]
+    },
+    {
+      "id": "shojaei",
+      "name": "محمدرضا شجاعی",
+      "photo": "teachers/shojaei.jpg",
+      "subjects": [
+        "physics"
+      ]
+    },
+    {
+      "id": "farahani",
+      "name": "پارسا فراهانی",
+      "photo": "teachers/farahani.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "mosalaei",
+      "name": "امید مصلایی",
+      "photo": "teachers/mosalaei.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "azizi",
+      "name": "مهدی عزیزی",
+      "photo": "teachers/azizi.jpg",
+      "subjects": [
+        "hesaban"
+      ]
+    },
+    {
+      "id": "vaezin",
+      "name": "محمد واعزین",
+      "photo": "teachers/vaezin.jpg",
+      "subjects": [
+        "hendese"
+      ]
+    },
+    {
+      "id": "karami",
+      "name": "معین کرمی",
+      "photo": "teachers/karami.jpg",
+      "subjects": [
+        "hesaban"
+      ]
+    },
+    {
+      "id": "hadianfard",
+      "name": "فرشاد هادیان‌فرد",
+      "photo": "teachers/hadianfard.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    }
   ],
   "books": [
-    { "subject": "hesaban",   "title": "حسابان جامع کنکور — گاج (IQ)",       "cover": "books/gaj-hesaban-iq.jpg",     "file": "books/gaj-hesaban-iq.pdf" },
-    { "subject": "chemistry", "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",   "cover": "books/gaj-shimi-iq-2.jpg",     "file": "books/gaj-shimi-iq-2.pdf" },
-    { "subject": "chemistry", "title": "شیمی جامع (ریاضی) — خیلی سبز",       "cover": "books/khayli-sabz-shimi.jpg",  "file": "books/khayli-sabz-shimi.pdf" }
+    {
+      "subject": "hesaban",
+      "title": "حسابان جامع کنکور — گاج (IQ)",
+      "cover": "books/gaj-hesaban-iq.jpg",
+      "file": "books/gaj-hesaban-iq.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",
+      "cover": "books/gaj-shimi-iq-2.jpg",
+      "file": "books/gaj-shimi-iq-2.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع (ریاضی) — خیلی سبز",
+      "cover": "books/khayli-sabz-shimi.jpg",
+      "file": "books/khayli-sabz-shimi.pdf"
+    }
   ],
-  "notes": []
+  "notes": [
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تابع — فصل ۱ دوازدهم",
+      "file": "notes/karami/12-f1-tabe.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مثلثات — فصل ۲ دوازدهم",
+      "file": "notes/karami/12-f2-mosallasat.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "حد و پیوستگی — فصل ۳ دوازدهم",
+      "file": "notes/karami/12-f3-had-peyvastegi.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مشتق — فصل ۴ دوازدهم",
+      "file": "notes/karami/12-f4-moshtagh.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "کاربرد مشتق — فصل ۵ دوازدهم",
+      "file": "notes/karami/12-f5-karbord-moshtagh.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "معادله و نامعادله — فصل ۱ پایه",
+      "file": "notes/karami/paye-f1-moadele-namoadele.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مجموعه و دنباله — فصل ۲ پایه",
+      "file": "notes/karami/paye-f2-majmooe-donbale.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "توان‌رسانی و اتحاد — فصل ۳ پایه",
+      "file": "notes/karami/paye-f3-tavan-ettehad.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "نمایی و لگاریتم — فصل ۴ پایه",
+      "file": "notes/karami/paye-f4-nemayi-logaritm.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تست تابع",
+      "file": "notes/karami/test-tabe.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تست معادله و نامعادله",
+      "file": "notes/karami/test-moadele-namoadele.pdf"
+    }
+  ]
 }
