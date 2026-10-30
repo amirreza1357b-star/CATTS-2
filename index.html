@@ -19237,15 +19237,12 @@ html body button#books-notes-badge#books-notes-badge#books-notes-badge{position:
 <script id="lib-hub-js">
 window.LibHub=(function(){
 var SUB=[
-{id:'stat',n:'آمار و احتمال',g:['#38bdf8','#4776ff'],i:"<path d='M2 19h20'/><path d='M3.5 19c2.5 0 3-12.5 8.5-12.5S17.5 19 20.5 19'/><path d='M12 6.5V19' stroke-dasharray='2 2.4'/>"},
-{id:'math',n:'ریاضی',g:['#fb923c','#f43f5e'],i:"<path d='M6 4.5v6M3 7.5h6'/><path d='M15 7.5h6'/><path d='M15 15l6 6M21 15l-6 6'/><path d='M3 18h6'/><path d='M6 15v.01M6 21v.01'/>"},
+{id:'stat',n:'آمار و گسسته',g:['#38bdf8','#4776ff'],i:"<path d='M2 19h20'/><path d='M3.5 19c2.5 0 3-12.5 8.5-12.5S17.5 19 20.5 19'/><path d='M12 6.5V19' stroke-dasharray='2 2.4'/>"},
 {id:'hesaban',n:'حسابان',g:['#a78bfa','#d946ef'],i:"<path d='M3 3v18h18'/><path d='M6 17c3.5-1 4.5-9 7-9s3 4.5 6 5'/><circle cx='13' cy='8' r='1.6'/><path d='M9.5 11l7-5.5'/>"},
 {id:'hendese',n:'هندسه',g:['#34d399','#0d9488'],i:"<path d='M3.5 19.5 12 4l8.5 15.5z'/><circle cx='12' cy='14.4' r='3'/>"},
-{id:'gosaste',n:'گسسته',g:['#22d3ee','#6366f1'],i:"<circle cx='6' cy='6' r='2.4'/><circle cx='18' cy='7' r='2.4'/><circle cx='12' cy='18' r='2.4'/><path d='M8.4 6.2l7.2.5M7.3 8.2l3.6 7.6M16.8 9.2l-3.7 6.6'/>"},
 {id:'physics',n:'فیزیک',g:['#60a5fa','#7c3aed'],i:"<circle cx='12' cy='12' r='1.8' fill='currentColor'/><ellipse cx='12' cy='12' rx='10' ry='4.2'/><ellipse cx='12' cy='12' rx='10' ry='4.2' transform='rotate(60 12 12)'/><ellipse cx='12' cy='12' rx='10' ry='4.2' transform='rotate(120 12 12)'/>"},
-{id:'chemistry',n:'شیمی',g:['#f472b6','#e11d48'],i:"<path d='M9.5 3h5M10 3v6.2L4.7 19a1.4 1.4 0 0 0 1.2 2.1h12.2a1.4 1.4 0 0 0 1.2-2.1L14 9.2V3'/><path d='M7.2 15h9.6'/><path d='M10.5 18v.01M13.6 18.6v.01'/>"},
-{id:'biology',n:'زیست‌شناسی',g:['#4ade80','#16a34a'],i:"<path d='M20 4C10.5 4 5.5 8.5 5.5 14.5c0 2.8 2 5 4.8 5 6.2 0 9.7-6.3 9.7-15.5z'/><path d='M4 21c2.2-6.5 6.3-10 11-12'/>"},
-{id:'geology',n:'زمین‌شناسی',g:['#fbbf24','#ea580c'],i:"<path d='M2.5 20 9 7.5l4 7 2.5-3.5 6 9z'/><path d='M2.5 20h19'/>"}];
+{id:'chemistry',n:'شیمی',g:['#f472b6','#e11d48'],i:"<path d='M9.5 3h5M10 3v6.2L4.7 19a1.4 1.4 0 0 0 1.2 2.1h12.2a1.4 1.4 0 0 0 1.2-2.1L14 9.2V3'/><path d='M7.2 15h9.6'/><path d='M10.5 18v.01M13.6 18.6v.01'/>"}];
+var AL={gosaste:'stat'};function al(x){return AL[x]||x;}
 var MODE={book:{n:'کتاب',s:'کتاب‌های درسی و کمک‌درسی هر درس',g:['#4776ff','#9173ff'],i:"<path d='M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5a2.5 2.5 0 0 0 0 5H19'/><path d='M9 7h6M9 11h4'/>"},
 note:{n:'جزوه',s:'جزوه‌های استادها به تفکیک درس',g:['#f59e0b','#ec4899'],i:"<path d='M14.5 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7.5z'/><path d='M14.5 3v4.5H19M9 13h6M9 17h4'/>"}};
 var P={back:"<path d='M9 6l6 6-6 6'/>",x:"<path d='M6 6l12 12M18 6L6 18'/>",tab:"<path d='M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4'/>",pen:"<path d='M12 20h9'/><path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z'/>",inbox:"<path d='M4 13l2.5-7.5A2 2 0 0 1 8.4 4h7.2a2 2 0 0 1 1.9 1.5L20 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z'/><path d='M4 13h4.5a1.5 1.5 0 0 1 1.5 1.5 2 2 0 0 0 4 0 1.5 1.5 0 0 1 1.5-1.5H20'/>"};
@@ -19259,16 +19256,16 @@ function sub(id){for(var i=0;i<SUB.length;i++)if(SUB[i].id===id)return SUB[i];re
 function g(c){return '--g1:'+c[0]+';--g2:'+c[1];}
 function load(){if(D)return Promise.resolve(D);
 return fetch('library/library.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){D={t:j.teachers||[],b:j.books||[],n:j.notes||[]};return D;}).catch(function(){D={t:[],b:[],n:[],err:1};return D;});}
-function tch(s){return D.t.filter(function(q){return q.subjects&&q.subjects.indexOf(s)>-1;});}
+function tch(s){return D.t.filter(function(q){return q.subjects&&q.subjects.map(al).indexOf(s)>-1;});}
 function lab(m,s){var c=cnt(m,s);if(c)return fa(c)+' مورد';if(m==='note'){var t=tch(s).length;if(t)return fa(t)+' استاد';}return 'به‌زودی';}
-function cnt(m,s){var a=m==='book'?D.b:D.n;return a.filter(function(x){return x.subject===s;}).length;}
+function cnt(m,s){var a=m==='book'?D.b:D.n;return a.filter(function(x){return al(x.subject)===s;}).length;}
 function top(t,back,small){return '<div class="lib-top">'+(back?'<button class="lib-ic" data-a="back" type="button" aria-label="بازگشت">'+sv(P.back,20)+'</button>':'')+'<div class="lib-ttl">'+esc(t)+(small?'<small>'+esc(small)+'</small>':'')+'</div><button class="lib-ic" data-a="close" type="button" aria-label="بستن">'+sv(P.x,20)+'</button></div>';}
 function empty(){return '<div class="lib-empty">'+sv(P.inbox,54)+'<b>هنوز چیزی اینجا اضافه نشده</b><span>'+(D.err?'فایل library/library.json پیدا نشد.':'به‌زودی اضافه می‌شود.')+'</span></div>';}
 function initial(n){n=String(n||'').replace(/^(استاد|دکتر|مهندس)\s+/,'');return esc(n.charAt(0)||'؟');}
 function render(){var h='',b='';
 if(!S.m){h=top('کتاب + جزوه');b='<div class="lib-modes">'+['book','note'].map(function(k){var m=MODE[k],c=(k==='book'?D.b:D.n).length;return '<button class="lib-mode" type="button" data-a="mode" data-m="'+k+'" style="'+g(m.g)+'"><span class="lib-tile">'+sv(m.i,36)+'</span><span><b>'+m.n+'</b><span>'+m.s+'</span><span>'+(c?fa(c)+' مورد':'به‌زودی')+'</span></span></button>';}).join('')+'</div>';}
 else if(!S.s){h=top(MODE[S.m].n,true);b='<div class="lib-subs">'+SUB.map(function(x){var c=lab(S.m,x.id);return '<button class="lib-sub" type="button" data-a="sub" data-s="'+x.id+'" style="'+g(x.g)+'"><span class="lib-tile">'+sv(x.i,30)+'</span><b>'+x.n+'</b><small>'+c+'</small></button>';}).join('')+'</div>';}
-else{var x=sub(S.s);h=top(MODE[S.m].n,true,x.n);cur=(S.m==='book'?D.b:D.n).filter(function(r){return r.subject===S.s;});
+else{var x=sub(S.s);h=top(MODE[S.m].n,true,x.n);cur=(S.m==='book'?D.b:D.n).filter(function(r){return al(r.subject)===S.s;});
 if(!cur.length&&(S.m==='book'||!tch(S.s).length))b=empty();
 else if(S.m==='book')b='<div class="lib-books" style="'+g(x.g)+'">'+cur.map(function(r,i){return '<button class="lib-bk" type="button" data-a="open" data-i="'+i+'"><span class="lib-cover">'+sv(MODE.book.i,40)+(r.cover?'<img src="'+esc(url(r.cover))+'" alt="" loading="lazy" onerror="this.remove()">':'')+'</span><b>'+esc(r.title)+'</b></button>';}).join('')+'</div>';
 else{var gr={},ord=[];if(S.m==='note')tch(S.s).forEach(function(t){gr[t.id]=[];ord.push(t.id);});cur.forEach(function(r,i){var k=r.teacher||'';if(!gr[k]){gr[k]=[];ord.push(k);}gr[k].push(i);});
