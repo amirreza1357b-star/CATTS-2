@@ -43,7 +43,7 @@
     },
     {
       "id": "vaezin",
-      "name": "محمد واعزین",
+      "name": "محمدحسین واعظین",
       "photo": "teachers/vaezin.jpg",
       "subjects": [
         "hendese"
@@ -152,6 +152,54 @@
       "teacher": "karami",
       "title": "تست معادله و نامعادله",
       "file": "notes/karami/test-moadele-namoadele.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه دهم",
+      "file": "notes/vaezin/jozve-jame-10.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه یازدهم",
+      "file": "notes/vaezin/jozve-jame-11.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه دوازدهم",
+      "file": "notes/vaezin/jozve-jame-12.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه دهم",
+      "file": "notes/vaezin/test-10.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه یازدهم",
+      "file": "notes/vaezin/test-11.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه دوازدهم",
+      "file": "notes/vaezin/test-12.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "نمونه سوال منطبق بر آزمون ۱۷ مهر ماز",
+      "file": "notes/vaezin/maz-17mehr.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "نمونه سوال منطبق بر آزمون ۱ آبان ماز",
+      "file": "notes/vaezin/maz-1aban.pdf"
     }
   ]
 }
