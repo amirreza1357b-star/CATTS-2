@@ -6,7 +6,6 @@
       "photo": "teachers/darabi.jpg",
       "subjects": [
         "stat",
-        "gosaste",
         "hendese"
       ]
     },
@@ -39,7 +38,6 @@
       "name": "مهدی عزیزی",
       "photo": "teachers/azizi.jpg",
       "subjects": [
-        "math",
         "hesaban"
       ]
     },
@@ -56,8 +54,7 @@
       "name": "معین کرمی",
       "photo": "teachers/karami.jpg",
       "subjects": [
-        "hesaban",
-        "math"
+        "hesaban"
       ]
     },
     {
