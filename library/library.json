@@ -69,6 +69,25 @@
       ]
     }
   ],
-  "books": [],
+  "books": [
+    {
+      "subject": "hesaban",
+      "title": "حسابان جامع کنکور — گاج (IQ)",
+      "cover": "books/hesaban/gaj-hesaban-iq.jpg",
+      "file": "books/hesaban/gaj-hesaban-iq.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",
+      "cover": "books/chemistry/gaj-shimi-iq-2.jpg",
+      "file": "books/chemistry/gaj-shimi-iq-2.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع (ریاضی) — خیلی سبز",
+      "cover": "books/chemistry/khayli-sabz-shimi.jpg",
+      "file": "books/chemistry/khayli-sabz-shimi.pdf"
+    }
+  ],
   "notes": []
 }
