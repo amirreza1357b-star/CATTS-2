@@ -1,5 +1,66 @@
 {
-  "teachers": [],
+  "teachers": [
+    {
+      "id": "darabi",
+      "name": "کیوان دارابی",
+      "photo": "teachers/darabi.jpg",
+      "subjects": [
+        "stat",
+        "gosaste",
+        "hendese"
+      ]
+    },
+    {
+      "id": "shojaei",
+      "name": "محمدرضا شجاعی",
+      "photo": "teachers/shojaei.jpg",
+      "subjects": [
+        "physics"
+      ]
+    },
+    {
+      "id": "farahani",
+      "name": "پارسا فراهانی",
+      "photo": "teachers/farahani.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "mosalaei",
+      "name": "امید مصلایی",
+      "photo": "teachers/mosalaei.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "azizi",
+      "name": "مهدی عزیزی",
+      "photo": "teachers/azizi.jpg",
+      "subjects": [
+        "math",
+        "hesaban"
+      ]
+    },
+    {
+      "id": "vaezin",
+      "name": "محمد واعزین",
+      "photo": "teachers/vaezin.jpg",
+      "subjects": [
+        "hendese"
+      ]
+    },
+    {
+      "id": "karami",
+      "name": "معین کرمی",
+      "photo": "teachers/karami.jpg",
+      "subjects": [
+        "hesaban",
+        "math"
+      ]
+    }
+  ],
   "books": [],
   "notes": []
 }
