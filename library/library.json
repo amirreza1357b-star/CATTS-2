@@ -59,6 +59,14 @@
         "hesaban",
         "math"
       ]
+    },
+    {
+      "id": "hadianfard",
+      "name": "فرشاد هادیان‌فرد",
+      "photo": "teachers/hadianfard.jpg",
+      "subjects": [
+        "chemistry"
+      ]
     }
   ],
   "books": [],
