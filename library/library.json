@@ -1,90 +1,18 @@
 {
   "teachers": [
-    {
-      "id": "darabi",
-      "name": "کیوان دارابی",
-      "photo": "teachers/darabi.jpg",
-      "subjects": [
-        "stat",
-        "hendese"
-      ]
-    },
-    {
-      "id": "shojaei",
-      "name": "محمدرضا شجاعی",
-      "photo": "teachers/shojaei.jpg",
-      "subjects": [
-        "physics"
-      ]
-    },
-    {
-      "id": "farahani",
-      "name": "پارسا فراهانی",
-      "photo": "teachers/farahani.jpg",
-      "subjects": [
-        "chemistry"
-      ]
-    },
-    {
-      "id": "mosalaei",
-      "name": "امید مصلایی",
-      "photo": "teachers/mosalaei.jpg",
-      "subjects": [
-        "chemistry"
-      ]
-    },
-    {
-      "id": "azizi",
-      "name": "مهدی عزیزی",
-      "photo": "teachers/azizi.jpg",
-      "subjects": [
-        "hesaban"
-      ]
-    },
-    {
-      "id": "vaezin",
-      "name": "محمد واعزین",
-      "photo": "teachers/vaezin.jpg",
-      "subjects": [
-        "hendese"
-      ]
-    },
-    {
-      "id": "karami",
-      "name": "معین کرمی",
-      "photo": "teachers/karami.jpg",
-      "subjects": [
-        "hesaban"
-      ]
-    },
-    {
-      "id": "hadianfard",
-      "name": "فرشاد هادیان‌فرد",
-      "photo": "teachers/hadianfard.jpg",
-      "subjects": [
-        "chemistry"
-      ]
-    }
+    { "id": "darabi",     "name": "کیوان دارابی",      "photo": "teachers/darabi.jpg",     "subjects": ["stat", "hendese"] },
+    { "id": "shojaei",    "name": "محمدرضا شجاعی",    "photo": "teachers/shojaei.jpg",    "subjects": ["physics"] },
+    { "id": "farahani",   "name": "پارسا فراهانی",    "photo": "teachers/farahani.jpg",   "subjects": ["chemistry"] },
+    { "id": "mosalaei",   "name": "امید مصلایی",      "photo": "teachers/mosalaei.jpg",   "subjects": ["chemistry"] },
+    { "id": "azizi",      "name": "مهدی عزیزی",       "photo": "teachers/azizi.jpg",      "subjects": ["hesaban"] },
+    { "id": "vaezin",     "name": "محمد واعزین",      "photo": "teachers/vaezin.jpg",     "subjects": ["hendese"] },
+    { "id": "karami",     "name": "معین کرمی",        "photo": "teachers/karami.jpg",     "subjects": ["hesaban"] },
+    { "id": "hadianfard", "name": "فرشاد هادیان‌فرد", "photo": "teachers/hadianfard.jpg", "subjects": ["chemistry"] }
   ],
   "books": [
-    {
-      "subject": "hesaban",
-      "title": "حسابان جامع کنکور — گاج (IQ)",
-      "cover": "books/hesaban/gaj-hesaban-iq.jpg",
-      "file": "books/hesaban/gaj-hesaban-iq.pdf"
-    },
-    {
-      "subject": "chemistry",
-      "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",
-      "cover": "books/chemistry/gaj-shimi-iq-2.jpg",
-      "file": "books/chemistry/gaj-shimi-iq-2.pdf"
-    },
-    {
-      "subject": "chemistry",
-      "title": "شیمی جامع (ریاضی) — خیلی سبز",
-      "cover": "books/chemistry/khayli-sabz-shimi.jpg",
-      "file": "books/chemistry/khayli-sabz-shimi.pdf"
-    }
+    { "subject": "hesaban",   "title": "حسابان جامع کنکور — گاج (IQ)",       "cover": "books/gaj-hesaban-iq.jpg",     "file": "books/gaj-hesaban-iq.pdf" },
+    { "subject": "chemistry", "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",   "cover": "books/gaj-shimi-iq-2.jpg",     "file": "books/gaj-shimi-iq-2.pdf" },
+    { "subject": "chemistry", "title": "شیمی جامع (ریاضی) — خیلی سبز",       "cover": "books/khayli-sabz-shimi.jpg",  "file": "books/khayli-sabz-shimi.pdf" }
   ],
   "notes": []
 }
