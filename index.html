@@ -4989,6 +4989,7 @@ body.light-mode .ckg-stat{ background:#fff; }
         <div class="app-bar-top">
             <div class="app-bar-icons">
 <button id="books-notes-badge" type="button" onclick="LibHub.open()" data-label="کتاب + جزوه" aria-label="کتاب + جزوه"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d='M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5a2.5 2.5 0 0 0 0 5H19'/><path d='M9 7h6M9 11h4'/></svg></button>
+<button id="finals-badge" type="button" onclick="LibHub.openFinal()" data-label="سوال نهایی" aria-label="سوال نهایی"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2'/><rect x='9' y='3' width='6' height='4' rx='1'/><path d='m9 14 2 2 4-4'/></svg></button>
                 <button id="qt-focus-btn" onclick="toggleFocusMode()" title="حالت تمرکز">🌗</button>
                 <button id="qt-notebook-btn" onclick="openQuickNotebook()" title="دفترچه لغت/فرمول سریع">📖</button>
                 <button id="qt-reminder-btn" onclick="openQuickReminder()" title="یادآور سریع">⏰<span id="qt-reminder-count" style="display:none;" class="qtb-count-dot"></span></button>
@@ -19233,6 +19234,13 @@ html body button#books-notes-badge#books-notes-badge#books-notes-badge{position:
 .lv-b.pri{color:#fff;border-color:rgba(255,255,255,.4);background:linear-gradient(135deg,#4776ff,#9173ff);box-shadow:0 8px 18px -8px #4776ff}
 #lib-viewer iframe{flex:1;width:100%;border:0;background:#fff}
 @media (max-width:640px){#lib-hub,#lib-viewer{padding:0}.lib-box{height:100dvh;border-radius:0}.lib-body{padding:14px}.lv-b span{display:none}}
+.lib-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.lib-chip{font:700 .82rem Vazirmatn,system-ui,sans-serif;padding:8px 18px;border-radius:999px;border:1px solid var(--glass-line);background:var(--glass);color:var(--text-primary);cursor:pointer;transition:transform .2s,background .2s}.lib-chip:hover{background:var(--glass-2)}
+.lib-chip.on{color:#fff;background:linear-gradient(135deg,#4776ff,#9173ff);border-color:rgba(255,255,255,.42);box-shadow:0 8px 18px -8px #4776ff}
+.lib-yr{font-weight:900;font-size:1.05rem;margin:18px 4px 4px}
+.lib-frow{display:flex;gap:8px;align-items:stretch;margin-top:8px}.lib-frow .lib-row{flex:1;margin-top:0}.lib-frow .lv-b{height:auto;min-height:38px}
+.lib-tag{font-style:normal;font-size:.7rem;font-weight:800;padding:3px 11px;border-radius:999px;background:color-mix(in srgb,var(--g1) 18%,transparent);color:var(--g1)}
+html body button#finals-badge#finals-badge#finals-badge{position:relative;width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;border-radius:15px!important;color:#fff!important;background:linear-gradient(135deg,#f59e0b,#ef4444)!important;border:1px solid rgba(255,255,255,.42)!important;box-shadow:0 10px 22px -10px #ef4444,inset 0 1px 0 rgba(255,255,255,.55)!important}
 </style>
 <script id="lib-hub-js">
 window.LibHub=(function(){
@@ -19252,17 +19260,42 @@ var E={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
 function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return E[c];});}
 function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
 function url(p){return /^https?:/i.test(p)?p:'library/'+String(p).split('/').map(encodeURIComponent).join('/');}
+var SUBF=[
+{id:'hesaban',n:'حسابان',g:['#a78bfa','#d946ef'],i:"<path d='M3 3v18h18'/><path d='M6 17c3.5-1 4.5-9 7-9s3 4.5 6 5'/><circle cx='13' cy='8' r='1.6'/><path d='M9.5 11l7-5.5'/>"},
+{id:'hendese',n:'هندسه',g:['#34d399','#0d9488'],i:"<path d='M3.5 19.5 12 4l8.5 15.5z'/><circle cx='12' cy='14.4' r='3'/>"},
+{id:'gosaste',n:'گسسته',g:['#22d3ee','#6366f1'],i:"<circle cx='6' cy='6' r='2.4'/><circle cx='18' cy='7' r='2.4'/><circle cx='12' cy='18' r='2.4'/><path d='M8.4 6.2l7.2.5M7.3 8.2l3.6 7.6M16.8 9.2l-3.7 6.6'/>"},
+{id:'physics',n:'فیزیک',g:['#60a5fa','#7c3aed'],i:"<circle cx='12' cy='12' r='1.8' fill='currentColor'/><ellipse cx='12' cy='12' rx='10' ry='4.2'/><ellipse cx='12' cy='12' rx='10' ry='4.2' transform='rotate(60 12 12)'/><ellipse cx='12' cy='12' rx='10' ry='4.2' transform='rotate(120 12 12)'/>"},
+{id:'chemistry',n:'شیمی',g:['#f472b6','#e11d48'],i:"<path d='M9.5 3h5M10 3v6.2L4.7 19a1.4 1.4 0 0 0 1.2 2.1h12.2a1.4 1.4 0 0 0 1.2-2.1L14 9.2V3'/><path d='M7.2 15h9.6'/><path d='M10.5 18v.01M13.6 18.6v.01'/>"},
+{id:'farsi',n:'فارسی',g:['#fb923c','#f43f5e'],i:"<path d='M20 4c-6.5 0-11 4-13 10l-2 6 6-2c6-2 10-7 9-14z'/><path d='M9 15l6-6'/>"},
+{id:'zaban',n:'زبان',g:['#38bdf8','#4776ff'],i:"<path d='m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6'/>"},
+{id:'arabi',n:'عربی',g:['#fbbf24','#ea580c'],i:"<path d='M7 8h3v4a3 3 0 0 1-3 3M14 8h3v4a3 3 0 0 1-3 3'/><path d='M3 5h18v14H3z' stroke-opacity='.0'/>"},
+{id:'dini',n:'دینی',g:['#34d399','#16a34a'],i:"<path d='M4 21v-7a8 8 0 0 1 16 0v7'/><path d='M12 3v3M2 21h20'/><path d='M10 21v-4a2 2 0 0 1 4 0v4'/>"},
+{id:'salamat',n:'سلامت و بهداشت',g:['#fb7185','#e11d48'],i:"<path d='M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z'/><path d='M3.2 12h4l1.5-3 3 6 2-3h5.5'/>"},
+{id:'hoviyat',n:'هویت اجتماعی',g:['#a78bfa','#6366f1'],i:"<circle cx='9' cy='8' r='3'/><path d='M3 20a6 6 0 0 1 12 0'/><circle cx='17' cy='9' r='2.4'/><path d='M16 14.5a5 5 0 0 1 5 5.5'/>"}];
+function fsub(id){for(var i=0;i<SUBF.length;i++)if(SUBF[i].id===id)return SUBF[i];return SUBF[0];}
+function fcnt(s){return D.f.filter(function(r){return r.subject===s;}).length;}
+function ftitle(r){return r.title||('امتحان نهایی '+(r.session?r.session+' ':'')+fa(r.year||''));}
+function renderFinal(){var h,b;
+if(!S.s){h=top('سوال نهایی');b='<div class="lib-subs">'+SUBF.map(function(x){var c=fcnt(x.id);return '<button class="lib-sub" type="button" data-a="fsub" data-s="'+x.id+'" style="'+g(x.g)+'"><span class="lib-tile">'+sv(x.i,30)+'</span><b>'+x.n+'</b><small>'+(c?fa(c)+' مورد':'به‌زودی')+'</small></button>';}).join('')+'</div>';}
+else{var x=fsub(S.s);h=top('سوال نهایی',true,x.n);
+var chips='<div class="lib-chips">'+[['all','همه'],['inside','داخل'],['outside','خارج']].map(function(t){return '<button type="button" class="lib-chip'+(S.t===t[0]?' on':'')+'" data-a="ftype" data-t="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>';
+cur=D.f.filter(function(r){return r.subject===S.s&&(S.t==='all'||r.type===S.t);}).sort(function(p,q){return (q.year||0)-(p.year||0);});
+if(!cur.length)b=chips+empty();
+else{var ly=null;b=chips+'<div style="'+g(x.g)+'">'+cur.map(function(r,i){var yh='';if(r.year!==ly){ly=r.year;yh='<div class="lib-yr">'+fa(r.year||'')+'</div>';}
+var tg=r.type==='outside'?'خارج':(r.type==='inside'?'داخل':'');
+return yh+'<div class="lib-frow"><button class="lib-row" type="button" data-a="fopen" data-i="'+i+'"><span class="lib-tile">'+sv(MODE.note.i,20)+'</span><b>'+esc(ftitle(r))+'</b>'+(tg?'<i class="lib-tag">'+tg+'</i>':'')+'<em>سوال</em></button>'+(r.answer?'<button class="lv-b" type="button" data-a="fans" data-i="'+i+'"><span>پاسخنامه</span></button>':'')+'</div>';}).join('')+'</div>';}}
+hub.innerHTML='<div class="lib-box">'+h+'<div class="lib-body">'+b+'</div></div>';}
 function sub(id){for(var i=0;i<SUB.length;i++)if(SUB[i].id===id)return SUB[i];return SUB[0];}
 function g(c){return '--g1:'+c[0]+';--g2:'+c[1];}
 function load(){if(D)return Promise.resolve(D);
-return fetch('library/library.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){D={t:j.teachers||[],b:j.books||[],n:j.notes||[]};return D;}).catch(function(){D={t:[],b:[],n:[],err:1};return D;});}
+return fetch('library/library.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){D={t:j.teachers||[],b:j.books||[],n:j.notes||[],f:j.finals||[]};return D;}).catch(function(){D={t:[],b:[],n:[],f:[],err:1};return D;});}
 function tch(s){return D.t.filter(function(q){return q.subjects&&q.subjects.map(al).indexOf(s)>-1;});}
 function lab(m,s){var c=cnt(m,s);if(c)return fa(c)+' مورد';if(m==='note'){var t=tch(s).length;if(t)return fa(t)+' استاد';}return 'به‌زودی';}
 function cnt(m,s){var a=m==='book'?D.b:D.n;return a.filter(function(x){return al(x.subject)===s;}).length;}
 function top(t,back,small){return '<div class="lib-top">'+(back?'<button class="lib-ic" data-a="back" type="button" aria-label="بازگشت">'+sv(P.back,20)+'</button>':'')+'<div class="lib-ttl">'+esc(t)+(small?'<small>'+esc(small)+'</small>':'')+'</div><button class="lib-ic" data-a="close" type="button" aria-label="بستن">'+sv(P.x,20)+'</button></div>';}
 function empty(){return '<div class="lib-empty">'+sv(P.inbox,54)+'<b>هنوز چیزی اینجا اضافه نشده</b><span>'+(D.err?'فایل library/library.json پیدا نشد.':'به‌زودی اضافه می‌شود.')+'</span></div>';}
 function initial(n){n=String(n||'').replace(/^(استاد|دکتر|مهندس)\s+/,'');return esc(n.charAt(0)||'؟');}
-function render(){var h='',b='';
+function render(){if(S.m==='final'){renderFinal();return;}var h='',b='';
 if(!S.m){h=top('کتاب + جزوه');b='<div class="lib-modes">'+['book','note'].map(function(k){var m=MODE[k],c=(k==='book'?D.b:D.n).length;return '<button class="lib-mode" type="button" data-a="mode" data-m="'+k+'" style="'+g(m.g)+'"><span class="lib-tile">'+sv(m.i,36)+'</span><span><b>'+m.n+'</b><span>'+m.s+'</span><span>'+(c?fa(c)+' مورد':'به‌زودی')+'</span></span></button>';}).join('')+'</div>';}
 else if(!S.s){h=top(MODE[S.m].n,true);b='<div class="lib-subs">'+SUB.map(function(x){var c=lab(S.m,x.id);return '<button class="lib-sub" type="button" data-a="sub" data-s="'+x.id+'" style="'+g(x.g)+'"><span class="lib-tile">'+sv(x.i,30)+'</span><b>'+x.n+'</b><small>'+c+'</small></button>';}).join('')+'</div>';}
 else{var x=sub(S.s);h=top(MODE[S.m].n,true,x.n);cur=(S.m==='book'?D.b:D.n).filter(function(r){return al(r.subject)===S.s;});
@@ -19274,9 +19307,13 @@ return '<div class="lib-grp" style="'+g(x.g)+'"><div class="lib-gh"><span class=
 hub.innerHTML='<div class="lib-box">'+h+'<div class="lib-body">'+b+'</div></div>';}
 function showFile(r,u){viewer.querySelector('.lv-t').textContent=r.title;viewer.querySelector('iframe').src=u;var a=viewer.querySelector('.lv-x');a.href=u;var ck=viewer.querySelector('.lv-ck');ck.style.display=typeof window.openCheknevisUrl==='function'?'':'none';ck.onclick=function(){closeViewer();close();window.openCheknevisUrl(u,r.title);};viewer.classList.add('show');}
 function note(m){try{window.toast?toast(m,''):alert(m);}catch(e){alert(m);}}
-function openFile(r){if(!r||!r.file){note('فایل این مورد هنوز اضافه نشده است.');return;}var u=url(r.file);if(/^https?:/i.test(r.file)){showFile(r,u);return;}
-fetch(u,{method:'HEAD'}).then(function(x){if(!x.ok)throw 0;showFile(r,u);}).catch(function(){note('فایل این مورد هنوز آپلود نشده است.');});}
+function openFile(r){if(!r||!r.file){note('فایل این مورد هنوز اضافه نشده است.');return;}var f=String(r.file);
+if(/^https?:/i.test(f)){showFile(r,url(f));return;}
+var alt=f.replace(/ \(/g,'__').replace(/\)/g,'_').replace(/ /g,'_'),list=[f];if(alt!==f)list.push(alt);
+(function next(k){if(k>=list.length){note('فایل این مورد هنوز آپلود نشده است.');return;}var u=url(list[k]);
+fetch(u,{method:'HEAD'}).then(function(x){if(!x.ok)throw 0;showFile(r,u);}).catch(function(){next(k+1);});})(0);}
 function closeViewer(){viewer.classList.remove('show');viewer.querySelector('iframe').src='about:blank';}
+function openFinal(){load().then(function(){S={m:'final',s:null,t:'all'};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function open(){load().then(function(){S={m:null,s:null};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function close(){hub.classList.remove('show');document.documentElement.style.overflow='';}
 function init(){hub=document.createElement('div');hub.id='lib-hub';document.body.appendChild(hub);
@@ -19285,10 +19322,14 @@ viewer.querySelector('.lv-c').onclick=closeViewer;viewer.addEventListener('click
 hub.addEventListener('click',function(e){if(e.target===hub){close();return;}var el=e.target.closest('[data-a]');if(!el)return;var a=el.getAttribute('data-a');
 if(a==='close')close();else if(a==='back'){if(S.s)S.s=null;else S.m=null;render();}
 else if(a==='mode'){S.m=el.getAttribute('data-m');render();}else if(a==='sub'){S.s=el.getAttribute('data-s');render();}
-else if(a==='open')openFile(cur[+el.getAttribute('data-i')]);});
+else if(a==='open')openFile(cur[+el.getAttribute('data-i')]);
+else if(a==='fsub'){S.s=el.getAttribute('data-s');S.t='all';render();}
+else if(a==='ftype'){S.t=el.getAttribute('data-t');render();}
+else if(a==='fopen'){var r=cur[+el.getAttribute('data-i')];openFile({title:ftitle(r),file:r.file});}
+else if(a==='fans'){var q=cur[+el.getAttribute('data-i')];openFile({title:'پاسخنامه — '+ftitle(q),file:q.answer});}});
 document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(viewer.classList.contains('show'))closeViewer();else if(hub.classList.contains('show'))close();});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-return {open:open,close:close};
+return {open:open,openFinal:openFinal,close:close};
 })();
 </script>
 </body>
