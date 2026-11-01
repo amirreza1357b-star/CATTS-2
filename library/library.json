@@ -200,6 +200,42 @@
       "teacher": "vaezin",
       "title": "نمونه سوال منطبق بر آزمون ۱ آبان ماز",
       "file": "notes/vaezin/maz-1aban.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "تست فصل ۱ دهم",
+      "file": "notes/shojaei/10-f1-test.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "تست‌های مقدماتی با پاسخ — مسافت، جابه‌جایی، تندی و سرعت متوسط",
+      "file": "notes/shojaei/moghadamati-masafat-tondi.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "سقوط آزاد — پایه دوازدهم",
+      "file": "notes/shojaei/soqut-azad.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۱ (صفحه ۱ تا ۱۱۳)",
+      "file": "notes/shojaei/jozve-jame-12-part1.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۲ (صفحه ۱۱۴ تا ۲۲۶)",
+      "file": "notes/shojaei/jozve-jame-12-part2.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۳ (صفحه ۲۲۷ تا ۳۳۸)",
+      "file": "notes/shojaei/jozve-jame-12-part3.pdf"
     }
   ]
 }
