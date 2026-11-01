@@ -1,3 +1,435 @@
+
+{
+  "teachers": [
+    {
+      "id": "darabi",
+      "name": "کیوان دارابی",
+      "photo": "teachers/darabi.jpg",
+      "subjects": ["stat", "hendese"]
+    },
+    {
+      "id": "shojaei",
+      "name": "محمدرضا شجاعی",
+      "photo": "teachers/shojaei.jpg",
+      "subjects": ["physics"]
+    },
+    {
+      "id": "farahani",
+      "name": "پارسا فراهانی",
+      "photo": "teachers/farahani.jpg",
+      "subjects": ["chemistry"]
+    },
+    {
+      "id": "mosalaei",
+      "name": "امید مصلایی",
+      "photo": "teachers/mosalaei.jpg",
+      "subjects": ["chemistry"]
+    },
+    {
+      "id": "azizi",
+      "name": "مهدی عزیزی",
+      "photo": "teachers/azizi.jpg",
+      "subjects": ["hesaban"]
+    },
+    {
+      "id": "vaezin",
+      "name": "محمدحسین واعظین",
+      "photo": "teachers/vaezin.jpg",
+      "subjects": ["hendese"]
+    },
+    {
+      "id": "karami",
+      "name": "معین کرمی",
+      "photo": "teachers/karami.jpg",
+      "subjects": ["hesaban"]
+    },
+    {
+      "id": "hadianfard",
+      "name": "فرشاد هادیان‌فرد",
+      "photo": "teachers/hadianfard.jpg",
+      "subjects": ["chemistry"]
+    }
+  ],
+  "books": [
+    {
+      "subject": "hesaban",
+      "title": "حسابان جامع کنکور — گاج (IQ)",
+      "cover": "books/gaj-hesaban-iq.jpg",
+      "file": "books/gaj-hesaban-iq.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع کنکور جلد ۲ — گاج (IQ)",
+      "cover": "books/gaj-shimi-iq-2.jpg",
+      "file": "books/gaj-shimi-iq-2.pdf"
+    },
+    {
+      "subject": "chemistry",
+      "title": "شیمی جامع (ریاضی) — خیلی سبز",
+      "cover": "books/khayli-sabz-shimi.jpg",
+      "file": "books/khayli-sabz-shimi.pdf"
+    }
+  ],
+  "notes": [
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تابع — فصل ۱ دوازدهم",
+      "file": "notes/karami/12-f1-tabe.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مثلثات — فصل ۲ دوازدهم",
+      "file": "notes/karami/12-f2-mosallasat.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "حد و پیوستگی — فصل ۳ دوازدهم",
+      "file": "notes/karami/12-f3-had-peyvastegi.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مشتق — فصل ۴ دوازدهم",
+      "file": "notes/karami/12-f4-moshtagh.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "کاربرد مشتق — فصل ۵ دوازدهم",
+      "file": "notes/karami/12-f5-karbord-moshtagh.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "معادله و نامعادله — فصل ۱ پایه",
+      "file": "notes/karami/paye-f1-moadele-namoadele.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "مجموعه و دنباله — فصل ۲ پایه",
+      "file": "notes/karami/paye-f2-majmooe-donbale.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "توان‌رسانی و اتحاد — فصل ۳ پایه",
+      "file": "notes/karami/paye-f3-tavan-ettehad.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "نمایی و لگاریتم — فصل ۴ پایه",
+      "file": "notes/karami/paye-f4-nemayi-logaritm.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تست تابع",
+      "file": "notes/karami/test-tabe.pdf"
+    },
+    {
+      "subject": "hesaban",
+      "teacher": "karami",
+      "title": "تست معادله و نامعادله",
+      "file": "notes/karami/test-moadele-namoadele.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه دهم",
+      "file": "notes/vaezin/jozve-jame-10.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه یازدهم",
+      "file": "notes/vaezin/jozve-jame-11.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "جزوه جامع سالیانه — پایه دوازدهم",
+      "file": "notes/vaezin/jozve-jame-12.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه دهم",
+      "file": "notes/vaezin/test-10.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه یازدهم",
+      "file": "notes/vaezin/test-11.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "مجموعه تست + پاسخنامه — پایه دوازدهم",
+      "file": "notes/vaezin/test-12.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "نمونه سوال منطبق بر آزمون ۱۷ مهر ماز",
+      "file": "notes/vaezin/maz-17mehr.pdf"
+    },
+    {
+      "subject": "hendese",
+      "teacher": "vaezin",
+      "title": "نمونه سوال منطبق بر آزمون ۱ آبان ماز",
+      "file": "notes/vaezin/maz-1aban.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "تست فصل ۱ دهم",
+      "file": "notes/shojaei/10-f1-test.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "تست‌های مقدماتی با پاسخ — مسافت، جابه‌جایی، تندی و سرعت متوسط",
+      "file": "notes/shojaei/moghadamati-masafat-tondi.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "سقوط آزاد — پایه دوازدهم",
+      "file": "notes/shojaei/soqut-azad.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۱ (صفحه ۱ تا ۱۱۳)",
+      "file": "notes/shojaei/jozve-jame-12-part1.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۲ (صفحه ۱۱۴ تا ۲۲۶)",
+      "file": "notes/shojaei/jozve-jame-12-part2.pdf"
+    },
+    {
+      "subject": "physics",
+      "teacher": "shojaei",
+      "title": "جزوه جامع سالیانه دوازدهم — بخش ۳ (صفحه ۲۲۷ تا ۳۳۸)",
+      "file": "notes/shojaei/jozve-jame-12-part3.pdf"
+    }
+  ],
+  "finals": [
+    {
+      "subject": "farsi",
+      "year": "1397",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1397-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1398",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1398-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1398",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1398-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1398",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1398-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1399",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1399-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1399",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1399-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1399",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1399-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1400",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1400-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1400",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1400-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1401",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1401-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1401",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1401-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1401",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1401-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1402",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1402-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1402",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1402-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1402",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی",
+      "file": "finals/farsi/1402-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1403",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1403-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1403",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1403-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1404",
+      "month": "khordad",
+      "region": "inside",
+      "title": "خرداد",
+      "file": "finals/farsi/1404-khordad.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1404",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور",
+      "file": "finals/farsi/1404-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1405",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور — نوبت عصر",
+      "file": "finals/farsi/1405-shahrivar-asr.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1405",
+      "month": "tir",
+      "region": "inside",
+      "title": "تیر",
+      "file": "finals/farsi/1405-tir.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1405",
+      "month": "shahrivar",
+      "region": "inside",
+      "title": "شهریور — نوبت صبح",
+      "file": "finals/farsi/1405-shahrivar-sobh.pdf"
+    },
+    {
+      "subject": "arabi",
+      "year": "1399",
+      "date": "1399/05/23",
+      "type": "inside",
+      "session": "شهریور",
+      "file": "finals/arabi/1399-shahrivar.pdf"
+    },
+    {
+      "subject": "arabi",
+      "year": "1399",
+      "date": "1399/10/29",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/arabi/1399-dey.pdf"
+    },
+    {
+      "subject": "arabi",
+      "year": "1400",
+      "date": "1400/03/12",
+      "type": "inside",
+      "session": "خرداد",
+      "file": "finals/arabi/1400-khordad.pdf"
+    },
+    {
+      "subject": "arabi",
+      "year": "1400",
+      "date": "1400/10/22",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/arabi/1400-dey.pdf"
     },
     {
       "subject": "arabi",
@@ -126,3 +558,6 @@
       "type": "both",
       "session": "شهریور (عصر)",
       "file": "finals/arabi/1405-shahrivar-asr.pdf"
+    }
+  ]
+}
