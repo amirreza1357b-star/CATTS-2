@@ -244,7 +244,7 @@
       "year": "1397",
       "month": "dey",
       "region": "inside",
-      "title": "نهایی دی ۱۳۹۷",
+      "title": " دی ",
       "file": "finals/farsi/1397-dey.pdf"
     },
     {
@@ -252,7 +252,7 @@
       "year": "1398",
       "month": "dey",
       "region": "inside",
-      "title": "نهایی دی ۱۳۹۸",
+      "title": " دی ",
       "file": "finals/farsi/1398-dey.pdf"
     },
     {
@@ -260,7 +260,7 @@
       "year": "1398",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۳۹۸",
+      "title": " خرداد ",
       "file": "finals/farsi/1398-khordad.pdf"
     },
     {
@@ -268,7 +268,7 @@
       "year": "1398",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۳۹۸",
+      "title": " شهریور ",
       "file": "finals/farsi/1398-shahrivar.pdf"
     },
     {
@@ -276,7 +276,7 @@
       "year": "1399",
       "month": "dey",
       "region": "inside",
-      "title": "نهایی دی ۱۳۹۹",
+      "title": " دی ",
       "file": "finals/farsi/1399-dey.pdf"
     },
     {
@@ -284,7 +284,7 @@
       "year": "1399",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۳۹۹",
+      "title": " خرداد ",
       "file": "finals/farsi/1399-khordad.pdf"
     },
     {
@@ -292,7 +292,7 @@
       "year": "1399",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۳۹۹",
+      "title": " شهریور ",
       "file": "finals/farsi/1399-shahrivar.pdf"
     },
     {
@@ -300,7 +300,7 @@
       "year": "1400",
       "month": "dey",
       "region": "inside",
-      "title": "نهایی دی ۱۴۰۰",
+      "title": " دی ",
       "file": "finals/farsi/1400-dey.pdf"
     },
     {
@@ -308,7 +308,7 @@
       "year": "1400",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۴۰۰",
+      "title": " خرداد ",
       "file": "finals/farsi/1400-khordad.pdf"
     },
     {
@@ -316,7 +316,7 @@
       "year": "1401",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۴۰۱",
+      "title": " خرداد ",
       "file": "finals/farsi/1401-khordad.pdf"
     },
     {
@@ -324,15 +324,23 @@
       "year": "1401",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۱",
+      "title": "شهریور ",
       "file": "finals/farsi/1401-shahrivar.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1401",
+      "month": "dey",
+      "region": "inside",
+      "title": "دی ",
+      "file": "finals/farsi/1401-dey.pdf"
     },
     {
       "subject": "farsi",
       "year": "1402",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۴۰۲",
+      "title": " خرداد ",
       "file": "finals/farsi/1402-khordad.pdf"
     },
     {
@@ -340,7 +348,7 @@
       "year": "1402",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۲",
+      "title": " شهریور",
       "file": "finals/farsi/1402-shahrivar.pdf"
     }, 
     {
@@ -348,7 +356,7 @@
       "year": "1402",
       "month": "dey",
       "region": "inside",
-      "title": "نهایی دی ۱۴۰۲",
+      "title": " دی ",
       "file": "finals/farsi/1402-dey.pdf"
     },
     {
@@ -356,7 +364,7 @@
       "year": "1403",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۴۰۳",
+      "title": " خرداد ",
       "file": "finals/farsi/1403-khordad.pdf"
     },
     {
@@ -364,7 +372,7 @@
       "year": "1403",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۳",
+      "title": " شهریور ",
       "file": "finals/farsi/1403-shahrivar.pdf"
     },
     {
@@ -372,7 +380,7 @@
       "year": "1404",
       "month": "khordad",
       "region": "inside",
-      "title": "نهایی خرداد ۱۴۰۴",
+      "title": "خرداد ",
       "file": "finals/farsi/1404-khordad.pdf"
     },
     {
@@ -380,7 +388,7 @@
       "year": "1404",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۴",
+      "title": " شهریور ",
       "file": "finals/farsi/1404-shahrivar.pdf"
     },
     {
@@ -388,7 +396,15 @@
       "year": "1405",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۵ — نوبت عصر",
+      "title": "شهریور — نوبت عصر",
+      "file": "finals/farsi/1405-shahrivar-asr.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": "1405",
+      "month": "tir",
+      "region": "inside",
+      "title": " تیر",
       "file": "finals/farsi/1405-shahrivar-asr.pdf"
     },
     {
@@ -396,7 +412,7 @@
       "year": "1405",
       "month": "shahrivar",
       "region": "inside",
-      "title": "نهایی شهریور ۱۴۰۵ — نوبت صبح",
+      "title": "شهریور — نوبت صبح",
       "file": "finals/farsi/1405-shahrivar-sobh.pdf"
     }
   ]
