@@ -1,53 +1,69 @@
-
 {
   "teachers": [
     {
       "id": "darabi",
       "name": "کیوان دارابی",
       "photo": "teachers/darabi.jpg",
-      "subjects": ["stat", "hendese"]
+      "subjects": [
+        "stat",
+        "hendese"
+      ]
     },
     {
       "id": "shojaei",
       "name": "محمدرضا شجاعی",
       "photo": "teachers/shojaei.jpg",
-      "subjects": ["physics"]
+      "subjects": [
+        "physics"
+      ]
     },
     {
       "id": "farahani",
       "name": "پارسا فراهانی",
       "photo": "teachers/farahani.jpg",
-      "subjects": ["chemistry"]
+      "subjects": [
+        "chemistry"
+      ]
     },
     {
       "id": "mosalaei",
       "name": "امید مصلایی",
       "photo": "teachers/mosalaei.jpg",
-      "subjects": ["chemistry"]
+      "subjects": [
+        "chemistry"
+      ]
     },
     {
       "id": "azizi",
       "name": "مهدی عزیزی",
       "photo": "teachers/azizi.jpg",
-      "subjects": ["hesaban"]
+      "subjects": [
+        "hesaban"
+      ]
     },
     {
       "id": "vaezin",
       "name": "محمدحسین واعظین",
       "photo": "teachers/vaezin.jpg",
-      "subjects": ["hendese"]
+      "subjects": [
+        "hendese"
+      ]
     },
     {
       "id": "karami",
       "name": "معین کرمی",
       "photo": "teachers/karami.jpg",
-      "subjects": ["hesaban"]
+      "subjects": [
+        "hesaban"
+      ]
     },
     {
       "id": "hadianfard",
       "name": "فرشاد هادیان‌فرد",
       "photo": "teachers/hadianfard.jpg",
-      "subjects": ["chemistry"]
+      "subjects": [
+        "chemistry"
+      ]
     }
   ],
   "books": [
@@ -225,183 +241,175 @@
   "finals": [
     {
       "subject": "farsi",
-      "year": "1397",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
+      "year": 1397,
+      "date": "1397/10/09",
+      "type": "inside",
+      "session": "دی",
       "file": "finals/farsi/1397-dey.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1398",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
-      "file": "finals/farsi/1398-dey.pdf"
-    },
-    {
-      "subject": "farsi",
-      "year": "1398",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1398,
+      "date": "1398/03/11",
+      "type": "inside",
+      "session": "خرداد",
       "file": "finals/farsi/1398-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1398",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1398,
+      "date": "1398/06/07",
+      "type": "inside",
+      "session": "شهریور",
       "file": "finals/farsi/1398-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1399",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
-      "file": "finals/farsi/1399-dey.pdf"
+      "year": 1398,
+      "date": "1398/10/17",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/farsi/1398-dey.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1399",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1399,
+      "date": "1399/03/21",
+      "type": "inside",
+      "session": "خرداد",
       "file": "finals/farsi/1399-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1399",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1399,
+      "date": "1399/06/05",
+      "type": "inside",
+      "session": "شهریور",
       "file": "finals/farsi/1399-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1400",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
-      "file": "finals/farsi/1400-dey.pdf"
+      "year": 1399,
+      "date": "1399/10/17",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/farsi/1399-dey.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1400",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1400,
+      "date": "1400/03/03",
+      "type": "inside",
+      "session": "خرداد",
       "file": "finals/farsi/1400-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1401",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1400,
+      "date": "1400/10/15",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/farsi/1400-dey.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": 1401,
+      "date": "1401/03/23",
+      "type": "inside",
+      "session": "خرداد",
       "file": "finals/farsi/1401-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1401",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1401,
+      "date": "1401/06/15",
+      "type": "inside",
+      "session": "شهریور",
       "file": "finals/farsi/1401-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1401",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
-      "file": "finals/farsi/1401-dey.pdf"
-    },
-    {
-      "subject": "farsi",
-      "year": "1402",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1402,
+      "date": "1402/03/04",
+      "type": "inside",
+      "session": "خرداد",
       "file": "finals/farsi/1402-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1402",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1402,
+      "date": "1402/06/02",
+      "type": "both",
+      "session": "شهریور",
       "file": "finals/farsi/1402-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1402",
-      "month": "dey",
-      "region": "inside",
-      "title": "دی",
-      "file": "finals/farsi/1402-dey.pdf"
-    },
-    {
-      "subject": "farsi",
-      "year": "1403",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1403,
+      "date": "1403/03/20",
+      "type": "both",
+      "session": "خرداد",
       "file": "finals/farsi/1403-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1403",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1403,
+      "date": "1403/05/29",
+      "type": "both",
+      "session": "تابستان",
       "file": "finals/farsi/1403-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1404",
-      "month": "khordad",
-      "region": "inside",
-      "title": "خرداد",
+      "year": 1404,
+      "date": "1404/02/30",
+      "type": "both",
+      "session": "خرداد",
       "file": "finals/farsi/1404-khordad.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1404",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور",
+      "year": 1404,
+      "date": "1404/06/06",
+      "type": "both",
+      "session": "شهریور",
       "file": "finals/farsi/1404-shahrivar.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1405",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور — نوبت عصر",
+      "year": 1405,
+      "date": "1405/06/16",
+      "type": "both",
+      "session": "شهریور (صبح)",
+      "file": "finals/farsi/1405-shahrivar-sobh.pdf"
+    },
+    {
+      "subject": "farsi",
+      "year": 1405,
+      "date": "1405/06/16",
+      "type": "both",
+      "session": "شهریور (عصر)",
       "file": "finals/farsi/1405-shahrivar-asr.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1405",
-      "month": "tir",
-      "region": "inside",
-      "title": "تیر",
-      "file": "finals/farsi/1405-tir.pdf"
+      "year": 1401,
+      "month": "dey",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/farsi/1401-dey.pdf"
     },
     {
       "subject": "farsi",
-      "year": "1405",
-      "month": "shahrivar",
-      "region": "inside",
-      "title": "شهریور — نوبت صبح",
-      "file": "finals/farsi/1405-shahrivar-sobh.pdf"
+      "year": 1402,
+      "month": "dey",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/farsi/1402-dey.pdf"
     },
     {
       "subject": "arabi",
-      "year": "1399",
+      "year": 1399,
       "date": "1399/05/23",
       "type": "inside",
       "session": "شهریور",
@@ -409,7 +417,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1399",
+      "year": 1399,
       "date": "1399/10/29",
       "type": "inside",
       "session": "دی",
@@ -417,7 +425,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1400",
+      "year": 1400,
       "date": "1400/03/12",
       "type": "inside",
       "session": "خرداد",
@@ -425,7 +433,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1400",
+      "year": 1400,
       "date": "1400/10/22",
       "type": "inside",
       "session": "دی",
@@ -433,7 +441,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1401",
+      "year": 1401,
       "date": "1401/03/19",
       "type": "inside",
       "session": "خرداد",
@@ -441,7 +449,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1401",
+      "year": 1401,
       "date": "1401/06/08",
       "type": "inside",
       "session": "شهریور",
@@ -449,7 +457,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1401",
+      "year": 1401,
       "date": "1401/10/12",
       "type": "inside",
       "session": "دی",
@@ -457,7 +465,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1402",
+      "year": 1402,
       "date": "1402/03/23",
       "type": "inside",
       "session": "خرداد",
@@ -465,7 +473,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1402",
+      "year": 1402,
       "date": "1402/06/09",
       "type": "both",
       "session": "شهریور",
@@ -473,7 +481,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1402",
+      "year": 1402,
       "date": "1402/10/12",
       "type": "both",
       "session": "دی",
@@ -481,7 +489,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1403",
+      "year": 1403,
       "date": "1403/03/06",
       "type": "both",
       "session": "خرداد",
@@ -489,7 +497,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1403",
+      "year": 1403,
       "date": "1403/05/20",
       "type": "both",
       "session": "تابستان",
@@ -497,7 +505,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1403",
+      "year": 1403,
       "date": "1403/10/11",
       "type": "inside",
       "session": "دی",
@@ -505,7 +513,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1404",
+      "year": 1404,
       "date": "1404/03/13",
       "type": "both",
       "session": "خرداد",
@@ -513,7 +521,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1404",
+      "year": 1404,
       "date": "1404/05/30",
       "type": "both",
       "session": "تابستان",
@@ -521,7 +529,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1404",
+      "year": 1404,
       "date": "1404/10/07",
       "type": "both",
       "session": "دی",
@@ -529,7 +537,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1405",
+      "year": 1405,
       "date": "1405/04/30",
       "type": "both",
       "session": "تیر و مرداد",
@@ -537,7 +545,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1405",
+      "year": 1405,
       "date": "1405/05/15",
       "type": "inside",
       "session": "مرداد",
@@ -545,7 +553,7 @@
     },
     {
       "subject": "arabi",
-      "year": "1405",
+      "year": 1405,
       "date": "1405/06/18",
       "type": "both",
       "session": "شهریور (صبح)",
@@ -553,11 +561,147 @@
     },
     {
       "subject": "arabi",
-      "year": "1405",
+      "year": 1405,
       "date": "1405/06/18",
       "type": "both",
       "session": "شهریور (عصر)",
       "file": "finals/arabi/1405-shahrivar-asr.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1399,
+      "date": "1399/06/13",
+      "type": "inside",
+      "session": "شهریور",
+      "file": "finals/zaban/1399-shahrivar.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1399,
+      "date": "1399/11/01",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/zaban/1399-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1400,
+      "date": "1400/10/20",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/zaban/1400-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1401,
+      "date": "1401/03/25",
+      "type": "inside",
+      "session": "خرداد",
+      "file": "finals/zaban/1401-khordad.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1401,
+      "date": "1401/10/24",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/zaban/1401-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1402,
+      "date": "1402/03/09",
+      "type": "inside",
+      "session": "خرداد",
+      "file": "finals/zaban/1402-khordad.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1402,
+      "date": "1402/06/05",
+      "type": "both",
+      "session": "شهریور",
+      "file": "finals/zaban/1402-shahrivar.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1402,
+      "date": "1402/10/16",
+      "type": "both",
+      "session": "دی",
+      "file": "finals/zaban/1402-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1403,
+      "date": "1403/03/24",
+      "type": "both",
+      "session": "خرداد",
+      "file": "finals/zaban/1403-khordad.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1403,
+      "date": "1403/05/25",
+      "type": "both",
+      "session": "تابستان",
+      "file": "finals/zaban/1403-tabestan.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1403,
+      "date": "1403/10/04",
+      "type": "inside",
+      "session": "دی",
+      "file": "finals/zaban/1403-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1404,
+      "date": "1404/03/06",
+      "type": "both",
+      "session": "خرداد",
+      "file": "finals/zaban/1404-khordad.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1404,
+      "date": "1404/06/05",
+      "type": "both",
+      "session": "تابستان",
+      "file": "finals/zaban/1404-tabestan.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1404,
+      "date": "1404/10/03",
+      "type": "both",
+      "session": "دی",
+      "file": "finals/zaban/1404-dey.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1405,
+      "date": "1405/05/01",
+      "type": "both",
+      "session": "تیر و مرداد",
+      "file": "finals/zaban/1405-tir-mordad.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1405,
+      "date": "1405/06/22",
+      "type": "both",
+      "session": "شهریور (صبح)",
+      "file": "finals/zaban/1405-shahrivar-sobh.pdf"
+    },
+    {
+      "subject": "zaban",
+      "year": 1405,
+      "date": "1405/06/22",
+      "type": "both",
+      "session": "شهریور (عصر)",
+      "file": "finals/zaban/1405-shahrivar-asr.pdf"
     }
   ]
 }
