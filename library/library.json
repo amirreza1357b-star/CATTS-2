@@ -64,6 +64,94 @@
       "subjects": [
         "chemistry"
       ]
+    },
+    {
+      "id": "tozandeh",
+      "name": "محمد توزنده",
+      "photo": "teachers/tozandeh.jpg",
+      "subjects": [
+        "hesaban"
+      ]
+    },
+    {
+      "id": "tahernezhad",
+      "name": "غلامرضا طاهرنژاد",
+      "photo": "teachers/tahernezhad.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "hakkakzadeh",
+      "name": "ولی حکاک‌زاده",
+      "photo": "teachers/hakkakzadeh.jpg",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "baghestani",
+      "name": "مهدی باغستانی",
+      "photo": "teachers/baghestani.jpg",
+      "subjects": [
+        "physics"
+      ]
+    },
+    {
+      "id": "emadi",
+      "name": "رسول عمادی",
+      "photo": "teachers/emadi.jpg",
+      "subjects": [
+        "physics"
+      ]
+    },
+    {
+      "id": "nooroldahr",
+      "name": "اصغر نورالدهر",
+      "photo": "teachers/nooroldahr.jpg",
+      "subjects": [
+        "hendese"
+      ]
+    },
+    {
+      "id": "sadroddini",
+      "name": "مهدی صدرالدینی",
+      "photo": "teachers/sadroddini.jpg",
+      "subjects": [
+        "stat"
+      ]
+    },
+    {
+      "id": "fayyazi",
+      "name": "کاظم فیاضی",
+      "photo": "teachers/fayyazi.jpg",
+      "subjects": [
+        "dini"
+      ]
+    },
+    {
+      "id": "seyyedsadeghi",
+      "name": "سید محمد سیدصادقی",
+      "photo": "teachers/seyyedsadeghi.jpg",
+      "subjects": [
+        "farsi"
+      ]
+    },
+    {
+      "id": "jalali",
+      "name": "علیرضا جلالی",
+      "photo": "teachers/jalali.jpg",
+      "subjects": [
+        "zaban"
+      ]
+    },
+    {
+      "id": "dashti",
+      "name": "محمدحسین دشتی",
+      "photo": "teachers/dashti.jpg",
+      "subjects": [
+        "arabi"
+      ]
     }
   ],
   "books": [
