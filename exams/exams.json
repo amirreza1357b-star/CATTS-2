@@ -2,7 +2,7 @@
   {
     "institute": "maz",
     "year": "1405",
-    "name": "آزمون ۶ شهریور - مرور یازدهم ",
+    "name": "آزمون ۶ شهریور - مرور و تثبیت پایه",
     "date": "1405/06/06",
     "questions": [
       "maz/1405/shahrivar6-q1.pdf",
@@ -15,7 +15,7 @@
   {
     "institute": "maz",
     "year": "1405",
-    "name": "آزمون ۱۳ شهریور - مرور یازدهم ",
+    "name": "آزمون ۱۳ شهریور - مرور و تثبیت پایه",
     "date": "1405/06/13",
     "questions": [
       "maz/1405/shahrivar13-q1.pdf",
@@ -41,7 +41,7 @@
   {
     "institute": "ghalamchi",
     "year": "1399",
-    "name": "آزمون ۲۶ دی ",
+    "name": "آزمون ۲۶ دی - اختصاصی دوازدهم ریاضی",
     "date": "1399/10/26",
     "questions": [
       "ghalamchi/1399/dey26-q.pdf"
@@ -53,7 +53,7 @@
   {
     "institute": "ghalamchi",
     "year": "1400",
-    "name": "آزمون ۲۰ فروردین",
+    "name": "آزمون ۲۰ فروردین - اختصاصی دوازدهم ریاضی",
     "date": "1400/01/20",
     "questions": [
       "ghalamchi/1400/farvardin20-q.pdf"
@@ -65,7 +65,7 @@
   {
     "institute": "ghalamchi",
     "year": "1400",
-    "name": "آزمون ۲۴ دی ",
+    "name": "آزمون ۲۴ دی - اختصاصی دوازدهم ریاضی",
     "date": "1400/10/24",
     "questions": [
       "ghalamchi/1400/dey24-q.pdf"
@@ -77,7 +77,7 @@
   {
     "institute": "ghalamchi",
     "year": "1401",
-    "name": "آزمون ۱۹ فروردین ",
+    "name": "آزمون ۱۹ فروردین - اختصاصی دوازدهم ریاضی",
     "date": "1401/01/19",
     "questions": [
       "ghalamchi/1401/farvardin19-q.pdf"
@@ -89,13 +89,229 @@
   {
     "institute": "ghalamchi",
     "year": "1401",
-    "name": "آزمون  ۱۶ دی ",
+    "name": "آزمون هدیه ۱۶ دی - اختصاصی دوازدهم ریاضی",
     "date": "1401/10/16",
     "questions": [
       "ghalamchi/1401/dey16-q.pdf"
     ],
     "answers": [
       "ghalamchi/1401/dey16-a.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۱۰ بهمن - اختصاصی دوازدهم ریاضی",
+    "date": "1404/11/10",
+    "questions": [
+      "ghalamchi/1404/bahman10.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/bahman10.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۱۰ اسفند - اختصاصی دوازدهم ریاضی",
+    "date": "1403/12/10",
+    "questions": [
+      "ghalamchi/1403/esfand10.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/esfand10.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۱۱ مهر - اختصاصی دوازدهم ریاضی",
+    "date": "1404/07/11",
+    "questions": [
+      "ghalamchi/1404/mehr11.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/mehr11.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۲ آبان - اختصاصی دوازدهم ریاضی",
+    "date": "1404/08/02",
+    "questions": [
+      "ghalamchi/1404/aban2.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/aban2.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۲ آذر - اختصاصی دوازدهم ریاضی",
+    "date": "1403/09/02",
+    "questions": [
+      "ghalamchi/1403/azar2.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/azar2.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۲ شهریور - اختصاصی دوازدهم ریاضی",
+    "date": "1403/06/02",
+    "questions": [
+      "ghalamchi/1403/shahrivar2.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/shahrivar2.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۳ بهمن - اختصاصی دوازدهم ریاضی",
+    "date": "1404/11/03",
+    "questions": [
+      "ghalamchi/1404/bahman3.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/bahman3.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۴ آبان - اختصاصی دوازدهم ریاضی",
+    "date": "1403/08/04",
+    "questions": [
+      "ghalamchi/1403/aban4.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/aban4.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون هدف‌گذاری ۴ بهمن - دوازدهم ریاضی",
+    "date": "1403/11/04",
+    "questions": [
+      "ghalamchi/1403/bahman4.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/bahman4.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۴ مهر - اختصاصی دوازدهم ریاضی",
+    "date": "1404/07/04",
+    "questions": [
+      "ghalamchi/1404/mehr4.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/mehr4.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1405",
+    "name": "آزمون ۴ اردیبهشت - اختصاصی دوازدهم ریاضی",
+    "date": "1405/02/04",
+    "questions": [
+      "ghalamchi/1405/ordibehesht4.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1405/ordibehesht4.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۵ مرداد - اختصاصی دوازدهم ریاضی",
+    "date": "1403/05/05",
+    "questions": [
+      "ghalamchi/1403/mordad5.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/mordad5.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۵ اردیبهشت - اختصاصی دوازدهم ریاضی",
+    "date": "1404/02/05",
+    "questions": [
+      "ghalamchi/1404/ordibehesht5.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/ordibehesht5.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۶ مهر - اختصاصی دوازدهم ریاضی",
+    "date": "1403/07/06",
+    "questions": [
+      "ghalamchi/1403/mehr6.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/mehr6.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1403",
+    "name": "آزمون ۷ دی - اختصاصی دوازدهم ریاضی",
+    "date": "1403/10/07",
+    "questions": [
+      "ghalamchi/1403/dey7.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1403/dey7.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۷ فروردین - اختصاصی دوازدهم ریاضی",
+    "date": "1404/01/07",
+    "questions": [
+      "ghalamchi/1404/farvardin7.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/farvardin7.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1405",
+    "name": "آزمون ۷ فروردین - اختصاصی دوازدهم ریاضی",
+    "date": "1405/01/07",
+    "questions": [
+      "ghalamchi/1405/farvardin7.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1405/farvardin7.pdf"
+    ]
+  },
+  {
+    "institute": "ghalamchi",
+    "year": "1404",
+    "name": "آزمون ۸ اسفند - اختصاصی دوازدهم ریاضی",
+    "date": "1404/12/08",
+    "questions": [
+      "ghalamchi/1404/esfand8.pdf"
+    ],
+    "answers": [
+      "ghalamchi/1404/esfand8.pdf"
     ]
   }
 ]
