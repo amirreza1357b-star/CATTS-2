@@ -19272,23 +19272,26 @@ var SUBF=[
 {id:'dini',n:'دینی',g:['#34d399','#16a34a'],i:"<path d='M4 21v-7a8 8 0 0 1 16 0v7'/><path d='M12 3v3M2 21h20'/><path d='M10 21v-4a2 2 0 0 1 4 0v4'/>"},
 {id:'salamat',n:'سلامت و بهداشت',g:['#fb7185','#e11d48'],i:"<path d='M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z'/><path d='M3.2 12h4l1.5-3 3 6 2-3h5.5'/>"},
 {id:'hoviyat',n:'هویت اجتماعی',g:['#a78bfa','#6366f1'],i:"<circle cx='9' cy='8' r='3'/><path d='M3 20a6 6 0 0 1 12 0'/><circle cx='17' cy='9' r='2.4'/><path d='M16 14.5a5 5 0 0 1 5 5.5'/>"}];
+['farsi','zaban','arabi','dini'].forEach(function(k){for(var i=0;i<SUBF.length;i++)if(SUBF[i].id===k)SUB.push(SUBF[i]);});
 function fsub(id){for(var i=0;i<SUBF.length;i++)if(SUBF[i].id===id)return SUBF[i];return SUBF[0];}
 function fcnt(s){return D.f.filter(function(r){return r.subject===s;}).length;}
+var MON={khordad:3,tir:4,mordad:5,shahrivar:6,mehr:7,dey:10};
+function dk(r){return r.date?+String(r.date).replace(/\D/g,''):(+r.year||0)*10000+(MON[r.month]||0)*100;}
 function ftitle(r){return r.title||('امتحان نهایی '+(r.session?r.session+' ':'')+fa(r.year||''));}
 function renderFinal(){var h,b;
 if(!S.s){h=top('سوال نهایی');b='<div class="lib-subs">'+SUBF.map(function(x){var c=fcnt(x.id);return '<button class="lib-sub" type="button" data-a="fsub" data-s="'+x.id+'" style="'+g(x.g)+'"><span class="lib-tile">'+sv(x.i,30)+'</span><b>'+x.n+'</b><small>'+(c?fa(c)+' مورد':'به‌زودی')+'</small></button>';}).join('')+'</div>';}
 else{var x=fsub(S.s);h=top('سوال نهایی',true,x.n);
 var chips='<div class="lib-chips">'+[['all','همه'],['inside','داخل'],['outside','خارج']].map(function(t){return '<button type="button" class="lib-chip'+(S.t===t[0]?' on':'')+'" data-a="ftype" data-t="'+t[0]+'">'+t[1]+'</button>';}).join('')+'</div>';
-cur=D.f.filter(function(r){return r.subject===S.s&&(S.t==='all'||r.type===S.t);}).sort(function(p,q){return (q.year||0)-(p.year||0);});
+cur=D.f.filter(function(r){return r.subject===S.s&&(S.t==='all'||r.type===S.t||r.type==='both');}).sort(function(p,q){return dk(q)-dk(p);});
 if(!cur.length)b=chips+empty();
 else{var ly=null;b=chips+'<div style="'+g(x.g)+'">'+cur.map(function(r,i){var yh='';if(r.year!==ly){ly=r.year;yh='<div class="lib-yr">'+fa(r.year||'')+'</div>';}
-var tg=r.type==='outside'?'خارج':(r.type==='inside'?'داخل':'');
+var tg=r.type==='outside'?'خارج':(r.type==='inside'?'داخل':(r.type==='both'?'داخل و خارج':''));
 return yh+'<div class="lib-frow"><button class="lib-row" type="button" data-a="fopen" data-i="'+i+'"><span class="lib-tile">'+sv(MODE.note.i,20)+'</span><b>'+esc(ftitle(r))+'</b>'+(tg?'<i class="lib-tag">'+tg+'</i>':'')+'<em>سوال</em></button>'+(r.answer?'<button class="lv-b" type="button" data-a="fans" data-i="'+i+'"><span>پاسخنامه</span></button>':'')+'</div>';}).join('')+'</div>';}}
 hub.innerHTML='<div class="lib-box">'+h+'<div class="lib-body">'+b+'</div></div>';}
 function sub(id){for(var i=0;i<SUB.length;i++)if(SUB[i].id===id)return SUB[i];return SUB[0];}
 function g(c){return '--g1:'+c[0]+';--g2:'+c[1];}
 function load(){if(D)return Promise.resolve(D);
-return fetch('library/library.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){D={t:j.teachers||[],b:j.books||[],n:j.notes||[],f:j.finals||[]};return D;}).catch(function(){D={t:[],b:[],n:[],f:[],err:1};return D;});}
+return fetch('library/library.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){D={t:j.teachers||[],b:j.books||[],n:j.notes||[],f:j.finals||[]};D.f.forEach(function(r){if(!r.type&&r.region)r.type=r.region;});return D;}).catch(function(){D={t:[],b:[],n:[],f:[],err:1};return D;});}
 function tch(s){return D.t.filter(function(q){return q.subjects&&q.subjects.map(al).indexOf(s)>-1;});}
 function lab(m,s){var c=cnt(m,s);if(c)return fa(c)+' مورد';if(m==='note'){var t=tch(s).length;if(t)return fa(t)+' استاد';}return 'به‌زودی';}
 function cnt(m,s){var a=m==='book'?D.b:D.n;return a.filter(function(x){return al(x.subject)===s;}).length;}
