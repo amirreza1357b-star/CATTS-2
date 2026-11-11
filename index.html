@@ -19338,18 +19338,29 @@ return {open:open,openFinal:openFinal,close:close};
 })();
 </script>
 <style id="top-date-widget-css">
-#top-date-widget{position:fixed;top:30px;right:100px;z-index:1200;display:flex;align-items:center;gap:10px;height:62px;padding:8px 14px 8px 12px;border-radius:24px;direction:rtl;color:var(--text-primary);background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);user-select:none;cursor:default;transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
-#top-date-widget:hover{transform:translateY(-3px)}
-#top-date-widget .tdw-tile{flex:none;width:46px;height:46px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#38bdf8,#6366f1);box-shadow:0 10px 20px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 5px rgba(0,0,0,.1)}
-#top-date-widget .tdw-tile small{font-size:.56rem;font-weight:700;line-height:1;opacity:.92;white-space:nowrap}
-#top-date-widget .tdw-tile b{font-size:1.28rem;font-weight:900;line-height:1.05}
-#top-date-widget .tdw-text{display:flex;flex-direction:column;justify-content:center;line-height:1.35;white-space:nowrap;min-width:0}
-#top-date-widget .tdw-text strong{font-size:.95rem;font-weight:800;color:var(--text-primary)}
-#top-date-widget .tdw-text span{font-size:.74rem;font-weight:600;color:var(--text-secondary)}
-#top-date-widget .tdw-text em{font-style:normal;font-size:.62rem;color:var(--text-secondary);opacity:.75}
-@media (max-width:1439px){#top-date-widget{padding:8px}#top-date-widget .tdw-text{display:none}}
+#top-date-widget{position:fixed;top:30px;right:100px;z-index:1200;display:flex;align-items:center;gap:11px;height:62px;padding:7px 15px 7px 12px;border-radius:26px;direction:rtl;overflow:hidden;color:var(--text-primary);background:linear-gradient(135deg,rgba(99,102,241,.16),rgba(56,189,248,.07) 55%,rgba(244,114,182,.12)),var(--glass);box-shadow:var(--glass-shadow),0 14px 34px -16px rgba(99,102,241,.55),inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);user-select:none;cursor:default;transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .3s}
+/* حاشیهٔ گرادیانی */
+#top-date-widget::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(135deg,rgba(56,189,248,.85),rgba(129,140,248,.3) 48%,rgba(244,114,182,.8));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* برق نرمی که هر چند ثانیه از روی کارت رد می‌شود */
+#top-date-widget::after{content:"";position:absolute;top:0;bottom:0;width:46%;left:-60%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);animation:tdwSheen 7s ease-in-out infinite}
+@keyframes tdwSheen{0%,62%{left:-60%}100%{left:130%}}
+#top-date-widget:hover{transform:translateY(-3px);box-shadow:var(--glass-shadow),0 20px 40px -14px rgba(99,102,241,.75),inset 0 1px 0 rgba(255,255,255,.3)}
+/* برگهٔ تقویم */
+#top-date-widget .tdw-tile{position:relative;z-index:1;flex:none;width:50px;height:48px;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,#ffffff,#e4e9ff);box-shadow:0 10px 20px -9px rgba(99,102,241,.8),0 0 0 1px rgba(255,255,255,.55),inset 0 -2px 4px rgba(79,70,229,.12)}
+#top-date-widget .tdw-tile small{flex:none;height:17px;display:grid;place-items:center;color:#fff;font-size:.6rem;font-weight:800;line-height:1;letter-spacing:.01em;background:linear-gradient(135deg,#fb7185,#f43f5e 55%,#e11d48);box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
+#top-date-widget .tdw-tile b{flex:1;display:grid;place-items:center;font-size:1.42rem;font-weight:900;line-height:1;color:#1e1b4b;padding-bottom:1px}
+#top-date-widget .tdw-text{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:1px;line-height:1.3;white-space:nowrap;min-width:0}
+#top-date-widget .tdw-text strong{font-size:1.02rem;font-weight:900;letter-spacing:-.01em;background:linear-gradient(90deg,#38bdf8,#818cf8 55%,#f472b6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+#top-date-widget .tdw-text span{font-size:.8rem;font-weight:700;color:var(--text-primary)}
+#top-date-widget .tdw-text em{display:flex;align-items:center;gap:5px;font-style:normal;font-size:.62rem;font-weight:600;color:var(--text-secondary);opacity:.85}
+#top-date-widget .tdw-text em::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.55);animation:tdwPulse 2.2s ease-out infinite}
+@keyframes tdwPulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%,100%{box-shadow:0 0 0 6px rgba(52,211,153,0)}}
+body.light-mode #top-date-widget .tdw-text strong{background:linear-gradient(90deg,#0284c7,#4f46e5 55%,#db2777);-webkit-background-clip:text;background-clip:text}
+body.light-mode #top-date-widget{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(56,189,248,.05) 55%,rgba(244,114,182,.09)),var(--glass)}
+@media (max-width:1459px){#top-date-widget{padding:7px;gap:0}#top-date-widget .tdw-text{display:none}}
 @media (max-width:1271px){#top-date-widget{display:none}}
 body.focus-mode-active #top-date-widget{display:none!important}
+@media (prefers-reduced-motion:reduce){#top-date-widget::after,#top-date-widget .tdw-text em::before{animation:none}#top-date-widget{transition:none}}
 </style>
 <script id="top-date-widget-js">
 (function(){
