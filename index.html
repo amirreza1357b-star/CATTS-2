@@ -1384,7 +1384,7 @@ input, select {
 
 /* ===== دکمه‌ی اعلان (کنار موشک) ===== */
 #announcement-badge {
-    position: absolute; top: 0; left: 96px;
+    top: auto; left: auto;
     width: 40px; height: 40px; border-radius: 50%;
     background: linear-gradient(135deg, #22c55e, #0ea5a3);
     display: none; align-items: center; justify-content: center;
@@ -4986,16 +4986,19 @@ body.light-mode .ckg-stat{ background:#fff; }
             <span id="app-user-greeting" class="app-user-greeting"></span>
             <div id="smart-date-line" class="smart-date-line" title="برای تنظیم دستی تاریخ کلیک کن" onclick="openDateSettings()"></div>
         </div>
+        <div id="top-date-widget" class="tdw" role="group" aria-label="تاریخ امروز">
+            <div class="tdw-tile"><small id="tdw-month"></small><b id="tdw-day"></b></div>
+            <div class="tdw-text"><strong id="tdw-weekday"></strong><span id="tdw-jalali"></span><em id="tdw-greg"></em></div>
+        </div>
         <div class="app-bar-top">
             <div class="app-bar-icons">
 <button id="books-notes-badge" type="button" onclick="LibHub.open()" data-label="کتاب + جزوه" aria-label="کتاب + جزوه"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d='M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5a2.5 2.5 0 0 0 0 5H19'/><path d='M9 7h6M9 11h4'/></svg></button>
 <button id="finals-badge" type="button" onclick="LibHub.openFinal()" data-label="سوال نهایی" aria-label="سوال نهایی"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2'/><rect x='9' y='3' width='6' height='4' rx='1'/><path d='m9 14 2 2 4-4'/></svg></button>
-<button id="budget-badge" type="button" onclick="LibHub.openBudget()" data-label="بودجه‌بندی آزمون‌ها" aria-label="بودجه‌بندی آزمون‌ها"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x='3' y='4' width='18' height='17' rx='2'/><path d='M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4'/></svg></button>
                 <button id="qt-focus-btn" onclick="toggleFocusMode()" title="حالت تمرکز">🌗</button>
                 <button id="qt-notebook-btn" onclick="openQuickNotebook()" title="دفترچه لغت/فرمول سریع">📖</button>
                 <button id="qt-reminder-btn" onclick="openQuickReminder()" title="یادآور سریع">⏰<span id="qt-reminder-count" style="display:none;" class="qtb-count-dot"></span></button>
                 <button id="guide-badge" onclick="toggleAppGuideModal(true)" title="راهنمای استفاده">❓</button>
-                <button id="maz-badge" onclick="window.open('https://biomaze.ir/','_blank')" title="ماز | گروه آموزشی ماز">MAZ</button>
+                <button id="maz-badge" onclick="window.MazView && MazView.open()" title="ماز | گروه آموزشی ماز">MAZ</button>
                 <button id="settings-badge" onclick="toggleAppSettingsModal(true)" title="تنظیمات">⚙️</button>
                 <button id="calculator-badge" onclick="toggleCalculatorModal(true)" title="ماشین‌حساب">🧮</button>
                 <button id="calculus-badge" onclick="toggleCalculusModal(true)" title="حد و مشتق">
@@ -5019,7 +5022,6 @@ body.light-mode .ckg-stat{ background:#fff; }
                     <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a9.5 9.5 0 0 0-8.2 4.7A5.5 5.5 0 0 0 2 11.5c0 1.6.68 3.03 1.76 4.05A9.5 9.5 0 0 0 3.8 17.3 5.5 5.5 0 0 0 9 22a9.5 9.5 0 0 0 8.2-4.7A5.5 5.5 0 0 0 22 12.5c0-1.6-.68-3.03-1.76-4.05.13-.62.18-1.26.16-1.9A5.5 5.5 0 0 0 15 2a9.5 9.5 0 0 0-3 .5zM12 4c.62 0 1.22.09 1.79.26a3.5 3.5 0 0 0-.79 2.24v6.5l-2-1.15V6.5A3.5 3.5 0 0 1 12 4zm5.5 2a3.5 3.5 0 0 1 3.44 4.15 5.48 5.48 0 0 0-1.94-1.02l-4-2.3a1.5 1.5 0 0 0-1.5 0l-3.75 2.16V7.06l3.9-2.25A3.48 3.48 0 0 1 15 4.5c1 0 1.93.4 2.5 1.06.31.35.62.87.7 1.44H17.5zM4 11.5a3.5 3.5 0 0 1 1.5-2.88v4.5c0 .55.3 1.06.78 1.33l3.72 2.15-3.9 2.25A3.5 3.5 0 0 1 4 11.5zm3.5 6.5c-.62 0-1.22-.09-1.79-.26a3.5 3.5 0 0 0 .79-2.24v-6.5l2 1.15v5.35A3.5 3.5 0 0 1 7.5 18zM17 17.44l-3.9 2.25a3.5 3.5 0 0 1-4.6-2.19 5.48 5.48 0 0 0 1.94-1.02l4-2.3a1.5 1.5 0 0 0 .75-1.3v-4.3l1.81 1.05v6.5c0 .48-.16.94-.4 1.31z"/></svg>
                 </button>
                 <button id="sample-questions-badge" onclick="window.open('https://www.kanoon.ir/Public/ExamQuestions','_blank')" title="نمونه سوال">📝</button>
-                <button id="examsheet-badge" onclick="window.open('https://www.kanoon.ir/Public/ExamQuestions','_blank')" title="جزوه و برگه امتحان">🧾</button>
                 <span>
                     <button id="countdown-badge" onclick="toggleCountdownPopup()" title="روزهای باقی‌مانده">🚀</button>
                     <div id="countdown-popup">
@@ -17060,7 +17062,6 @@ html body button#chatgpt-badge#chatgpt-badge{--ic:url("data:image/svg+xml,<svg x
 html body button#translate-badge#translate-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6'/></svg>");--g1:#fb7185;--g2:#ec4899}
 html body button#chatgpt-external-badge#chatgpt-external-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/></svg>");--g1:#34d399;--g2:#0d9488}
 html body button#sample-questions-badge#sample-questions-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><rect width='8' height='4' x='8' y='2' rx='1'/><path d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M12 11h4M12 16h4M8 11h.01M8 16h.01'/></svg>");--g1:#fb923c;--g2:#f43f5e}
-html body button#examsheet-badge#examsheet-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z'/><path d='M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8'/></svg>");--g1:#a78bfa;--g2:#6366f1}
 html body button#countdown-badge#countdown-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M10 2h4M12 14l3-3'/><circle cx='12' cy='14' r='8'/></svg>");--g1:#fb923c;--g2:#ec4899}
 html body button#announcement-badge#announcement-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0'/></svg>");--g1:#f43f5e;--g2:#fb923c}
 html body button#qt-focus-btn#qt-focus-btn{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>");--g1:#818cf8;--g2:#8b5cf6}
@@ -18326,12 +18327,12 @@ html body .tab-content.active{animation:uiIn .4s ease both}
         topics: [
           {
             id: 'visit', title: 'دسترسی به سایت', vis: 'account',
-            summary: 'با زدن روی آیکون MAZ، سایت گروه آموزشی ماز در مرورگر باز می‌شود.',
+            summary: 'با زدن روی آیکون MAZ، سایت گروه آموزشی ماز داخل خود برنامه (بدون خروج از CATTS-2) باز می‌شود.',
             steps: [
               'از نوار بخش‌ها یا نوار بالا آیکون MAZ را پیدا کن.',
               'روی آن بزن تا سایت باز شود.',
               'برای استفاده در برنامه، از دفترچه‌های آزمون مارکت استفاده کن.',
-              'برای بازگشت، به برنامه برگرد.'
+              'برای برگشت، دکمهٔ «بازگشت به برنامه» را بزن. اگر ماز داخل برنامه نمایش داده نشد، از دکمهٔ «تب جدید» استفاده کن.'
             ],
             tip: 'دفترچه‌های آزمون ماز را می‌توانی در آزمون مارکت هم پیدا کنی.'
           },
@@ -19242,12 +19243,6 @@ html body button#books-notes-badge#books-notes-badge#books-notes-badge{position:
 .lib-frow{display:flex;gap:8px;align-items:stretch;margin-top:8px}.lib-frow .lib-row{flex:1;margin-top:0}.lib-frow .lv-b{height:auto;min-height:38px}
 .lib-tag{font-style:normal;font-size:.7rem;font-weight:800;padding:3px 11px;border-radius:999px;background:color-mix(in srgb,var(--g1) 18%,transparent);color:var(--g1)}
 html body button#finals-badge#finals-badge#finals-badge{position:relative;width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;border-radius:15px!important;color:#fff!important;background:linear-gradient(135deg,#f59e0b,#ef4444)!important;border:1px solid rgba(255,255,255,.42)!important;box-shadow:0 10px 22px -10px #ef4444,inset 0 1px 0 rgba(255,255,255,.55)!important}
-.lib-note{padding:11px 15px;border-radius:15px;background:var(--glass);border:1px solid var(--glass-line);font-size:.85rem;color:var(--text-secondary);margin:0 0 12px;line-height:1.9}
-.lib-bi{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:8px;border-radius:16px;border:1px solid var(--glass-line);background:var(--glass)}
-.lib-bi .l{flex:none;font-weight:800;font-size:.78rem;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--g1) 18%,transparent);color:var(--g1);white-space:nowrap}
-.lib-bi b{flex:1;font-weight:600;font-size:.88rem;line-height:1.85}.lib-bi b small{display:block;color:var(--text-secondary);font-weight:600;font-size:.76rem}
-@media (max-width:640px){.lib-bi{flex-wrap:wrap}.lib-bi b{flex-basis:100%;order:3}}
-html body button#budget-badge#budget-badge#budget-badge{position:relative;width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;border-radius:15px!important;color:#fff!important;background:linear-gradient(135deg,#10b981,#0ea5e9)!important;border:1px solid rgba(255,255,255,.42)!important;box-shadow:0 10px 22px -10px #0ea5e9,inset 0 1px 0 rgba(255,255,255,.55)!important}
 </style>
 <script id="lib-hub-js">
 window.LibHub=(function(){
@@ -19266,7 +19261,7 @@ function sv(i,z){return '<svg viewBox="0 0 24 24" width="'+z+'" height="'+z+'" f
 var E={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
 function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return E[c];});}
 function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
-function url(p){if(/^https?:/i.test(p))return p;p=String(p);var h='',i=p.indexOf('#');if(i>-1){h=p.slice(i);p=p.slice(0,i);}return 'library/'+p.split('/').map(encodeURIComponent).join('/')+h;}
+function url(p){return /^https?:/i.test(p)?p:'library/'+String(p).split('/').map(encodeURIComponent).join('/');}
 var SUBF=[
 {id:'hesaban',n:'حسابان',g:['#a78bfa','#d946ef'],i:"<path d='M3 3v18h18'/><path d='M6 17c3.5-1 4.5-9 7-9s3 4.5 6 5'/><circle cx='13' cy='8' r='1.6'/><path d='M9.5 11l7-5.5'/>"},
 {id:'hendese',n:'هندسه',g:['#34d399','#0d9488'],i:"<path d='M3.5 19.5 12 4l8.5 15.5z'/><circle cx='12' cy='14.4' r='3'/>"},
@@ -19305,7 +19300,7 @@ function cnt(m,s){var a=m==='book'?D.b:D.n;return a.filter(function(x){return al
 function top(t,back,small){return '<div class="lib-top">'+(back?'<button class="lib-ic" data-a="back" type="button" aria-label="بازگشت">'+sv(P.back,20)+'</button>':'')+'<div class="lib-ttl">'+esc(t)+(small?'<small>'+esc(small)+'</small>':'')+'</div><button class="lib-ic" data-a="close" type="button" aria-label="بستن">'+sv(P.x,20)+'</button></div>';}
 function empty(){return '<div class="lib-empty">'+sv(P.inbox,54)+'<b>هنوز چیزی اینجا اضافه نشده</b><span>'+(D.err?'فایل library/library.json پیدا نشد.':'به‌زودی اضافه می‌شود.')+'</span></div>';}
 function initial(n){n=String(n||'').replace(/^(استاد|دکتر|مهندس)\s+/,'');return esc(n.charAt(0)||'؟');}
-function render(){if(S.m==='budget'){renderBudget();return;}if(S.m==='final'){renderFinal();return;}var h='',b='';
+function render(){if(S.m==='final'){renderFinal();return;}var h='',b='';
 if(!S.m){h=top('کتاب + جزوه');b='<div class="lib-modes">'+['book','note'].map(function(k){var m=MODE[k],c=(k==='book'?D.b:D.n).length;return '<button class="lib-mode" type="button" data-a="mode" data-m="'+k+'" style="'+g(m.g)+'"><span class="lib-tile">'+sv(m.i,36)+'</span><span><b>'+m.n+'</b><span>'+m.s+'</span><span>'+(c?fa(c)+' مورد':'به‌زودی')+'</span></span></button>';}).join('')+'</div>';}
 else if(!S.s){h=top(MODE[S.m].n,true);b='<div class="lib-subs">'+SUB.map(function(x){var c=lab(S.m,x.id);return '<button class="lib-sub" type="button" data-a="sub" data-s="'+x.id+'" style="'+g(x.g)+'"><span class="lib-tile">'+sv(x.i,30)+'</span><b>'+x.n+'</b><small>'+c+'</small></button>';}).join('')+'</div>';}
 else{var x=sub(S.s);h=top(MODE[S.m].n,true,x.n);cur=(S.m==='book'?D.b:D.n).filter(function(r){return al(r.subject)===S.s;});
@@ -19323,24 +19318,6 @@ var alt=f.replace(/ \(/g,'__').replace(/\)/g,'_').replace(/ /g,'_'),list=[f];if(
 (function next(k){if(k>=list.length){note('فایل این مورد هنوز آپلود نشده است.');return;}var u=url(list[k]);
 fetch(u,{method:'HEAD'}).then(function(x){if(!x.ok)throw 0;showFile(r,u);}).catch(function(){next(k+1);});})(0);}
 function closeViewer(){viewer.classList.remove('show');viewer.querySelector('iframe').src='about:blank';}
-var BD=null,curB=[];
-function loadBudget(){if(BD)return Promise.resolve(BD);return fetch('library/budget.json?v='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){BD=j;return j;}).catch(function(){BD={institutes:[],bookmap:{},err:1};return BD;});}
-var IG=[['#a78bfa','#6366f1'],['#fb923c','#ec4899'],['#34d399','#16a34a'],['#38bdf8','#4776ff'],['#fbbf24','#ea580c']];
-var GG={'حسابان':['#a78bfa','#d946ef'],'هندسه':['#34d399','#0d9488'],'گسسته و آمار':['#22d3ee','#6366f1'],'فیزیک':['#60a5fa','#7c3aed'],'شیمی':['#f472b6','#e11d48']};
-var ICAL="<rect x='3' y='4' width='18' height='17' rx='2'/><path d='M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4'/>";
-function renderBudget(){var h,b;
-if(S.i===null){h=top('بودجه‌بندی آزمون‌ها');b=BD.institutes.length?'<div class="lib-subs">'+BD.institutes.map(function(x,i){var n=x.stages.length;return '<button class="lib-sub" type="button" data-a="binst" data-i="'+i+'" style="'+g(IG[i%IG.length])+'"><span class="lib-tile">'+sv(ICAL,30)+'</span><b>'+esc(x.name)+'</b><small>'+(n?fa(n)+' آزمون':'به‌زودی')+'</small></button>';}).join('')+'</div>':empty();}
-else{var I=BD.institutes[S.i];
-if(S.s===null){h=top(I.name,true,I.year);
-if(!I.stages.length)b='<div class="lib-empty">'+sv(P.inbox,54)+'<b>به‌زودی اضافه می‌شود</b><span>'+esc(I.soon||'')+'</span></div>';
-else{var lp=null;b=(I.desc?'<div class="lib-note">'+esc(I.desc)+'</div>':'')+'<div style="'+g(IG[S.i%IG.length])+'">'+I.stages.map(function(s,i){var y='';if(s.phase!==lp){lp=s.phase;y='<div class="lib-yr" style="font-size:.92rem">'+esc(s.phase)+'</div>';}
-return y+'<button class="lib-row" type="button" data-a="bstage" data-i="'+i+'"><span class="lib-tile">'+sv(ICAL,20)+'</span><b>'+esc(s.date)+'</b><i class="lib-tag">'+fa(s.items.length)+' بخش</i><em>مشاهده</em></button>';}).join('')+'</div>';}}
-else{var st=I.stages[S.s];h=top(I.name,true,st.date);curB=st.items;var gl=[],gm={};
-st.items.forEach(function(it,i){if(!gm[it.group]){gm[it.group]=[];gl.push(it.group);}gm[it.group].push(i);});
-b='<div class="lib-note">'+esc(st.phase)+'</div>'+gl.map(function(k){var c=GG[k]||IG[0];return '<div style="'+g(c)+'"><div class="lib-yr">'+esc(k)+'</div>'+gm[k].map(function(i){var it=curB[i];var pg=it.from?('صفحه‌های '+fa(it.from)+(it.to&&it.to!==it.from?' تا '+fa(it.to):'')):'کل کتاب';
-return '<div class="lib-bi"><span class="l">'+esc(it.lesson)+'</span><b>'+esc(it.topic||'—')+'<small>'+pg+'</small></b>'+(BD.bookmap[it.lesson]?'<button class="lv-b pri" type="button" data-a="bbook" data-i="'+i+'">'+sv(MODE.book.i,17)+'<span>باز کردن کتاب</span></button>':'')+'</div>';}).join('')+'</div>';}).join('');}}
-hub.innerHTML='<div class="lib-box">'+h+'<div class="lib-body">'+b+'</div></div>';}
-function openBudget(){loadBudget().then(function(){S={m:'budget',i:null,s:null};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function openFinal(){load().then(function(){S={m:'final',s:null,t:'all'};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function open(){load().then(function(){S={m:null,s:null};render();hub.classList.add('show');document.documentElement.style.overflow='hidden';});}
 function close(){hub.classList.remove('show');document.documentElement.style.overflow='';}
@@ -19348,20 +19325,290 @@ function init(){hub=document.createElement('div');hub.id='lib-hub';document.body
 viewer=document.createElement('div');viewer.id='lib-viewer';viewer.innerHTML='<div class="lib-box"><div class="lv-h"><span class="lv-t"></span><button class="lv-b pri lv-ck" type="button">'+sv(P.pen,17)+'<span>باز کردن در چک‌نویس</span></button><a class="lv-b lv-x" target="_blank" rel="noopener">'+sv(P.tab,17)+'<span>تب جدید</span></a><button class="lib-ic lv-c" type="button" aria-label="بستن">'+sv(P.x,20)+'</button></div><iframe title="فایل"></iframe></div>';document.body.appendChild(viewer);
 viewer.querySelector('.lv-c').onclick=closeViewer;viewer.addEventListener('click',function(e){if(e.target===viewer)closeViewer();});
 hub.addEventListener('click',function(e){if(e.target===hub){close();return;}var el=e.target.closest('[data-a]');if(!el)return;var a=el.getAttribute('data-a');
-if(a==='close')close();else if(a==='back'){if(S.m==='budget'){if(S.s!==null)S.s=null;else S.i=null;}else if(S.s)S.s=null;else S.m=null;render();}
+if(a==='close')close();else if(a==='back'){if(S.s)S.s=null;else S.m=null;render();}
 else if(a==='mode'){S.m=el.getAttribute('data-m');render();}else if(a==='sub'){S.s=el.getAttribute('data-s');render();}
 else if(a==='open')openFile(cur[+el.getAttribute('data-i')]);
-else if(a==='binst'){S.i=+el.getAttribute('data-i');S.s=null;render();}
-else if(a==='bstage'){S.s=+el.getAttribute('data-i');render();}
-else if(a==='bbook'){var bi=curB[+el.getAttribute('data-i')],bm=BD.bookmap[bi.lesson];openFile({title:bi.lesson+(bi.from?' — صفحهٔ '+fa(bi.from):''),file:'../'+bm.file+(bi.from?'#page='+(bi.from+(bm.offset||0)):'')});}
 else if(a==='fsub'){S.s=el.getAttribute('data-s');S.t='all';render();}
 else if(a==='ftype'){S.t=el.getAttribute('data-t');render();}
 else if(a==='fopen'){var r=cur[+el.getAttribute('data-i')];openFile({title:ftitle(r),file:r.file});}
 else if(a==='fans'){var q=cur[+el.getAttribute('data-i')];openFile({title:'پاسخنامه — '+ftitle(q),file:q.answer});}});
 document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(viewer.classList.contains('show'))closeViewer();else if(hub.classList.contains('show'))close();});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-return {open:open,openFinal:openFinal,openBudget:openBudget,close:close};
+return {open:open,openFinal:openFinal,close:close};
 })();
 </script>
+<style id="top-date-widget-css">
+#top-date-widget{position:fixed;top:30px;right:100px;z-index:1200;display:flex;align-items:center;gap:11px;height:62px;padding:7px 15px 7px 12px;border-radius:26px;direction:rtl;overflow:hidden;color:var(--text-primary);background:linear-gradient(135deg,rgba(99,102,241,.16),rgba(56,189,248,.07) 55%,rgba(244,114,182,.12)),var(--glass);box-shadow:var(--glass-shadow),0 14px 34px -16px rgba(99,102,241,.55),inset 0 1px 0 rgba(255,255,255,.22);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);user-select:none;cursor:default;transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .3s}
+/* حاشیهٔ گرادیانی */
+#top-date-widget::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(135deg,rgba(56,189,248,.85),rgba(129,140,248,.3) 48%,rgba(244,114,182,.8));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* برق نرمی که هر چند ثانیه از روی کارت رد می‌شود */
+#top-date-widget::after{content:"";position:absolute;top:0;bottom:0;width:46%;left:-60%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);animation:tdwSheen 7s ease-in-out infinite}
+@keyframes tdwSheen{0%,62%{left:-60%}100%{left:130%}}
+#top-date-widget:hover{transform:translateY(-3px);box-shadow:var(--glass-shadow),0 20px 40px -14px rgba(99,102,241,.75),inset 0 1px 0 rgba(255,255,255,.3)}
+/* برگهٔ تقویم */
+#top-date-widget .tdw-tile{position:relative;z-index:1;flex:none;width:50px;height:48px;border-radius:15px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,#ffffff,#e4e9ff);box-shadow:0 10px 20px -9px rgba(99,102,241,.8),0 0 0 1px rgba(255,255,255,.55),inset 0 -2px 4px rgba(79,70,229,.12)}
+#top-date-widget .tdw-tile small{flex:none;height:17px;display:grid;place-items:center;color:#fff;font-size:.6rem;font-weight:800;line-height:1;letter-spacing:.01em;background:linear-gradient(135deg,#fb7185,#f43f5e 55%,#e11d48);box-shadow:inset 0 -1px 0 rgba(0,0,0,.12)}
+#top-date-widget .tdw-tile b{flex:1;display:grid;place-items:center;font-size:1.42rem;font-weight:900;line-height:1;color:#1e1b4b;padding-bottom:1px}
+#top-date-widget .tdw-text{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:1px;line-height:1.3;white-space:nowrap;min-width:0}
+#top-date-widget .tdw-text strong{font-size:1.02rem;font-weight:900;letter-spacing:-.01em;background:linear-gradient(90deg,#38bdf8,#818cf8 55%,#f472b6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+#top-date-widget .tdw-text span{font-size:.8rem;font-weight:700;color:var(--text-primary)}
+#top-date-widget .tdw-text em{display:flex;align-items:center;gap:5px;font-style:normal;font-size:.62rem;font-weight:600;color:var(--text-secondary);opacity:.85}
+#top-date-widget .tdw-text em::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.55);animation:tdwPulse 2.2s ease-out infinite}
+@keyframes tdwPulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%,100%{box-shadow:0 0 0 6px rgba(52,211,153,0)}}
+body.light-mode #top-date-widget .tdw-text strong{background:linear-gradient(90deg,#0284c7,#4f46e5 55%,#db2777);-webkit-background-clip:text;background-clip:text}
+body.light-mode #top-date-widget{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(56,189,248,.05) 55%,rgba(244,114,182,.09)),var(--glass)}
+@media (max-width:1459px){#top-date-widget{padding:7px;gap:0}#top-date-widget .tdw-text{display:none}}
+@media (max-width:1271px){#top-date-widget{display:none}}
+body.focus-mode-active #top-date-widget{display:none!important}
+@media (prefers-reduced-motion:reduce){#top-date-widget::after,#top-date-widget .tdw-text em::before{animation:none}#top-date-widget{transition:none}}
+</style>
+<script id="top-date-widget-js">
+(function(){
+  function put(id, v){ var e = document.getElementById(id); if(e && e.textContent !== v) e.textContent = v; }
+  function render(){
+    var box = document.getElementById('top-date-widget'); if(!box) return;
+    try{
+      var d = new Date();   /* ساعت و تاریخ خودِ سیستم (لپتاپ) */
+      var p = {};
+      new Intl.DateTimeFormat('fa-IR-u-ca-persian', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
+        .formatToParts(d).forEach(function(x){ p[x.type] = x.value; });
+      var g = new Intl.DateTimeFormat('fa-IR-u-ca-gregory', {day:'numeric', month:'long', year:'numeric'}).format(d);
+      var full = p.day + ' ' + p.month + ' ' + p.year;
+      put('tdw-day', p.day); put('tdw-month', p.month); put('tdw-weekday', p.weekday);
+      put('tdw-jalali', full); put('tdw-greg', g);
+      box.title = p.weekday + '، ' + full + ' — ' + g;
+    }catch(e){ box.style.display = 'none'; }
+  }
+  render();
+  setInterval(render, 30000);                                   /* عوض‌شدن خودکار نیمه‌شب */
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) render(); });
+  window.addEventListener('focus', render);
+  window.addEventListener('pageshow', render);
+})();
+</script>
+<!-- ===== MAZ-VIEW: نمایش سایت ماز داخل برنامه (iframe) ===== -->
+<section id="maz-view" role="region" aria-label="سایت ماز" aria-hidden="true" tabindex="-1" data-state="idle">
+  <div class="mzv-bar">
+    <button type="button" class="mzv-back" id="mzv-back" onclick="MazView.close()">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <span>بازگشت به برنامه</span>
+    </button>
+    <div class="mzv-title">
+      <span class="mzv-logo">MAZ</span>
+      <div class="mzv-ttext"><strong>گروه آموزشی ماز</strong><small dir="ltr">biomaze.ir</small></div>
+    </div>
+    <div class="mzv-actions">
+      <button type="button" class="mzv-icon" onclick="MazView.reload()" title="بارگذاری مجدد" aria-label="بارگذاری مجدد">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+      </button>
+      <button type="button" class="mzv-icon" onclick="MazView.openExternal()" title="باز کردن در تب جدید" aria-label="باز کردن در تب جدید">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mzv-stage">
+    <div class="mzv-loading" aria-live="polite">
+      <div class="mzv-orb"><i></i><b>MAZ</b></div>
+      <h3>در حال بارگذاری سایت ماز…</h3>
+      <p>بدون خروج از CATTS-2 و در همین صفحه باز می‌شود.</p>
+      <div class="mzv-progress"><span></span></div>
+      <div class="mzv-slow">
+        <p>اتصال کندتر از حد معمول است. اگر منتظر ماندن نمی‌خواهی:</p>
+        <button type="button" class="mzv-btn ghost" onclick="MazView.openExternal()">باز کردن در تب جدید</button>
+      </div>
+    </div>
+    <div class="mzv-error" role="alert">
+      <div class="mzv-err-ic">
+        <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>
+      </div>
+      <h3 id="mzv-err-title">نمایش ماز داخل برنامه ممکن نشد</h3>
+      <p id="mzv-err-msg"></p>
+      <p class="mzv-err-note">اگر سایت ماز نمایش داخل صفحهٔ دیگر را ممنوع کرده باشد (محدودیت امنیتی <span dir="ltr">X-Frame-Options</span> یا <span dir="ltr">CSP</span>)، مرورگر اجازهٔ نمایش آن را در iframe نمی‌دهد و فقط در تب جدید باز می‌شود. این محدودیت از سمت سایت ماز است و از طرف برنامه قابل دور زدن نیست.</p>
+      <div class="mzv-err-actions">
+        <button type="button" class="mzv-btn" onclick="MazView.openExternal()">باز کردن ماز در تب جدید</button>
+        <button type="button" class="mzv-btn ghost" onclick="MazView.reload()">تلاش دوباره</button>
+        <button type="button" class="mzv-btn ghost" onclick="MazView.close()">بازگشت به برنامه</button>
+      </div>
+    </div>
+    <div class="mzv-chip" role="status">
+      <span>اگر صفحهٔ ماز خالی ماند یا پیام «refused to connect» دیدی، سایت ماز نمایش داخل برنامه را مجاز نکرده است (<span dir="ltr">X-Frame-Options</span> / <span dir="ltr">CSP</span>).</span>
+      <button type="button" class="mzv-btn sm" onclick="MazView.openExternal()">تب جدید</button>
+      <button type="button" class="mzv-x" onclick="MazView.hideChip()" aria-label="بستن">✕</button>
+    </div>
+  </div>
+</section>
+<style id="maz-view-css">
+#maz-view{position:fixed;top:112px;left:14px;right:100px;bottom:14px;z-index:500;display:none;flex-direction:column;direction:rtl;border-radius:28px;overflow:hidden;color:var(--text-primary);background:linear-gradient(145deg,var(--glass-2),var(--glass)),var(--bg-solid);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow-lg);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);outline:none;overscroll-behavior:contain}
+#maz-view.open{display:flex;animation:mzvIn .34s cubic-bezier(.2,1.2,.4,1)}
+@keyframes mzvIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+/* وقتی پنل باز است: اسکرول صفحه قفل می‌شود (بدون جابه‌جایی چیدمان) و نوار آیکون‌ها بالای پنل می‌ماند تا برچسب‌هایش دیده شود */
+html.maz-open{overflow:hidden;scrollbar-gutter:stable}
+html.maz-open .app-bar-icons{position:relative;z-index:510}
+#maz-view .mzv-bar{flex:none;display:flex;align-items:center;gap:12px;height:64px;padding:0 14px;border-bottom:1px solid var(--glass-line)}
+#maz-view .mzv-back{flex:none;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:15px;border:1px solid rgba(255,255,255,.38);color:#fff;font:inherit;font-size:.85rem;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#38bdf8,#6366f1);box-shadow:0 10px 20px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 5px rgba(0,0,0,.1);transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+#maz-view .mzv-back:hover{transform:translateY(-2px)}
+#maz-view .mzv-back:active{transform:scale(.96)}
+#maz-view .mzv-title{flex:1;min-width:0;display:flex;align-items:center;gap:11px}
+#maz-view .mzv-logo{flex:none;width:42px;height:42px;border-radius:15px;display:grid;place-items:center;color:#fff;font-size:.72rem;font-weight:900;letter-spacing:.02em;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#38bdf8,#2563eb);box-shadow:0 10px 20px -10px #2563eb,inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 5px rgba(0,0,0,.1)}
+#maz-view .mzv-ttext{display:flex;flex-direction:column;line-height:1.35;min-width:0}
+#maz-view .mzv-ttext strong{font-size:.95rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#maz-view .mzv-ttext small{font-size:.68rem;color:var(--text-secondary);text-align:right}
+#maz-view .mzv-actions{flex:none;display:flex;gap:8px}
+#maz-view .mzv-icon{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;cursor:pointer;color:var(--text-primary);background:var(--glass-2);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:transform .3s cubic-bezier(.3,1.5,.5,1),background .2s}
+#maz-view .mzv-icon:hover{transform:translateY(-2px);background:var(--glass)}
+#maz-view .mzv-icon:active{transform:scale(.94)}
+#maz-view .mzv-stage{position:relative;flex:1;min-height:0;margin:10px;border-radius:20px;overflow:hidden;background:var(--bg-solid);border:1px solid var(--glass-line)}
+#maz-view .mzv-frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;opacity:0;transition:opacity .45s ease}
+#maz-view[data-state="ready"] .mzv-frame{opacity:1}
+#maz-view .mzv-loading,#maz-view .mzv-error{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;overflow:auto}
+#maz-view[data-state="loading"] .mzv-loading,#maz-view[data-state="error"] .mzv-error{display:flex;animation:mzvIn .3s ease}
+#maz-view .mzv-loading::before,#maz-view .mzv-loading::after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;filter:blur(70px);opacity:.34;pointer-events:none;animation:mzvBlob 7s ease-in-out infinite alternate}
+#maz-view .mzv-loading::before{top:-90px;right:-70px;background:#4776ff}
+#maz-view .mzv-loading::after{bottom:-110px;left:-70px;background:#f472b6;animation-delay:-3s}
+@keyframes mzvBlob{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,24px) scale(1.18)}}
+#maz-view .mzv-loading>*,#maz-view .mzv-error>*{position:relative;z-index:1}
+#maz-view .mzv-orb{position:relative;width:108px;height:108px;display:grid;place-items:center}
+#maz-view .mzv-orb i{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 22%,#38bdf8 58%,#818cf8 82%,#f472b6);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));animation:mzvSpin 1.1s linear infinite}
+#maz-view .mzv-orb b{width:68px;height:68px;border-radius:23px;display:grid;place-items:center;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.03em;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#38bdf8,#2563eb);box-shadow:0 14px 30px -12px #2563eb,inset 0 1px 0 rgba(255,255,255,.55);animation:mzvPulse 1.8s ease-in-out infinite}
+@keyframes mzvSpin{to{transform:rotate(360deg)}}
+@keyframes mzvPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+#maz-view h3{margin:6px 0 0;font-size:1.1rem;font-weight:900}
+#maz-view .mzv-loading p,#maz-view .mzv-error p{margin:0;max-width:520px;font-size:.82rem;line-height:1.9;color:var(--text-secondary)}
+#maz-view .mzv-progress{width:190px;height:5px;border-radius:9px;overflow:hidden;background:var(--glass-line)}
+#maz-view .mzv-progress span{display:block;height:100%;width:42%;border-radius:9px;background:linear-gradient(90deg,#38bdf8,#818cf8,#f472b6);animation:mzvBar 1.3s ease-in-out infinite}
+@keyframes mzvBar{0%{transform:translateX(-120%)}100%{transform:translateX(330%)}}
+#maz-view .mzv-slow{display:none;flex-direction:column;align-items:center;gap:9px;margin-top:6px}
+#maz-view[data-slow="1"] .mzv-slow{display:flex;animation:mzvIn .3s ease}
+#maz-view .mzv-err-ic{width:72px;height:72px;border-radius:24px;display:grid;place-items:center;color:#fff;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#fb923c,#f43f5e);box-shadow:0 14px 30px -12px #f43f5e,inset 0 1px 0 rgba(255,255,255,.55)}
+#maz-view .mzv-err-note{font-size:.74rem!important;opacity:.85}
+#maz-view .mzv-err-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:8px}
+#maz-view .mzv-btn{height:40px;padding:0 18px;border-radius:14px;border:1px solid rgba(255,255,255,.38);color:#fff;font:inherit;font-size:.82rem;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#38bdf8,#6366f1);box-shadow:0 10px 20px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.55);transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+#maz-view .mzv-btn:hover{transform:translateY(-2px)}
+#maz-view .mzv-btn.ghost{color:var(--text-primary);background:var(--glass-2);border-color:var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+#maz-view .mzv-btn.sm{height:32px;padding:0 13px;font-size:.74rem;border-radius:11px;flex:none}
+#maz-view .mzv-chip{position:absolute;bottom:14px;left:0;right:0;margin:0 auto;width:fit-content;z-index:3;display:none;align-items:center;gap:10px;max-width:calc(100% - 28px);padding:8px 10px 8px 14px;border-radius:18px;color:#eef1ff;font-size:.74rem;line-height:1.7;background:rgba(10,14,28,.86);border:1px solid rgba(255,255,255,.16);box-shadow:0 14px 34px -10px rgba(0,0,0,.6);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#maz-view[data-chip="1"][data-state="ready"] .mzv-chip{display:flex;animation:mzvChip .4s cubic-bezier(.2,1.2,.4,1)}
+@keyframes mzvChip{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+#maz-view .mzv-x{flex:none;width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:.7rem}
+@media (max-width:859px){
+  #maz-view{top:0;left:0;right:0;bottom:0;border-radius:0;z-index:900}
+  #maz-view .mzv-bar{padding-left:176px}
+}
+@media (max-width:600px){
+  #maz-view .mzv-ttext,#maz-view .mzv-back span{display:none}
+  #maz-view .mzv-back{padding:0 12px}
+}
+@media (max-width:480px){#maz-view .mzv-bar{padding-left:64px}}
+@media (prefers-reduced-motion:reduce){#maz-view *,#maz-view{animation:none!important;transition:none!important}}
+</style>
+<script id="maz-view-js">
+(function(){
+  'use strict';
+  var MAZ_URL = 'https://biomaze.ir/';
+  var SLOW_MS = 7000, TIMEOUT_MS = 25000, CHIP_MS = 15000;
+  var root = document.getElementById('maz-view'); if(!root) return;
+  var stage = root.querySelector('.mzv-stage');
+  var backBtn = document.getElementById('mzv-back');
+  var errTitle = document.getElementById('mzv-err-title');
+  var errMsg = document.getElementById('mzv-err-msg');
+  var html = document.documentElement;
+  var frame = null, state = 'idle', errReason = '', isOpen = false, savedY = 0, opener = null;
+  var tSlow = 0, tFail = 0, tChip = 0;
+
+  var MSGS = {
+    offline: ['به اینترنت وصل نیستی', 'اتصال اینترنت قطع است. بعد از وصل‌شدن دوباره امتحان کن یا ماز را مستقیم در تب جدید باز کن.'],
+    timeout: ['بارگذاری ماز بیش از حد طول کشید', 'ممکن است اینترنت ضعیف باشد یا سایت ماز در این لحظه پاسخ ندهد.'],
+    error:   ['سایت ماز بارگذاری نشد', 'هنگام باز کردن سایت ماز خطایی رخ داد.']
+  };
+
+  function clearTimers(){ clearTimeout(tSlow); clearTimeout(tFail); }
+  function hideChip(){ clearTimeout(tChip); root.removeAttribute('data-chip'); }
+  function setState(s){
+    state = s; root.setAttribute('data-state', s);
+    if(s !== 'loading') root.removeAttribute('data-slow');
+    if(s !== 'ready') hideChip();
+  }
+  function dropFrame(){ if(frame && frame.parentNode) frame.parentNode.removeChild(frame); frame = null; }
+
+  function fail(reason){
+    clearTimers(); dropFrame();
+    errReason = reason;
+    var m = MSGS[reason] || MSGS.error;
+    errTitle.textContent = m[0]; errMsg.textContent = m[1];
+    setState('error');
+  }
+  function onFirstLoad(){
+    clearTimers(); errReason = '';
+    setState('ready');
+    root.setAttribute('data-chip', '1');
+    tChip = setTimeout(hideChip, CHIP_MS);
+  }
+  function mount(){
+    dropFrame();
+    var f = document.createElement('iframe');
+    var first = true;
+    f.className = 'mzv-frame'; f.id = 'maz-frame'; f.title = 'سایت ماز';
+    f.setAttribute('allow', 'fullscreen; clipboard-write; autoplay; encrypted-media');
+    f.setAttribute('allowfullscreen', '');
+    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    f.addEventListener('load', function(){
+      if(f !== frame || !first) return;
+      /* رویداد load مربوط به about:blank اولیه را نادیده بگیر (همان‌مبدأ است؛ صفحهٔ واقعی ماز cross-origin است و خواندن آدرسش خطا می‌دهد) */
+      try{ if(f.contentWindow && f.contentWindow.location.href === 'about:blank') return; }catch(e){}
+      first = false; onFirstLoad();
+    });
+    frame = f;
+    f.src = MAZ_URL;                       /* اول src، بعد افزودن به صفحه */
+    stage.insertBefore(f, stage.firstChild);
+  }
+  function start(){
+    clearTimers(); hideChip();
+    if(navigator.onLine === false){ fail('offline'); return; }
+    setState('loading');
+    mount();
+    tSlow = setTimeout(function(){ if(state === 'loading') root.setAttribute('data-slow', '1'); }, SLOW_MS);
+    tFail = setTimeout(function(){ if(state === 'loading') fail('timeout'); }, TIMEOUT_MS);
+  }
+
+  function open(){
+    if(!isOpen){
+      isOpen = true;
+      savedY = window.pageYOffset || 0;
+      opener = document.activeElement;
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      html.classList.add('maz-open');
+      root.classList.add('open');
+      root.setAttribute('aria-hidden', 'false');
+      try{ backBtn.focus({ preventScroll: true }); }catch(e){}
+    }
+    if(!frame || state === 'idle' || state === 'error') start();
+  }
+  function close(skipRestore){
+    if(!isOpen) return;
+    isOpen = false;
+    root.classList.remove('open');
+    root.setAttribute('aria-hidden', 'true');
+    html.classList.remove('maz-open');
+    if(skipRestore !== true){
+      window.scrollTo({ top: savedY, left: 0, behavior: 'instant' });
+      try{ if(opener && opener.focus) opener.focus({ preventScroll: true }); }catch(e){}
+    }
+    opener = null;
+  }
+  function openExternal(){ window.open(MAZ_URL, '_blank', 'noopener'); }
+
+  /* رفتن به یکی از بخش‌های ریل کناری = خروج از صفحهٔ ماز (کلیک دست‌نخورده به خود دکمه می‌رسد) */
+  document.addEventListener('click', function(e){
+    if(isOpen && e.target && e.target.closest && e.target.closest('.tabs .tab-btn')) close(true);
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if(isOpen && e.key === 'Escape' && root.contains(document.activeElement)) close();
+  });
+  window.addEventListener('online', function(){ if(isOpen && state === 'error' && errReason === 'offline') start(); });
+
+  window.MazView = { open: open, close: close, reload: start, openExternal: openExternal, hideChip: hideChip };
+})();
+</script>
+<!-- ===== /MAZ-VIEW ===== -->
 </body>
 </html>
