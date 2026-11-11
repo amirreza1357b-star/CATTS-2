@@ -1384,7 +1384,7 @@ input, select {
 
 /* ===== دکمه‌ی اعلان (کنار موشک) ===== */
 #announcement-badge {
-    position: absolute; top: 0; left: 96px;
+    top: auto; left: auto;
     width: 40px; height: 40px; border-radius: 50%;
     background: linear-gradient(135deg, #22c55e, #0ea5a3);
     display: none; align-items: center; justify-content: center;
@@ -4986,6 +4986,10 @@ body.light-mode .ckg-stat{ background:#fff; }
             <span id="app-user-greeting" class="app-user-greeting"></span>
             <div id="smart-date-line" class="smart-date-line" title="برای تنظیم دستی تاریخ کلیک کن" onclick="openDateSettings()"></div>
         </div>
+        <div id="top-date-widget" class="tdw" role="group" aria-label="تاریخ امروز">
+            <div class="tdw-tile"><small id="tdw-month"></small><b id="tdw-day"></b></div>
+            <div class="tdw-text"><strong id="tdw-weekday"></strong><span id="tdw-jalali"></span><em id="tdw-greg"></em></div>
+        </div>
         <div class="app-bar-top">
             <div class="app-bar-icons">
 <button id="books-notes-badge" type="button" onclick="LibHub.open()" data-label="کتاب + جزوه" aria-label="کتاب + جزوه"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d='M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5a2.5 2.5 0 0 0 0 5H19'/><path d='M9 7h6M9 11h4'/></svg></button>
@@ -5018,7 +5022,6 @@ body.light-mode .ckg-stat{ background:#fff; }
                     <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a9.5 9.5 0 0 0-8.2 4.7A5.5 5.5 0 0 0 2 11.5c0 1.6.68 3.03 1.76 4.05A9.5 9.5 0 0 0 3.8 17.3 5.5 5.5 0 0 0 9 22a9.5 9.5 0 0 0 8.2-4.7A5.5 5.5 0 0 0 22 12.5c0-1.6-.68-3.03-1.76-4.05.13-.62.18-1.26.16-1.9A5.5 5.5 0 0 0 15 2a9.5 9.5 0 0 0-3 .5zM12 4c.62 0 1.22.09 1.79.26a3.5 3.5 0 0 0-.79 2.24v6.5l-2-1.15V6.5A3.5 3.5 0 0 1 12 4zm5.5 2a3.5 3.5 0 0 1 3.44 4.15 5.48 5.48 0 0 0-1.94-1.02l-4-2.3a1.5 1.5 0 0 0-1.5 0l-3.75 2.16V7.06l3.9-2.25A3.48 3.48 0 0 1 15 4.5c1 0 1.93.4 2.5 1.06.31.35.62.87.7 1.44H17.5zM4 11.5a3.5 3.5 0 0 1 1.5-2.88v4.5c0 .55.3 1.06.78 1.33l3.72 2.15-3.9 2.25A3.5 3.5 0 0 1 4 11.5zm3.5 6.5c-.62 0-1.22-.09-1.79-.26a3.5 3.5 0 0 0 .79-2.24v-6.5l2 1.15v5.35A3.5 3.5 0 0 1 7.5 18zM17 17.44l-3.9 2.25a3.5 3.5 0 0 1-4.6-2.19 5.48 5.48 0 0 0 1.94-1.02l4-2.3a1.5 1.5 0 0 0 .75-1.3v-4.3l1.81 1.05v6.5c0 .48-.16.94-.4 1.31z"/></svg>
                 </button>
                 <button id="sample-questions-badge" onclick="window.open('https://www.kanoon.ir/Public/ExamQuestions','_blank')" title="نمونه سوال">📝</button>
-                <button id="examsheet-badge" onclick="window.open('https://www.kanoon.ir/Public/ExamQuestions','_blank')" title="جزوه و برگه امتحان">🧾</button>
                 <span>
                     <button id="countdown-badge" onclick="toggleCountdownPopup()" title="روزهای باقی‌مانده">🚀</button>
                     <div id="countdown-popup">
@@ -17059,7 +17062,6 @@ html body button#chatgpt-badge#chatgpt-badge{--ic:url("data:image/svg+xml,<svg x
 html body button#translate-badge#translate-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6'/></svg>");--g1:#fb7185;--g2:#ec4899}
 html body button#chatgpt-external-badge#chatgpt-external-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/></svg>");--g1:#34d399;--g2:#0d9488}
 html body button#sample-questions-badge#sample-questions-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><rect width='8' height='4' x='8' y='2' rx='1'/><path d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M12 11h4M12 16h4M8 11h.01M8 16h.01'/></svg>");--g1:#fb923c;--g2:#f43f5e}
-html body button#examsheet-badge#examsheet-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z'/><path d='M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8'/></svg>");--g1:#a78bfa;--g2:#6366f1}
 html body button#countdown-badge#countdown-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M10 2h4M12 14l3-3'/><circle cx='12' cy='14' r='8'/></svg>");--g1:#fb923c;--g2:#ec4899}
 html body button#announcement-badge#announcement-badge{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><path d='M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0'/></svg>");--g1:#f43f5e;--g2:#fb923c}
 html body button#qt-focus-btn#qt-focus-btn{--ic:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>");--g1:#818cf8;--g2:#8b5cf6}
@@ -19333,6 +19335,44 @@ else if(a==='fans'){var q=cur[+el.getAttribute('data-i')];openFile({title:'پا�
 document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(viewer.classList.contains('show'))closeViewer();else if(hub.classList.contains('show'))close();});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 return {open:open,openFinal:openFinal,close:close};
+})();
+</script>
+<style id="top-date-widget-css">
+#top-date-widget{position:fixed;top:30px;right:100px;z-index:1200;display:flex;align-items:center;gap:10px;height:62px;padding:8px 14px 8px 12px;border-radius:24px;direction:rtl;color:var(--text-primary);background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);user-select:none;cursor:default;transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
+#top-date-widget:hover{transform:translateY(-3px)}
+#top-date-widget .tdw-tile{flex:none;width:46px;height:46px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#38bdf8,#6366f1);box-shadow:0 10px 20px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 5px rgba(0,0,0,.1)}
+#top-date-widget .tdw-tile small{font-size:.56rem;font-weight:700;line-height:1;opacity:.92;white-space:nowrap}
+#top-date-widget .tdw-tile b{font-size:1.28rem;font-weight:900;line-height:1.05}
+#top-date-widget .tdw-text{display:flex;flex-direction:column;justify-content:center;line-height:1.35;white-space:nowrap;min-width:0}
+#top-date-widget .tdw-text strong{font-size:.95rem;font-weight:800;color:var(--text-primary)}
+#top-date-widget .tdw-text span{font-size:.74rem;font-weight:600;color:var(--text-secondary)}
+#top-date-widget .tdw-text em{font-style:normal;font-size:.62rem;color:var(--text-secondary);opacity:.75}
+@media (max-width:1439px){#top-date-widget{padding:8px}#top-date-widget .tdw-text{display:none}}
+@media (max-width:1271px){#top-date-widget{display:none}}
+body.focus-mode-active #top-date-widget{display:none!important}
+</style>
+<script id="top-date-widget-js">
+(function(){
+  function put(id, v){ var e = document.getElementById(id); if(e && e.textContent !== v) e.textContent = v; }
+  function render(){
+    var box = document.getElementById('top-date-widget'); if(!box) return;
+    try{
+      var d = new Date();   /* ساعت و تاریخ خودِ سیستم (لپتاپ) */
+      var p = {};
+      new Intl.DateTimeFormat('fa-IR-u-ca-persian', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
+        .formatToParts(d).forEach(function(x){ p[x.type] = x.value; });
+      var g = new Intl.DateTimeFormat('fa-IR-u-ca-gregory', {day:'numeric', month:'long', year:'numeric'}).format(d);
+      var full = p.day + ' ' + p.month + ' ' + p.year;
+      put('tdw-day', p.day); put('tdw-month', p.month); put('tdw-weekday', p.weekday);
+      put('tdw-jalali', full); put('tdw-greg', g);
+      box.title = p.weekday + '، ' + full + ' — ' + g;
+    }catch(e){ box.style.display = 'none'; }
+  }
+  render();
+  setInterval(render, 30000);                                   /* عوض‌شدن خودکار نیمه‌شب */
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) render(); });
+  window.addEventListener('focus', render);
+  window.addEventListener('pageshow', render);
 })();
 </script>
 </body>
