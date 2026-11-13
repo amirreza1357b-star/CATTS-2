@@ -3722,8 +3722,10 @@ body.light-mode #cloud-account-modal{background:linear-gradient(145deg,rgba(255,
         #timer-section-card.timer-focus-mode #study-timer-panel{
             width:100%; max-width:380px; text-align:center;
         }
-        #timer-section-card.timer-focus-mode #exam-timer-panel > *:not(.timer-display):not(.controls),
-        #timer-section-card.timer-focus-mode #study-timer-panel > *:not(.timer-display):not(.controls){
+        #timer-section-card.timer-focus-mode #exam-timer-panel > *:not(#exam-main-view),
+        #timer-section-card.timer-focus-mode #exam-main-view > *:not(.timer-display):not(.controls),
+        #timer-section-card.timer-focus-mode #study-free-view > *:not(.timer-display):not(.controls),
+        #timer-section-card.timer-focus-mode #study-timer-panel > *:not(#study-free-view):not(#pomo-panel){
             display:none;
         }
         #timer-section-card.timer-focus-mode .timer-display{
@@ -4996,7 +4998,7 @@ body.light-mode .ckg-stat{ background:#fff; }
                 <button id="qt-notebook-btn" onclick="openQuickNotebook()" title="دفترچه لغت/فرمول سریع">📖</button>
                 <button id="qt-reminder-btn" onclick="openQuickReminder()" title="یادآور سریع">⏰<span id="qt-reminder-count" style="display:none;" class="qtb-count-dot"></span></button>
                 <button id="guide-badge" onclick="toggleAppGuideModal(true)" title="راهنمای استفاده">❓</button>
-                <button id="maz-badge" onclick="window.CattsBrowser && CattsBrowser.open()" title="ماز | گروه آموزشی ماز">MAZ</button>
+                <button id="maz-badge" onclick="window.CattsBrowser && CattsBrowser.openMaz()" title="ماز | گروه آموزشی ماز">MAZ</button>
                 <button id="settings-badge" onclick="toggleAppSettingsModal(true)" title="تنظیمات">⚙️</button>
                 <button id="calculator-badge" onclick="toggleCalculatorModal(true)" title="ماشین‌حساب">🧮</button>
                 <button id="calculus-badge" onclick="toggleCalculusModal(true)" title="حد و مشتق">
@@ -5133,43 +5135,40 @@ body.light-mode .ckg-stat{ background:#fff; }
                 </div>
 
                 <div id="exam-timer-panel">
-                <div class="section-title">⏳ تایمر آزمون</div>
-                <select id="track-select" onchange="updateTimerSubjects()">
+<div class="tpx-head"><span class="tpx-ic">🧪</span><div class="tpx-ht"><div class="section-title">⏳ تایمر آزمون</div><small>درس و تعداد تست را بزن تا زمان استاندارد خودکار حساب شود</small></div><div id="auto-time-result" class="timer-mode-badge">تایمر آزاد</div></div>
+<div class="tpx-sub-switch" id="exam-sub-switch"><button type="button" id="esub-btn-main" class="on" onclick="switchExamSub('main')">⏳ تایمر آزمون</button><button type="button" id="esub-btn-top3" onclick="switchExamSub('top3')">🏆 ۳ روش برتر</button></div>
+<div id="exam-main-view">
+<div class="tpx-form">
+<div class="tpx-row2"><select id="track-select" onchange="updateTimerSubjects()">
                     <option value="تجربی">🧬 رشته تجربی</option>
                     <option value="ریاضی">📐 رشته ریاضی</option>
-                </select>
-                <select id="subject" onchange="calculateSubjectTime()">
+                </select><select id="subject" onchange="calculateSubjectTime()">
                     <option value="">⏱️ بدون انتخاب درس — تایمر آزاد</option>
-                </select>
-                <input type="number" id="question-count" placeholder="تعداد تست (مثلاً ۲۰)" min="1" oninput="calculateSubjectTime()">
-                <div class="rate-hint" id="rate-hint">برای تایمر آزاد، دقیقه و ثانیه را خودت وارد کن.</div>
-                <div id="auto-time-result" class="timer-mode-badge">تایمر آزاد</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                    <input type="number" id="minutes" placeholder="دقیقه" value="30" min="0">
-                    <input type="number" id="seconds" placeholder="ثانیه" value="0" min="0" max="59">
-                </div>
-
-                <div class="timer-display" id="timer"><div class="timer-hud"><i class="timer-core-dot"></i><span class="timer-label">FOCUS MODE</span><span class="timer-digits">30:00</span><span class="timer-sub">MINUTES · SECONDS</span></div></div>
-
-                <div class="controls">
+                </select></div>
+<input type="number" id="question-count" placeholder="تعداد تست (مثلاً ۲۰)" min="1" oninput="calculateSubjectTime()">
+<div class="rate-hint" id="rate-hint">برای تایمر آزاد، دقیقه و ثانیه را خودت وارد کن.</div>
+<div class="tpx-row2"><input type="number" id="minutes" placeholder="دقیقه" value="30" min="0"><input type="number" id="seconds" placeholder="ثانیه" value="0" min="0" max="59"></div>
+</div>
+<div class="timer-display" id="timer"><div class="timer-hud"><i class="timer-core-dot"></i><span class="timer-label">تمرکز آزمون</span><span class="timer-digits">30:00</span><span class="timer-sub">دقیقه : ثانیه</span></div></div>
+<div class="controls">
                     <button class="btn btn-success" id="startPauseBtn" onclick="toggleTimer()">شروع</button>
                     <button class="btn btn-danger" onclick="resetTimer()">بازنشانی</button>
                 </div>
-                </div>
+</div>
+</div>
 
-                <div id="study-timer-panel" style="display:none;">
-                <div class="section-title">📖 تایمر مطالعه</div>
-                <p class="rate-hint" style="margin-bottom:10px;">هر بار «توقف» بزنی، زمان ذخیره می‌شود؛ با «شروع» دوباره از همان‌جا ادامه پیدا می‌کند. بعد از ساعت ۱۱ شب مجموع خالص مطالعه‌ی امروز اعلام می‌شود. 🧠 هر چند دقیقه یک‌بار (نامنظم) یک پیام «هنوز پای درسی؟» می‌آید؛ اگر جواب ندی، همون بازه جزو «خالص» حساب نمی‌شه و تایمر خودش متوقف می‌شه — تا زمان واقعاً خوانده‌شده با زمانِ صرفاً «پای میز نشستن» قاطی نشه.</p>
-
-                <div class="timer-display" id="study-timer"><div class="timer-hud"><i class="timer-core-dot"></i><span class="timer-label">STUDY MODE</span><span class="timer-digits" id="study-timer-digits">۰۰:۰۰:۰۰</span><span class="timer-sub">ساعت · دقیقه · ثانیه</span></div></div>
-
-                <div class="controls">
+<div id="study-timer-panel" style="display:none;">
+<div class="tpx-head"><span class="tpx-ic">📖</span><div class="tpx-ht"><div class="section-title">📖 تایمر مطالعه</div><small>کرنومتر آزاد، پومودورو و سه روش برتر یادگیری</small></div></div>
+<div class="tpx-sub-switch" id="study-sub-switch"><button type="button" id="sub-btn-free" class="on" onclick="switchStudySub('free')">⏱ کرنومتر</button><button type="button" id="sub-btn-pomo" onclick="switchStudySub('pomo')">🍅 پومودورو</button><button type="button" id="sub-btn-ar" onclick="switchStudySub('ar')">🧠 بازیابی فعال</button><button type="button" id="sub-btn-sr" onclick="switchStudySub('sr')">🔁 مرور فاصله‌دار</button><button type="button" id="sub-btn-tb" onclick="switchStudySub('tb')">🗓 زمان‌بندی بلوکی</button></div>
+<div id="study-free-view">
+<details class="tpx-info"><summary>ℹ️ این تایمر چطور کار می‌کند؟</summary><p class="rate-hint">هر بار «توقف» بزنی، زمان ذخیره می‌شود؛ با «شروع» دوباره از همان‌جا ادامه پیدا می‌کند. بعد از ساعت ۱۱ شب مجموع خالص مطالعه‌ی امروز اعلام می‌شود. 🧠 هر چند دقیقه یک‌بار (نامنظم) یک پیام «هنوز پای درسی؟» می‌آید؛ اگر جواب ندی، همون بازه جزو «خالص» حساب نمی‌شه و تایمر خودش متوقف می‌شه — تا زمان واقعاً خوانده‌شده با زمانِ صرفاً «پای میز نشستن» قاطی نشه.</p></details>
+<div class="timer-display" id="study-timer"><div class="timer-hud"><i class="timer-core-dot"></i><span class="timer-label">مطالعه</span><span class="timer-digits" id="study-timer-digits">۰۰:۰۰:۰۰</span><span class="timer-sub">ساعت · دقیقه · ثانیه</span></div></div>
+<div class="controls">
                     <button class="btn btn-success" id="startStudyBtn" onclick="toggleStudyStopwatch()">شروع</button>
                     <button class="btn btn-danger" onclick="resetTodayStudyTime()">بازنشانی امروز</button>
                 </div>
-                <div class="rate-hint" id="study-today-total" style="text-align:center;margin-top:10px;font-weight:800;">مجموع خالص مطالعه‌ی امروز: ۰ دقیقه</div>
-
-                <div style="margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;">
+<div class="rate-hint" id="study-today-total" style="text-align:center;margin-top:10px;font-weight:800;">مجموع خالص مطالعه‌ی امروز: ۰ دقیقه</div>
+<div class="tpx-card">
                     <div class="section-title" style="font-size:.92rem;">📌 بازه‌ی مطالعه رو دستی ثبت کن</div>
                     <p class="rate-hint" style="margin:6px 0 10px;">اگه نمی‌تونی هنگام درس خوندن مرورگر رو روشن/وصل نگه داری (مثلاً گوشی قفله یا لپ‌تاپ بسته‌ست)، لازم نیست تایمر بالا روشن باشه؛ فقط ساعت شروع و پایانِ همون بازه رو بعداً اینجا بزن — زمان خالصش (منهای استراحت) خودش به مجموع همون روز اضافه می‌شه.</p>
                     <div style="display:flex;gap:8px;">
@@ -5183,10 +5182,11 @@ body.light-mode .ckg-stat{ background:#fff; }
                     <input type="number" id="study-range-break" placeholder="دقیقه استراحت وسط این بازه (اختیاری)" min="0" style="margin-top:8px;">
                     <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="addManualStudyRange()">➕ افزودن این بازه به مطالعه‌ی خالص</button>
                 </div>
-                </div>
-            </div>
+</div>
+</div>
+</div>
 
-            <!-- ثبت نتیجه و تاریخچه -->
+<!-- ثبت نتیجه و تاریخچه -->
             <div>
                 <div class="glass-card">
                     <div class="section-title">🖋️ ثبت نتیجه آزمون</div>
@@ -8723,25 +8723,48 @@ function focusCheckMissed(){
 }
 
 /* جابه‌جایی بین حالت «تست» و «مطالعه» */
+const STUDY_VIEWS = { free:'study-free-view', pomo:'pomo-panel', ar:'ar-panel', sr:'sr-panel', tb:'tb-panel' };
+const EXAM_VIEWS = { main:'exam-main-view', top3:'top3-panel' };
 function switchTimerMode(mode){
+    if(mode === 'pomo'){ try{ localStorage.setItem('study_sub_mode','pomo'); }catch(e){} mode = 'study'; }
+    const m = mode === 'study' ? 'study' : 'exam';
     const examPanel = document.getElementById('exam-timer-panel');
     const studyPanel = document.getElementById('study-timer-panel');
-    const examBtn = document.getElementById('mode-btn-exam');
-    const studyBtn = document.getElementById('mode-btn-study');
+    if(examPanel) examPanel.style.display = m === 'exam' ? 'block' : 'none';
+    if(studyPanel) studyPanel.style.display = m === 'study' ? 'block' : 'none';
+    document.getElementById('mode-btn-exam')?.classList.toggle('active', m === 'exam');
+    document.getElementById('mode-btn-study')?.classList.toggle('active', m === 'study');
+    localStorage.setItem('timer_active_mode', m);
+    applySubs();
+    if(m === 'study' && (localStorage.getItem('study_sub_mode') || 'free') === 'free') renderStudyStopwatch();
+}
+/* زیرحالت‌های «مطالعه»: کرنومتر | پومودورو | بازیابی فعال | مرور فاصله‌دار | زمان‌بندی بلوکی  —  «تست»: تایمر آزمون | ۳ روش برتر */
+function switchStudySub(sub){ try{ localStorage.setItem('study_sub_mode', STUDY_VIEWS[sub] ? sub : 'free'); }catch(e){} applySubs(); }
+function switchExamSub(sub){ try{ localStorage.setItem('exam_sub_mode', sub === 'top3' ? 'top3' : 'main'); }catch(e){} applySubs(); }
+function applySubs(){
+    const mode = localStorage.getItem('timer_active_mode') === 'study' ? 'study' : 'exam';
+    let ss = localStorage.getItem('study_sub_mode') || 'free'; if(!STUDY_VIEWS[ss]) ss = 'free';
+    const es = localStorage.getItem('exam_sub_mode') === 'top3' ? 'top3' : 'main';
+    Object.keys(STUDY_VIEWS).forEach(k => {
+        const el = document.getElementById(STUDY_VIEWS[k]); if(el) el.style.display = (mode === 'study' && ss === k) ? 'block' : 'none';
+        document.getElementById('sub-btn-' + k)?.classList.toggle('on', ss === k);
+    });
+    Object.keys(EXAM_VIEWS).forEach(k => {
+        const el = document.getElementById(EXAM_VIEWS[k]); if(el) el.style.display = (mode === 'exam' && es === k) ? 'block' : 'none';
+        document.getElementById('esub-btn-' + k)?.classList.toggle('on', es === k);
+    });
     const card = document.getElementById('timer-section-card');
-    if(mode === 'study'){
-        if(examPanel) examPanel.style.display = 'none';
-        if(studyPanel) studyPanel.style.display = 'block';
-        examBtn?.classList.remove('active'); studyBtn?.classList.add('active');
-        card?.classList.add('mode-study');
-        renderStudyStopwatch();
-    } else {
-        if(examPanel) examPanel.style.display = 'block';
-        if(studyPanel) studyPanel.style.display = 'none';
-        studyBtn?.classList.remove('active'); examBtn?.classList.add('active');
-        card?.classList.remove('mode-study');
+    ['exam','study','pomo','ar','sr','tb','top3'].forEach(c => card?.classList.remove('mode-' + c));
+    card?.classList.add('mode-' + (mode === 'study' ? (ss === 'free' ? 'study' : ss) : (es === 'top3' ? 'top3' : 'exam')));
+    const wide = mode === 'study' ? ss !== 'free' : es === 'top3';
+    document.getElementById('tab-timer')?.classList.toggle('pomo-on', wide);
+    document.getElementById('tab-timer')?.classList.toggle('sm-nofs', (mode === 'study' && ['ar','sr','tb'].includes(ss)) || (mode === 'exam' && es === 'top3'));
+    document.getElementById('study-timer-panel')?.classList.toggle('pomo-sub', mode === 'study' && ss !== 'free');
+    if(mode === 'study' && ss === 'pomo' && window.Pomodoro) window.Pomodoro.onShow();
+    if(window.StudyMethods){
+        if(mode === 'study' && ['ar','sr','tb'].includes(ss)) window.StudyMethods.show(ss);
+        if(mode === 'exam' && es === 'top3') window.StudyMethods.show('top3');
     }
-    localStorage.setItem('timer_active_mode', mode);
 }
 /* بعد از ساعت ۱۱ شب (۲۳:۰۰)، یک‌بار در روز مجموع خالص مطالعه را اعلام کن. */
 function checkStudyNightWrapup(){
@@ -19406,9 +19429,9 @@ return {open:open,openFinal:openFinal,openBudget:openBudget,openBudgetAt:openBud
       <div class="cb-err-ic"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg></div>
       <h3 id="cb-err-t"></h3><p id="cb-err-m"></p>
       <p class="cb-fine" id="cb-err-n">اگر سایت نمایش داخل صفحهٔ دیگر را ممنوع کرده باشد (<span dir="ltr">X-Frame-Options</span> یا <span dir="ltr">CSP</span>)، مرورگر اجازهٔ نمایش آن را در iframe نمی‌دهد. این محدودیت از سمت خود سایت است و دور زده نمی‌شود؛ قابلیت‌های وابسته به iframe (مثل بارگذاری مجدد) برای این تب غیرفعال شده‌اند.</p>
-      <div class="cb-err-acts"><button type="button" class="cb-btn" data-a="ext">باز کردن مستقیم سایت در تب جدید</button><button type="button" class="cb-btn ghost" data-a="retry">تلاش مجدد</button><button type="button" class="cb-btn ghost" data-a="exit">بازگشت به برنامه</button></div>
+      <p class="cb-fine" id="cb-err-ck">اگر پیام «redirected you too many times» دیدی، معمولاً مرورگر کوکی شخص‌ثالث را برای ماز بسته است. در Chrome: Settings ← Privacy and security ← Third-party cookies ← «Sites allowed to use third-party cookies» ← <span dir="ltr">biomaze.ir</span> را اضافه کن و دوباره «تلاش مجدد» بزن. اگر باز هم باز نشد، «پنجرهٔ کنار برنامه» مطمئن‌ترین راه است.</p><div class="cb-err-acts"><button type="button" class="cb-btn" data-a="pop">باز کردن در پنجرهٔ کنار برنامه</button><button type="button" class="cb-btn ghost" data-a="ext">باز کردن در تب جدید</button><button type="button" class="cb-btn ghost" data-a="retry">تلاش مجدد</button><button type="button" class="cb-btn ghost" data-a="exit">بازگشت به برنامه</button></div>
     </div>
-    <div class="cb-chip" role="status"><span>اگر صفحه خالی ماند یا پیام خطای مرورگر (مثل «refused to connect» یا «redirected you too many times») دیدی، سایت اجازهٔ نمایش داخل برنامه را نمی‌دهد.</span><button type="button" class="cb-btn sm" data-a="ext">تب جدید</button><button type="button" class="cb-btn sm ghost" data-a="blocked">مسدود است</button><button type="button" class="cb-x" data-a="chipx" aria-label="بستن">✕</button></div>
+    <div class="cb-chip" role="status"><span>اگر صفحه خالی ماند یا پیام خطای مرورگر (مثل «refused to connect» یا «redirected you too many times») دیدی، سایت اجازهٔ نمایش داخل برنامه را نمی‌دهد.</span><button type="button" class="cb-btn sm" data-a="pop">پنجرهٔ جدا</button><button type="button" class="cb-btn sm ghost" data-a="ext">تب جدید</button><button type="button" class="cb-btn sm ghost" data-a="blocked">مسدود است</button><button type="button" class="cb-x" data-a="chipx" aria-label="بستن">✕</button></div>
     <aside class="cb-bm" id="cb-bm" aria-label="نشانک‌ها"><div class="cb-bm-h"><b>نشانک‌ها</b><button type="button" class="cb-ib sm" data-a="bm" aria-label="بستن">✕</button></div><div id="cb-bm-list"></div></aside>
   </div>
   <div class="cb-toast" id="cb-toast" role="status"></div>
@@ -19507,7 +19530,7 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
 #catts-browser[data-slow="1"] .cb-slow{display:flex}
 #catts-browser .cb-err-ic{width:72px;height:72px;border-radius:24px;display:grid;place-items:center;color:#fff;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#fb923c,#f43f5e);box-shadow:0 14px 30px -12px #f43f5e,inset 0 1px 0 rgba(255,255,255,.55)}
 #catts-browser .cb-err-acts{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:6px}
-#catts-browser:not([data-state="blocked"]) #cb-err-n{display:none}
+#catts-browser:not([data-state="blocked"]) #cb-err-n,#catts-browser:not([data-state="blocked"][data-maz="1"]) #cb-err-ck{display:none}
 #catts-browser .cb-btn{height:40px;padding:0 18px;border-radius:14px;border:1px solid rgba(255,255,255,.38);color:#fff;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer;background:linear-gradient(145deg,#38bdf8,#6366f1);box-shadow:0 10px 20px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.55);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
 #catts-browser .cb-btn:hover{transform:translateY(-2px)}
 #catts-browser .cb-btn.ghost{color:var(--text-primary);background:var(--glass-2);border-color:var(--glass-line);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
@@ -19629,7 +19652,7 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
     f.setAttribute('allow','fullscreen; clipboard-write; autoplay; encrypted-media');
     f.setAttribute('allowfullscreen','');
     f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
-    f.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads allow-modals allow-presentation');
+    if(host(t.url)!=='biomaze.ir')f.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads allow-modals allow-presentation');
     f.addEventListener('load',function(){
       if(f!==t.frame)return;
       try{if(f.contentWindow&&f.contentWindow.location.href==='about:blank')return;}catch(e){}
@@ -19654,6 +19677,7 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
     if(st==='error'){var m=ERR[t.reason]||ERR.error;q('#cb-err-t').textContent=m[0];q('#cb-err-m').textContent=m[1];}
     if(st==='blocked'){q('#cb-err-t').textContent='این سایت اجازهٔ نمایش داخل برنامه را نمی‌دهد';q('#cb-err-m').textContent=t.reason==='remembered'?'قبلاً مشخص کرده‌ای که «'+host(t.url)+'» نمایش داخلی را مجاز نکرده است. می‌توانی دوباره امتحانش کنی یا در تب جدید باز کنی.':'طبق تأیید تو، سایت نمایش داخلی را مجاز نکرده است (مرورگر خودکار این را به برنامه اطلاع نمی‌دهد).';}
     if(t&&t.url)q('#cb-load-host').textContent=host(t.url);
+    root.setAttribute('data-maz',t&&t.url&&host(t.url)==='biomaze.ir'?'1':'0');
     chrome();
   }
   function chrome(){
@@ -19790,6 +19814,9 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
     else note('این مرورگر تمام‌صفحه را پشتیبانی نمی‌کند.');
   }
   document.addEventListener('fullscreenchange',function(){root.classList.toggle('fs',document.fullscreenElement===root);setTimeout(clampTp,0);});
+  function popup(u){var w=window.open(u,'_blank','popup=yes,noopener,width=1200,height=820');if(!w)note('مرورگر پنجرهٔ جدید را مسدود کرد؛ اجازهٔ پاپ‌آپ بده یا «تب جدید» را بزن.');return !!w;}
+  /* دکمهٔ ماز: اگر قبلاً مشخص شده ماز نمایش داخلی را مجاز نکرده، مستقیم در پنجرهٔ کنار برنامه باز می‌شود */
+  function openMaz(){if(blk.indexOf(origin(HOME))>-1&&!isOpen){popup(HOME);return;}open();}
   /* ---------- باز و بسته‌شدن ---------- */
   function open(raw){
     if(!isOpen){
@@ -19821,6 +19848,7 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
     else if(a==='retry'){if(t)retry(t);}
     else if(a==='blocked'){if(t)markBlocked(t);}
     else if(a==='chipx'){if(t){t.chip=false;sync();}}
+    else if(a==='pop'){popup(t&&t.url?t.url:HOME);}
     else if(a==='ext'){var u=t&&t.url?t.url:HOME;window.open(u,'_blank','noopener');}
     else if(a==='star')toggleStar();
     else if(a==='bm')drawer();
@@ -19863,7 +19891,7 @@ html.cb-focus .top-left-stack,html.cb-focus #chat-badge,html.cb-focus #panda-mas
   window.addEventListener('offline',chrome);
   window.addEventListener('resize',clampTp);
   restore();tShow();
-  window.CattsBrowser={open:open,close:close,openUrl:openUrl,focus:focusMode};
+  window.CattsBrowser={openMaz:openMaz,open:open,close:close,openUrl:openUrl,focus:focusMode};
 })();
 </script>
 <!-- ===== /CATTS-BROWSER ===== -->
@@ -19998,6 +20026,1028 @@ body.focus-mode-active #date-tile{display:none}
   render();load();
   document.addEventListener('visibilitychange',function(){if(!document.hidden){var c=jp(new Date());if(key(c.year,c.month,c.day)!==todayKey){vy=0;sel=null;}render();}});
   document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.tab-btn[data-adm-tab="tab-planner"]'))setTimeout(render,0);},true);
+})();
+</script>
+<style id="pomo-css">
+/* ====================== POMODORO ====================== */
+html body #tab-timer.pomo-on .grid-two{display:block!important;grid-template-columns:1fr!important}
+html body #tab-timer.pomo-on .grid-two>div:first-child{width:100%!important;max-width:none!important}
+#tab-timer.pomo-on .grid-two>div:nth-child(2){display:none}
+#pomo-panel{--pm-bg:rgba(255,255,255,.055);--pm-line:rgba(255,255,255,.11);--pm-mut:var(--text-secondary);text-align:right;direction:rtl}
+body.light-mode #pomo-panel{--pm-bg:rgba(255,255,255,.72);--pm-line:rgba(15,23,42,.1)}
+#pomo-panel button{min-height:0;font-family:inherit}
+#pomo-panel .pm-in,.pm-modal .pm-in{width:100%!important;min-height:0!important;height:42px!important;margin:0!important;padding:0 12px!important;border-radius:12px!important;border:1px solid var(--pm-line)!important;background:var(--pm-bg)!important;color:var(--text-primary)!important;font-size:.86rem!important;box-shadow:none!important;outline:0}
+#pomo-panel .pm-in:focus,.pm-modal .pm-in:focus{border-color:var(--pa,#818cf8)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--pa,#818cf8) 25%,transparent)!important}
+.pm-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.pm-top-r{display:flex;gap:8px}
+.pm-help{display:flex;align-items:center;gap:10px;padding:9px 16px 9px 12px;border-radius:16px;cursor:pointer;color:var(--text-primary);border:1px solid color-mix(in srgb,var(--pa) 45%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--pa) 22%,transparent),color-mix(in srgb,var(--pb) 12%,transparent));transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.pm-help:hover{transform:translateY(-2px)}
+.pm-help span{font-size:1.3rem}.pm-help b{font-size:.88rem;font-weight:800}
+.pm-help i{font-style:normal;font-size:.68rem;font-weight:800;color:#fff;padding:3px 9px;border-radius:999px;background:linear-gradient(135deg,var(--pa),var(--pb))}
+.pm-help.pulse{animation:pmPulse 2s ease-in-out infinite}
+@keyframes pmPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--pa) 55%,transparent)}50%{box-shadow:0 0 0 9px transparent}}
+.pm-chip{height:38px;padding:0 14px;border-radius:13px;cursor:pointer;color:var(--text-primary);font-size:.8rem;font-weight:700;border:1px solid var(--pm-line);background:var(--pm-bg);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.pm-chip:hover{transform:translateY(-2px)}
+.pm-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:20px;align-items:start}
+@media (max-width:980px){.pm-grid{grid-template-columns:1fr}}
+.pm-main{display:flex;flex-direction:column;align-items:center;gap:16px;padding:22px 16px 20px;border-radius:26px;border:1px solid var(--pm-line);background:radial-gradient(70% 55% at 50% 0%,color-mix(in srgb,var(--pa) 20%,transparent),transparent 72%),var(--pm-bg);transition:background .6s}
+.pm-tabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:rgba(0,0,0,.18);border:1px solid var(--pm-line);max-width:100%}
+body.light-mode .pm-tabs{background:rgba(15,23,42,.06)}
+.pm-tabs button{height:36px;padding:0 15px;border-radius:12px;border:0;background:transparent;color:var(--pm-mut);font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s}
+.pm-tabs button.on{color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 8px 20px -8px var(--pa)}
+.pm-ringwrap{position:relative;width:min(78vw,300px);aspect-ratio:1}
+.pm-ringwrap svg{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.pm-ringwrap .tr{fill:none;stroke:var(--pm-line);stroke-width:10}
+.pm-ringwrap .pr{fill:none;stroke:url(#pmGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:628.32;stroke-dashoffset:628.32;filter:drop-shadow(0 0 9px color-mix(in srgb,var(--pa) 70%,transparent));transition:stroke-dashoffset .5s linear}
+.pm-ringwrap .tk{fill:none;stroke:var(--pm-line);stroke-width:3;stroke-dasharray:1.5 10.23;opacity:.7}
+.pm-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+.pm-center span{font-size:.82rem;font-weight:800;color:var(--pa)}
+.pm-center b{font-size:clamp(2.6rem,9vw,3.7rem);font-weight:900;line-height:1.1;letter-spacing:.01em;color:var(--text-primary);font-variant-numeric:tabular-nums}
+.pm-center small{font-size:.72rem;color:var(--pm-mut);font-weight:700}
+.pm-ctrl{display:flex;align-items:center;gap:14px}
+.pm-go{min-width:170px;height:54px;padding:0 28px;border-radius:18px;border:1px solid rgba(255,255,255,.35);color:#fff;font-size:1.05rem;font-weight:900;cursor:pointer;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 16px 34px -14px var(--pa),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .3s}
+.pm-go:hover{transform:translateY(-2px)}.pm-go:active{transform:scale(.97)}
+.pm-go.run{background:var(--pm-bg);color:var(--text-primary);border-color:var(--pm-line);box-shadow:none}
+.pm-ib{width:46px;height:46px;border-radius:15px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.pm-ib:hover{transform:translateY(-2px)}
+.pm-now{font-size:.82rem;color:var(--pm-mut);min-height:20px;text-align:center}
+.pm-now b{color:var(--text-primary)}
+.pm-live{width:100%;max-width:440px;padding:12px 14px;border-radius:16px;font-size:.8rem;line-height:1.9;text-align:center;border:1px dashed color-mix(in srgb,var(--pa) 45%,transparent);color:var(--text-primary);background:color-mix(in srgb,var(--pa) 8%,transparent)}
+.pm-breath{width:74px;height:74px;margin:2px auto 10px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,color-mix(in srgb,var(--pa) 55%,transparent),color-mix(in srgb,var(--pb) 18%,transparent));animation:pmBreath 8s ease-in-out infinite;position:relative}
+.pm-breath::before,.pm-breath::after{position:absolute;font-size:.66rem;font-weight:800;color:#fff;opacity:0}
+.pm-breath::before{content:"دم";animation:pmIn 8s infinite}.pm-breath::after{content:"بازدم";animation:pmOut 8s infinite}
+@keyframes pmBreath{0%,100%{transform:scale(.7)}50%{transform:scale(1.18)}}
+@keyframes pmIn{0%{opacity:0}8%,42%{opacity:1}50%,100%{opacity:0}}
+@keyframes pmOut{0%,50%{opacity:0}58%,92%{opacity:1}100%{opacity:0}}
+.pm-ref{width:100%;max-width:440px;padding:14px;border-radius:18px;border:1px solid color-mix(in srgb,#fbbf24 50%,transparent);background:color-mix(in srgb,#fbbf24 10%,transparent);text-align:center;font-size:.82rem}
+.pm-ref b{display:block;margin-bottom:6px}
+.pm-stars{display:flex;justify-content:center;gap:4px;margin:6px 0 10px}
+.pm-stars button{border:0;background:transparent;font-size:1.5rem;cursor:pointer;color:var(--pm-line);transition:transform .2s}
+.pm-stars button.on{color:#fbbf24}.pm-stars button:hover{transform:scale(1.2)}
+.pm-ref .row{display:flex;gap:8px;margin-top:8px}
+.pm-amb{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;font-size:.74rem;color:var(--pm-mut)}
+.pm-amb button{height:30px;padding:0 11px;border-radius:10px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-size:.72rem;font-weight:700;cursor:pointer}
+.pm-amb button.on{background:linear-gradient(135deg,var(--pa),var(--pb));color:#fff;border-color:transparent}
+.pm-amb input[type=range]{width:90px;accent-color:var(--pa)}
+.pm-side{display:flex;flex-direction:column;gap:16px}
+.pm-card{padding:16px;border-radius:22px;border:1px solid var(--pm-line);background:var(--pm-bg)}
+.pm-card h4{margin:0 0 12px;font-size:.92rem;font-weight:900;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pm-card h4 button{height:28px;padding:0 10px;border-radius:9px;border:1px solid var(--pm-line);background:transparent;color:var(--pm-mut);font-size:.68rem;cursor:pointer}
+.pm-goal{display:flex;align-items:center;gap:16px}
+.pm-goal svg{width:92px;height:92px;flex:none;transform:rotate(-90deg)}
+.pm-goal .tr{fill:none;stroke:var(--pm-line);stroke-width:9}.pm-goal .pr{fill:none;stroke:url(#pmGrad2);stroke-width:9;stroke-linecap:round;stroke-dasharray:263.9;transition:stroke-dashoffset .6s}
+.pm-goal .gt{flex:1;min-width:0}.pm-goal .gt b{display:block;font-size:1.25rem;font-weight:900}.pm-goal .gt small{display:block;color:var(--pm-mut);font-size:.74rem;line-height:1.8}
+.pm-goal .gt em{display:inline-block;margin-top:4px;font-style:normal;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,#fb923c 20%,transparent)}
+.pm-addrow{display:grid;grid-template-columns:1fr 64px 92px 42px;gap:6px;margin-bottom:10px}
+.pm-addbtn{height:42px;border-radius:12px;border:0;color:#fff;font-size:1.2rem;font-weight:900;cursor:pointer;background:linear-gradient(135deg,var(--pa),var(--pb))}
+.pm-list{display:flex;flex-direction:column;gap:7px;max-height:260px;overflow:auto}
+.pm-task{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:14px;border:1px solid var(--pm-line);cursor:pointer;transition:background .2s,border-color .2s}
+.pm-task.on{border-color:var(--pa);background:color-mix(in srgb,var(--pa) 12%,transparent)}
+.pm-task .ck{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--pm-line);background:transparent;color:#fff;font-size:.7rem;cursor:pointer;display:grid;place-items:center}
+.pm-task.done .ck{background:var(--pb);border-color:var(--pb)}
+.pm-task.done .tt{text-decoration:line-through;opacity:.55}
+.pm-task .tt{flex:1;min-width:0;font-size:.82rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm-task .sb{font-size:.62rem;padding:2px 8px;border-radius:999px;background:var(--pm-line);color:var(--pm-mut);white-space:nowrap}
+.pm-task .ct{font-size:.72rem;font-weight:800;color:var(--pm-mut);white-space:nowrap}
+.pm-task .rm{flex:none;border:0;background:transparent;color:var(--pm-mut);cursor:pointer;font-size:.8rem}
+.pm-empty{padding:14px 8px;text-align:center;font-size:.76rem;color:var(--pm-mut);line-height:1.9}
+.pm-report{margin-top:20px}
+.pm-report h3{margin:0 0 12px;font-size:1.02rem;font-weight:900}
+.pm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.pm-kpi{padding:14px;border-radius:18px;border:1px solid var(--pm-line);background:var(--pm-bg)}
+.pm-kpi small{display:block;font-size:.7rem;color:var(--pm-mut);font-weight:700;margin-bottom:6px}
+.pm-kpi b{display:block;font-size:1.35rem;font-weight:900;line-height:1.25}
+.pm-kpi em{display:block;margin-top:4px;font-style:normal;font-size:.68rem;color:var(--pm-mut);line-height:1.7}
+.pm-rgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+@media (max-width:860px){.pm-rgrid{grid-template-columns:1fr}}
+.pm-plot{position:relative;display:flex;align-items:flex-end;gap:6px;height:118px;margin-top:6px}
+.pm-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;gap:3px}
+.pm-bar i{display:block;width:100%;max-width:34px;border-radius:9px 9px 5px 5px;background:linear-gradient(180deg,#ff7a59,#ff3d6e);transition:height .5s}
+.pm-bar.z i{background:var(--pm-line)}.pm-bar.t i{box-shadow:0 0 0 2px color-mix(in srgb,#38bdf8 70%,transparent)}
+.pm-bar u{text-decoration:none;font-size:.66rem;font-weight:800;height:14px;line-height:14px}
+.pm-lbls{display:flex;gap:6px;margin-top:6px}.pm-lbls span{flex:1;text-align:center;font-size:.62rem;color:var(--pm-mut);font-weight:700;min-width:0}
+.pm-gl{position:absolute;right:0;left:0;border-top:1px dashed color-mix(in srgb,#34d399 75%,transparent);pointer-events:none;z-index:1}
+.pm-gl::after{content:"هدف";position:absolute;left:0;top:-15px;font-size:.6rem;color:#34d399;font-weight:800}
+.pm-seg{display:inline-flex;gap:3px;padding:3px;border-radius:11px;background:rgba(0,0,0,.16)}
+.pm-seg button{height:26px;padding:0 11px;border-radius:8px;border:0;background:transparent;color:var(--pm-mut);font-size:.68rem;font-weight:800;cursor:pointer}
+.pm-seg button.on{background:var(--pm-bg);color:var(--text-primary)}
+.pm-heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.pm-heat i{aspect-ratio:1;border-radius:7px;background:var(--pm-line)}
+.pm-heat i[data-l="1"]{background:color-mix(in srgb,#ff7a59 35%,transparent)}.pm-heat i[data-l="2"]{background:color-mix(in srgb,#ff7a59 62%,transparent)}.pm-heat i[data-l="3"]{background:linear-gradient(135deg,#ff7a59,#ff3d6e)}
+.pm-sub{display:flex;flex-direction:column;gap:9px}
+.pm-sub div{display:grid;grid-template-columns:78px 1fr 54px;align-items:center;gap:8px;font-size:.74rem;font-weight:700}
+.pm-sub i{display:block;height:9px;border-radius:9px;background:linear-gradient(90deg,#38bdf8,#818cf8)}
+.pm-sub u{text-decoration:none;color:var(--pm-mut);text-align:left}
+.pm-recent{display:flex;flex-direction:column;gap:7px}
+.pm-recent div{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:13px;border:1px solid var(--pm-line);font-size:.76rem}
+.pm-recent b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm-recent small{color:var(--pm-mut);white-space:nowrap}
+.pm-insight{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pm-insight span{padding:7px 12px;border-radius:12px;font-size:.74rem;font-weight:700;border:1px solid var(--pm-line);background:var(--pm-bg)}
+#timer-section-card.timer-focus-mode #pomo-panel .pm-top,#timer-section-card.timer-focus-mode #pomo-panel .pm-side,#timer-section-card.timer-focus-mode #pomo-panel .pm-report,#timer-section-card.timer-focus-mode #pomo-panel .pm-amb{display:none}
+#timer-section-card.timer-focus-mode #pomo-panel{max-width:520px;width:100%}
+#timer-section-card.timer-focus-mode .pm-grid{grid-template-columns:1fr}
+/* پنجره‌های راهنما و تنظیمات */
+.pm-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(5,8,18,.62);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);direction:rtl}
+.pm-modal.show{display:flex;animation:pmFade .25s ease}
+@keyframes pmFade{from{opacity:0}to{opacity:1}}
+.pm-sheet{width:min(720px,100%);max-height:88vh;overflow:auto;border-radius:28px;border:1px solid var(--pm-line,rgba(255,255,255,.12));background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),var(--bg-solid);color:var(--text-primary);box-shadow:0 40px 90px -30px rgba(0,0,0,.8);animation:pmUp .35s cubic-bezier(.2,1.2,.4,1);--pa:#ff7a59;--pb:#ff3d6e;--pm-bg:rgba(255,255,255,.055);--pm-line:rgba(255,255,255,.12);--pm-mut:var(--text-secondary)}
+body.light-mode .pm-sheet{--pm-bg:rgba(255,255,255,.8);--pm-line:rgba(15,23,42,.1)}
+@keyframes pmUp{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
+.pm-sh-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--bg-solid);border-bottom:1px solid var(--pm-line)}
+.pm-sh-h .em{font-size:1.8rem}.pm-sh-h h2{flex:1;margin:0;font-size:1.1rem;font-weight:900}
+.pm-sh-h button{width:36px;height:36px;border-radius:12px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);cursor:pointer;min-height:0}
+.pm-sh-b{padding:18px 20px 22px;font-size:.84rem;line-height:2}
+.pm-sh-b h3{margin:18px 0 8px;font-size:.96rem;font-weight:900;color:var(--pa)}
+.pm-sh-b p{margin:0 0 8px;color:var(--text-primary)}
+.pm-cycle{display:flex;gap:4px;height:46px;margin:12px 0 6px;direction:ltr}
+.pm-cycle i{display:grid;place-items:center;border-radius:11px;font-style:normal;font-size:.72rem;font-weight:900;color:#fff;min-width:0}
+.pm-cycle .f{background:linear-gradient(135deg,#ff7a59,#ff3d6e)}.pm-cycle .s{background:linear-gradient(135deg,#2dd4bf,#22c55e)}.pm-cycle .l{background:linear-gradient(135deg,#818cf8,#38bdf8)}
+.pm-cap{font-size:.72rem;color:var(--pm-mut);text-align:center}
+.pm-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}
+.pm-step{padding:12px;border-radius:16px;border:1px solid var(--pm-line);background:var(--pm-bg);font-size:.78rem;line-height:1.8}
+.pm-step b{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:.82rem}
+.pm-step b i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.72rem;color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb))}
+.pm-sh-b ul{margin:0 0 6px;padding:0 18px 0 0}.pm-sh-b li{margin-bottom:5px}
+.pm-cta{display:block;width:100%;height:50px;margin-top:18px;border-radius:16px;border:0;color:#fff;font-size:.95rem;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#ff7a59,#ff3d6e);box-shadow:0 14px 30px -12px #ff3d6e;min-height:0}
+.pm-set-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--pm-line)}
+.pm-set-row label.t{font-size:.84rem;font-weight:700;flex:1}.pm-set-row small{display:block;font-size:.68rem;color:var(--pm-mut);font-weight:600}
+.pm-set-row .pm-in{width:92px!important;text-align:center}
+.pm-sw{position:relative;width:46px;height:26px;flex:none;cursor:pointer}
+.pm-sw input{position:absolute;opacity:0;width:0!important;height:0!important;margin:0!important}
+.pm-sw i{position:absolute;inset:0;border-radius:999px;background:var(--pm-line);transition:background .25s}
+.pm-sw i::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.pm-sw input:checked+i{background:linear-gradient(135deg,var(--pa),var(--pb))}.pm-sw input:checked+i::after{transform:translateX(-20px)}
+.pm-presets{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.pm-presets button{height:36px;padding:0 14px;border-radius:12px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-size:.76rem;font-weight:800;cursor:pointer;min-height:0}
+.pm-danger{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pm-danger button{height:38px;padding:0 14px;border-radius:12px;border:1px solid color-mix(in srgb,#f43f5e 50%,transparent);background:color-mix(in srgb,#f43f5e 10%,transparent);color:var(--text-primary);font-size:.74rem;font-weight:800;cursor:pointer;min-height:0}
+@media (max-width:560px){.pm-ctrl{gap:10px}.pm-go{min-width:130px}.pm-addrow{grid-template-columns:1fr 56px 42px}.pm-addrow select{display:none}.pm-tabs button{padding:0 10px;font-size:.72rem}}
+@media (prefers-reduced-motion:reduce){#pomo-panel *,.pm-modal *{animation:none!important;transition:none!important}}
+/* ====================== ظاهر کلی: جلوهٔ آرام پس‌زمینه و اسکرول‌بار ====================== */
+:root{scrollbar-width:thin;scrollbar-color:rgba(129,140,248,.5) transparent}
+::selection{background:rgba(129,140,248,.35)}
+body::before{content:"";position:fixed;inset:-8%;z-index:-1;pointer-events:none;background:radial-gradient(38% 34% at 14% 8%,rgba(56,189,248,.17),transparent 70%),radial-gradient(34% 30% at 90% 16%,rgba(129,140,248,.16),transparent 70%),radial-gradient(40% 34% at 68% 94%,rgba(244,114,182,.11),transparent 70%);animation:cattsAurora 30s ease-in-out infinite alternate}
+body.light-mode::before{opacity:.75}
+@keyframes cattsAurora{to{transform:translate3d(2.5%,-2%,0) scale(1.07)}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
+</style>
+<script id="pomo-js">
+(function(){
+  'use strict';
+  var KEY='pomodoro_v1';
+  var SUBJ=['ریاضی','فیزیک','شیمی','زیست','ادبیات','عربی','دین و زندگی','زبان','هندسه','سایر'];
+  var MODES={focus:'تمرکز',short:'استراحت کوتاه',long:'استراحت بلند'};
+  var TIPS={short:['💧 یک لیوان آب بنوش.','👀 قانون ۲۰-۲۰-۲۰: ۲۰ ثانیه به چیزی دورتر از ۶ متر نگاه کن.','🧘 بلند شو و گردن و شانه‌هایت را بکش.','🧠 بدون نگاه به کتاب، سه نکتهٔ مهم همین جلسه را با خودت بگو (یادآوری فعال).','📵 استراحت واقعی یعنی بدون اسکرول؛ گوشی را کنار بگذار.','🚶 چند قدم راه برو و چند نفس عمیق بکش.'],
+    long:['🎉 یک چرخهٔ کامل تمام شد؛ به خودت آفرین بگو!','📝 عنوان مطالبی که خواندی را مرور کن و یک سؤال از خودت بپرس.','🥗 یک میان‌وعدهٔ سبک بخور و کمی حرکت کن.','☀️ اگر می‌شود چند دقیقه نور طبیعی بگیر.','😴 اگر خسته‌ای، چرت ۱۰ تا ۲۰ دقیقه‌ای بهتر از ادامهٔ بی‌کیفیت است.'],
+    focus:['فقط روی «همین یک کار» تمرکز کن. فکر مزاحم آمد؟ در دفتر حواس‌پرتی بنویس و برگرد.','گوشی را دور از دستت بگذار؛ این ۲۰–۳۰ دقیقه فقط مال توست.','اگر گیر کردی، همان‌جا یادداشت کن و از سؤال بعدی ادامه بده.']};
+  var DEF={cfg:{focus:25,short:5,long:15,every:4,autoBreak:true,autoFocus:false,sound:true,vol:60,notify:false,wake:false,goal:6,amb:'off',ambVol:35},
+    st:{mode:'focus',running:false,endAt:0,left:25*60000,total:25*60000,startAt:0,cycle:0,task:null,ovl:false,tip:0},
+    tasks:[],hist:[],park:[],seenHelp:false,reflect:null};
+  var S=load(),root=null,ring=null,origTitle=document.title,tickId=0,ui={tab:'7',amb:null};
+  var $=function(s,r){return (r||document).querySelector(s);},$$=function(s,r){return (r||document).querySelectorAll(s);};
+  function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function pad(n){return String(n).padStart(2,'0');}
+  function dk(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+  function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  function clamp(v,a,b,d){v=Number(v);if(!isFinite(v))return d;return Math.min(b,Math.max(a,Math.round(v)));}
+  /* ---------- ذخیره‌سازی ---------- */
+  function load(){
+    var s=null,d=JSON.parse(JSON.stringify(DEF));
+    try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
+    if(s&&typeof s==='object'){
+      ['cfg','st'].forEach(function(k){if(s[k]&&typeof s[k]==='object')Object.keys(d[k]).forEach(function(x){if(s[k][x]!==undefined)d[k][x]=s[k][x];});});
+      ['tasks','hist','park'].forEach(function(k){if(Array.isArray(s[k]))d[k]=s[k];});
+      d.seenHelp=!!s.seenHelp;d.reflect=s.reflect||null;
+    }
+    var c=d.cfg;c.focus=clamp(c.focus,1,180,25);c.short=clamp(c.short,1,60,5);c.long=clamp(c.long,1,120,15);c.every=clamp(c.every,2,8,4);c.goal=clamp(c.goal,1,24,6);c.vol=clamp(c.vol,0,100,60);c.ambVol=clamp(c.ambVol,0,100,35);
+    ['autoBreak','autoFocus','sound','notify','wake'].forEach(function(k){c[k]=!!c[k];});if(['off','rain','brown','white'].indexOf(c.amb)<0)c.amb='off';
+    var t=d.st;if(!MODES[t.mode])t.mode='focus';t.running=!!t.running;t.cycle=clamp(t.cycle,0,7,0);t.total=clamp(t.total,1000,3*3600000,c[t.mode]*60000);t.left=clamp(t.left,0,3*3600000,t.total);t.endAt=Number(t.endAt)||0;t.startAt=Number(t.startAt)||0;t.ovl=!!t.ovl;t.tip=clamp(t.tip,0,50,0);
+    d.hist=d.hist.filter(function(e){return e&&isFinite(e.ts)&&isFinite(e.sec);}).slice(-2000);
+    d.tasks=d.tasks.filter(function(e){return e&&e.id&&e.t;}).slice(0,60);d.park=d.park.filter(function(e){return e&&e.id&&e.t;}).slice(0,100);
+    return d;
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+  function dur(m){return S.cfg[m]*60000;}
+  function leftMs(){return S.st.running?Math.max(0,S.st.endAt-Date.now()):S.st.left;}
+  function elapsed(){return Math.max(0,Math.round((S.st.total-leftMs())/1000));}
+  function fmt(ms){var s=Math.max(0,Math.ceil(ms/1000));return fa(pad(Math.floor(s/60))+':'+pad(s%60));}
+  function studyRunning(){try{return typeof studyState!=='undefined'&&studyState==='running';}catch(e){return false;}}
+  /* ---------- صدا ---------- */
+  var AC=null,amb={src:null,gain:null,type:null},wl=null;
+  function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC;}
+  function chime(kind){
+    if(!S.cfg.sound)return;var a=ac();if(!a)return;var t=a.currentTime,v=S.cfg.vol/100*.35;
+    (kind==='focus'?[523.25,659.25,783.99,1046.5]:[783.99,659.25]).forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t+i*.22);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),t+i*.22+.03);g.gain.exponentialRampToValueAtTime(.0001,t+i*.22+.9);o.connect(g);g.connect(a.destination);o.start(t+i*.22);o.stop(t+i*.22+1);});
+  }
+  function noise(a,brown){var n=a.sampleRate*3,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0),l=0;for(var i=0;i<n;i++){var w=Math.random()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5;}else d[i]=w*.5;}return b;}
+  function ambStart(){
+    var a=ac();if(!a||amb.src||S.cfg.amb==='off')return;var ty=S.cfg.amb,s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();
+    s.buffer=noise(a,ty==='brown');s.loop=true;g.gain.value=0;
+    if(ty==='rain'){f.type='bandpass';f.frequency.value=1800;f.Q.value=.35;}else if(ty==='white'){f.type='lowpass';f.frequency.value=9000;}else{f.type='lowpass';f.frequency.value=700;}
+    s.connect(f);f.connect(g);g.connect(a.destination);s.start();g.gain.linearRampToValueAtTime(S.cfg.ambVol/100*.5,a.currentTime+.8);amb={src:s,gain:g,type:ty};
+  }
+  function ambStop(){if(!amb.src)return;var s=amb.src,g=amb.gain;try{g.gain.cancelScheduledValues(AC.currentTime);g.gain.linearRampToValueAtTime(0,AC.currentTime+.5);setTimeout(function(){try{s.stop();}catch(e){}},600);}catch(e){}amb={src:null,gain:null,type:null};}
+  function ambSync(){
+    var want=S.cfg.amb!=='off'&&S.st.running&&S.st.mode==='focus';
+    if(want){if(amb.src&&amb.type!==S.cfg.amb)ambStop();ambStart();if(amb.gain)amb.gain.gain.value=S.cfg.ambVol/100*.5;}else ambStop();
+  }
+  function wakeSync(){
+    if(!('wakeLock' in navigator))return;var want=S.cfg.wake&&S.st.running&&!document.hidden;
+    if(want&&!wl){navigator.wakeLock.request('screen').then(function(l){wl=l;l.addEventListener('release',function(){wl=null;});}).catch(function(){});}
+    else if(!want&&wl){wl.release().catch(function(){});wl=null;}
+  }
+  function notify(t,b){if(!S.cfg.notify||!document.hidden||!('Notification' in window)||Notification.permission!=='granted')return;try{new Notification(t,{body:b,tag:'pomodoro'});}catch(e){}}
+  function toast(t,m){try{if(typeof showReminderToast==='function')showReminderToast(t,m||'');}catch(e){}}
+  /* ---------- موتور ---------- */
+  function setPhase(mode,run){
+    S.st.mode=mode;S.st.total=dur(mode);S.st.left=S.st.total;S.st.running=false;S.st.startAt=0;S.st.endAt=0;S.st.ovl=false;
+    S.st.tip=Math.floor(Math.random()*50);
+    save();renderAll();if(run)start();else sideEffects();
+  }
+  function start(){
+    ac();if(S.st.running)return;
+    if(S.st.left<=0)S.st.left=S.st.total=dur(S.st.mode);
+    if(S.st.mode==='focus'){if(!S.st.startAt)S.st.startAt=Date.now();if(studyRunning()){S.st.ovl=true;toast('⏱ تایمر مطالعه هم روشن است','برای جلوگیری از حساب دوباره، زمان این پومودورو به مطالعهٔ خالص اضافه نمی‌شود.');}}
+    S.st.endAt=Date.now()+S.st.left;S.st.running=true;save();renderAll();sideEffects();
+  }
+  function pause(){if(!S.st.running)return;S.st.left=Math.max(0,S.st.endAt-Date.now());S.st.running=false;save();renderAll();sideEffects();}
+  function toggle(){S.st.running?pause():start();}
+  function reset(){
+    var e=S.st.mode==='focus'?elapsed():0;
+    S.st.running=false;S.st.total=dur(S.st.mode);S.st.left=S.st.total;S.st.startAt=0;S.st.ovl=false;save();renderAll();sideEffects();
+    if(e>=60)toast('↺ بازنشانی شد','پیشرفت این جلسه ثبت نشد. (برای ثبت زمان، به‌جای بازنشانی از «رد کردن» استفاده کن.)');
+  }
+  function skip(){
+    var m=S.st.mode;
+    if(m==='focus'){var e=elapsed();if(e>=60)record(e,false);setPhase('short',false);}
+    else setPhase('focus',false);
+  }
+  function setMode(m){
+    if(m===S.st.mode)return;
+    if(S.st.running&&elapsed()>10&&!confirm('تایمر در حال اجراست. مرحله عوض شود؟ (پیشرفت فعلی ثبت نمی‌شود)'))return;
+    S.st.running=false;S.st.startAt=0;setPhase(m,false);
+  }
+  function record(sec,ok){
+    var counted=ok||sec>=300,endTs=Date.now(),t=null;
+    S.tasks.forEach(function(x){if(x.id===S.st.task)t=x;});
+    var e={id:uid(),st:S.st.startAt||(endTs-sec*1000),ts:endTs,sec:sec,ok:!!ok,c:counted?1:0,subj:t?t.s||'':'',task:t?t.t:'',rate:0,note:''};
+    S.hist.push(e);if(S.hist.length>2000)S.hist=S.hist.slice(-2000);
+    if(ok&&t)t.fin=(t.fin||0)+1;
+    if(counted&&!S.st.ovl){try{if(typeof addStudySeconds==='function'){addStudySeconds(dk(),sec);if(typeof scheduleCloudSync==='function')scheduleCloudSync();if(typeof renderStudyStopwatch==='function')renderStudyStopwatch();}}catch(x){}}
+    if(ok)S.reflect=e.id;
+    return e;
+  }
+  function complete(late){
+    var m=S.st.mode;
+    if(m==='focus'){
+      var ovl=S.st.ovl;record(Math.round(S.st.total/1000),true);S.st.cycle++;var next='short';
+      if(S.st.cycle>=S.cfg.every){next='long';S.st.cycle=0;}
+      if(!late)chime('focus');notify('🍅 پومودورو کامل شد','وقت '+(next==='long'?'استراحت بلند':'استراحت کوتاه')+' است.');
+      toast('🍅 آفرین!','پومودورو کامل شد'+(ovl?'':' و به مطالعهٔ خالص امروز اضافه شد')+'.');
+      setPhase(next,late?false:S.cfg.autoBreak);
+    }else{
+      if(!late)chime('break');notify('⏰ استراحت تمام شد','برگرد سراغ درس.');
+      setPhase('focus',late?false:S.cfg.autoFocus);
+    }
+  }
+  function sideEffects(){ambSync();wakeSync();updateTitle();}
+  function updateTitle(){document.title=S.st.running?fmt(leftMs())+' · '+MODES[S.st.mode]+' | '+origTitle:origTitle;}
+  function tick(){
+    if(!S.st.running){return;}
+    if(S.st.mode==='focus'&&studyRunning())S.st.ovl=true;
+    if(leftMs()<=0){complete(false);return;}
+    renderTimer();updateTitle();
+  }
+  /* ---------- آمار و میانگین‌ها ---------- */
+  function stats(){
+    var H=S.hist,by={},i,e,k;
+    H.forEach(function(e){var d=dk(new Date(e.ts)),o=by[d]||(by[d]={n:0,sec:0,ab:0});if(e.ok)o.n++;else o.ab++;if(e.c)o.sec+=e.sec;});
+    var base=new Date();base.setHours(12,0,0,0);
+    function day(off){var d=new Date(base);d.setDate(d.getDate()-off);return d;}
+    function span(n){var a=[];for(var j=n-1;j>=0;j--){var d=day(j),key=dk(d),o=by[key]||{n:0,sec:0,ab:0};a.push({d:d,k:key,n:o.n,sec:o.sec,ab:o.ab});}return a;}
+    function avg(a){var n=0,s=0,act=0;a.forEach(function(x){n+=x.n;s+=x.sec;if(x.n>0)act++;});return {n:n/a.length,min:s/60/a.length,tn:n,act:act,actN:act?n/act:0,actMin:act?s/60/act:0};}
+    var w7=span(7),w30=span(30),w28=span(28),today=w7[6];
+    var okE=H.filter(function(e){return e.ok;}),all30=H.filter(function(e){return e.ts>=day(29).getTime()-12*3600000;});
+    var ok30=all30.filter(function(e){return e.ok;}),ab30=all30.filter(function(e){return !e.ok;});
+    var rated=all30.filter(function(e){return e.rate>0;});
+    var streak=0,off=today.n>0?0:1;while(off<3650){var o=by[dk(day(off))];if(o&&o.n>0){streak++;off++;}else break;}
+    var ds=Object.keys(by).filter(function(k){return by[k].n>0;}).sort(),best=0,run=0,prev=null;
+    ds.forEach(function(k){var d=new Date(k+'T12:00:00');if(prev&&Math.round((d-prev)/864e5)===1)run++;else run=1;if(run>best)best=run;prev=d;});
+    var hours=new Array(24).fill(0),sc=0;all30.forEach(function(e){if(e.c){hours[new Date(e.st).getHours()]+=e.sec;sc++;}});
+    var ph=-1,pm=0;hours.forEach(function(v,h){if(v>pm){pm=v;ph=h;}});
+    var wd=[0,0,0,0,0,0,0],wdTot=0;w28.forEach(function(x){wd[x.d.getDay()]+=x.n;wdTot+=x.n;});
+    var bw=-1,bm=0;wd.forEach(function(v,j){if(v>bm){bm=v;bw=j;}});
+    var sj={};all30.forEach(function(e){if(e.c&&e.subj)sj[e.subj]=(sj[e.subj]||0)+e.sec;});
+    var sjl=Object.keys(sj).map(function(k){return {name:k,min:Math.round(sj[k]/60)};}).sort(function(a,b){return b.min-a.min;}).slice(0,5);
+    var totSec=0;H.forEach(function(e){if(e.c)totSec+=e.sec;});
+    var okSecAvg=ok30.length?ok30.reduce(function(s,e){return s+e.sec;},0)/ok30.length/60:0;
+    return {today:today,w7:w7,w30:w30,w28:w28,avg7:avg(w7),avg30:avg(w30),sessAvg:okSecAvg,
+      comp:{ok:ok30.length,ab:ab30.length,rate:(ok30.length+ab30.length)?ok30.length/(ok30.length+ab30.length):null},
+      rate:{avg:rated.length?rated.reduce(function(s,e){return s+e.rate;},0)/rated.length:null,n:rated.length},
+      streak:streak,best:best,total:{n:okE.length,h:totSec/3600},peak:(sc>=3&&ph>=0)?ph:null,bestDay:(wdTot>=3&&bw>=0)?bw:null,subj:sjl,recent:H.slice(-6).reverse()};
+  }
+  function todayNum(){var s=stats();return s.today;}
+  /* ---------- رندر ---------- */
+  function card(){return document.getElementById('timer-section-card');}
+  function ringHtml(){
+    return '<svg viewBox="0 0 220 220" aria-hidden="true"><defs><linearGradient id="pmGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--pa)"/><stop offset="1" style="stop-color:var(--pb)"/></linearGradient></defs><circle class="tk" cx="110" cy="110" r="112"/><circle class="tr" cx="110" cy="110" r="100"/><circle class="pr" id="pm-pr" cx="110" cy="110" r="100"/></svg>';
+  }
+  function build(){
+    var p=document.createElement('div');p.id='pomo-panel';p.style.display='none';
+    p.innerHTML='<div class="pm-top"><button type="button" class="pm-help" data-pm="help" id="pm-help-btn"><span>🍅</span><b>پومودورو چیست و چطور کار می‌کند؟</b><i>راهنما</i></button><div class="pm-top-r"><button type="button" class="pm-chip" data-pm="settings">⚙️ تنظیمات</button><button type="button" class="pm-chip" data-pm="toreport">📊 گزارش و میانگین‌ها</button></div></div>'
+    +'<div class="pm-grid"><section class="pm-main"><div class="pm-tabs" id="pm-tabs"></div><div class="pm-ringwrap">'+ringHtml()+'<div class="pm-center"><span id="pm-lab"></span><b id="pm-dig"></b><small id="pm-sub"></small></div></div>'
+    +'<div class="pm-ctrl"><button type="button" class="pm-ib" data-pm="reset" title="بازنشانی (بدون ثبت)" aria-label="بازنشانی">↺</button><button type="button" class="pm-go" id="pm-go" data-pm="go">شروع</button><button type="button" class="pm-ib" data-pm="skip" title="رد کردن مرحله" aria-label="رد کردن">⏭</button></div>'
+    +'<div class="pm-now" id="pm-now"></div><div class="pm-live" id="pm-live"></div><div id="pm-reflect" style="width:100%;display:flex;justify-content:center"></div><div class="pm-amb" id="pm-amb"></div></section>'
+    +'<aside class="pm-side"><div class="pm-card pm-goal" id="pm-goal"></div>'
+    +'<div class="pm-card"><h4><span>✅ کارها</span><button type="button" data-pm="clear-done">پاک‌کردن انجام‌شده‌ها</button></h4><div class="pm-addrow"><input class="pm-in" id="pm-t-in" type="text" maxlength="80" placeholder="چه کاری می‌خواهی انجام بدهی؟"><input class="pm-in" id="pm-t-est" type="number" min="1" max="12" value="2" title="تعداد پومودورو"><select class="pm-in" id="pm-t-sub"><option value="">درس؟</option>'+SUBJ.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select><button type="button" class="pm-addbtn" data-pm="add-task" aria-label="افزودن">＋</button></div><div class="pm-list" id="pm-tasks"></div></div>'
+    +'<div class="pm-card"><h4><span>🧠 دفتر حواس‌پرتی</span></h4><div class="pm-addrow" style="grid-template-columns:1fr 42px"><input class="pm-in" id="pm-p-in" type="text" maxlength="100" placeholder="فکر یا کار مزاحم؟ اینجا بنویس و برگرد سر درس"><button type="button" class="pm-addbtn" data-pm="add-park" aria-label="افزودن">＋</button></div><div class="pm-list" id="pm-park" style="max-height:170px"></div></div></aside></div>'
+    +'<section class="pm-report" id="pm-report"></section>';
+    document.getElementById('study-timer-panel').appendChild(p);
+    root=p;ring=$('#pm-pr',p);
+    document.body.insertAdjacentHTML('beforeend',helpHtml()+settingsHtml());
+  }
+  function renderTabs(){
+    $('#pm-tabs').innerHTML=['focus','short','long'].map(function(m){return '<button type="button" data-pm="mode" data-m="'+m+'" class="'+(S.st.mode===m?'on':'')+'">'+({focus:'🍅 تمرکز',short:'☕ استراحت کوتاه',long:'🛋 استراحت بلند'}[m])+'</button>';}).join('');
+  }
+  function renderTimer(){
+    var m=S.st.mode,l=leftMs(),p=1-l/S.st.total;if(p<0)p=0;if(p>1)p=1;
+    if(ring)ring.style.strokeDashoffset=(628.32*(1-p)).toFixed(2);
+    $('#pm-dig').textContent=fmt(l);
+  }
+  function renderAll(){
+    if(!root)return;
+    var c=card();if(c)c.setAttribute('data-pm',S.st.mode);
+    renderTabs();renderTimer();
+    $('#pm-lab').textContent=MODES[S.st.mode];
+    $('#pm-sub').textContent=S.st.mode==='focus'?'پومودورو '+fa(S.st.cycle+1)+' از '+fa(S.cfg.every):(S.st.mode==='long'?'چرخه کامل شد 🎉':'یک نفس تازه کن');
+    var go=$('#pm-go');go.textContent=S.st.running?'توقف':(S.st.left<S.st.total&&S.st.left>0?'ادامه':'شروع');go.classList.toggle('run',S.st.running);
+    var t=null;S.tasks.forEach(function(x){if(x.id===S.st.task)t=x;});
+    $('#pm-now').innerHTML=t?'در حال کار روی: <b>'+esc(t.t)+'</b> '+(t.s?'· '+esc(t.s):'')+' · 🍅 '+fa(t.fin||0)+'/'+fa(t.est):'یک کار از فهرست انتخاب کن (اختیاری)';
+    var live=$('#pm-live'),tp=TIPS[S.st.mode],msg=tp[S.st.tip%tp.length];
+    live.innerHTML=(S.st.mode==='focus'?'':'<div class="pm-breath"></div>')+esc(msg);
+    renderReflect();renderAmb();renderGoal();renderTasks();renderPark();renderReport();
+    var hb=$('#pm-help-btn');if(hb)hb.classList.toggle('pulse',!S.seenHelp);
+    syncSettings();
+  }
+  function renderReflect(){
+    var box=$('#pm-reflect'),e=null;S.hist.forEach(function(x){if(x.id===S.reflect)e=x;});
+    if(!e){box.innerHTML='';return;}
+    box.innerHTML='<div class="pm-ref"><b>🎉 پومودورو کامل شد! تمرکزت چطور بود؟</b><div class="pm-stars">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-pm="rate" data-n="'+n+'" class="'+(e.rate>=n?'on':'')+'" aria-label="'+n+' ستاره">★</button>';}).join('')+'</div><input class="pm-in" id="pm-note" type="text" maxlength="140" placeholder="یک جمله از چیزی که یاد گرفتی (اختیاری)" value="'+esc(e.note||'')+'"><div class="row"><button type="button" class="pm-chip" style="flex:1" data-pm="ref-save">ثبت</button><button type="button" class="pm-chip" data-pm="ref-skip">رد</button></div></div>';
+  }
+  function renderAmb(){
+    var o=[['off','خاموش'],['rain','🌧 باران'],['brown','🌊 نویز قهوه‌ای'],['white','⚪ نویز سفید']];
+    $('#pm-amb').innerHTML='<span>🎧 صدای محیط (فقط هنگام تمرکز):</span>'+o.map(function(x){return '<button type="button" data-pm="amb" data-a="'+x[0]+'" class="'+(S.cfg.amb===x[0]?'on':'')+'">'+x[1]+'</button>';}).join('')+'<input type="range" min="0" max="100" value="'+S.cfg.ambVol+'" data-pm="ambvol" aria-label="بلندی صدا">';
+  }
+  function renderGoal(){
+    var s=stats(),n=s.today.n,g=S.cfg.goal,p=Math.min(1,n/g),c=263.9;
+    $('#pm-goal').innerHTML='<svg viewBox="0 0 100 100"><defs><linearGradient id="pmGrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#38bdf8"/></linearGradient></defs><circle class="tr" cx="50" cy="50" r="42"/><circle class="pr" cx="50" cy="50" r="42" style="stroke-dashoffset:'+(c*(1-p)).toFixed(1)+'"/></svg><div class="gt"><b>'+fa(n)+' از '+fa(g)+' پومودورو</b><small>تمرکز امروز: '+fa(Math.round(s.today.sec/60))+' دقیقه</small>'+(s.streak>0?'<em>🔥 '+fa(s.streak)+' روز پیاپی</em>':'<em>امروز را شروع کن</em>')+(n>=g?'<small>🎯 هدف امروز را زدی!</small>':'')+'</div>';
+  }
+  function renderTasks(){
+    var el=$('#pm-tasks');
+    if(!S.tasks.length){el.innerHTML='<div class="pm-empty">هنوز کاری نداری. «چه کاری؟» را بنویس و تعداد پومودورو را حدس بزن؛ بعد روی آن بزن تا فعال شود.</div>';return;}
+    el.innerHTML=S.tasks.map(function(t){return '<div class="pm-task'+(t.id===S.st.task?' on':'')+(t.done?' done':'')+'" data-pm="sel-task" data-id="'+t.id+'"><button type="button" class="ck" data-pm="done-task" data-id="'+t.id+'" aria-label="انجام شد">'+(t.done?'✓':'')+'</button><span class="tt">'+esc(t.t)+'</span>'+(t.s?'<span class="sb">'+esc(t.s)+'</span>':'')+'<span class="ct">🍅 '+fa(t.fin||0)+'/'+fa(t.est)+'</span><button type="button" class="rm" data-pm="del-task" data-id="'+t.id+'" aria-label="حذف">✕</button></div>';}).join('');
+  }
+  function renderPark(){
+    var el=$('#pm-park');
+    if(!S.park.length){el.innerHTML='<div class="pm-empty">وقتی وسط درس فکر یا کار مزاحمی آمد، اینجا یادداشتش کن تا ذهنت سبک شود؛ بعد از جلسه سراغش برو.</div>';return;}
+    el.innerHTML=S.park.slice().reverse().slice(0,30).map(function(t){return '<div class="pm-task'+(t.done?' done':'')+'"><button type="button" class="ck" data-pm="done-park" data-id="'+t.id+'" aria-label="انجام شد">'+(t.done?'✓':'')+'</button><span class="tt">'+esc(t.t)+'</span><button type="button" class="rm" data-pm="del-park" data-id="'+t.id+'" aria-label="حذف">✕</button></div>';}).join('');
+  }
+  var WL=['ی','د','س','چ','پ','ج','ش'],WN=['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+  function jd(d){try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long',day:'numeric'}).format(d);}catch(e){return dk(d);}}
+  function renderReport(){
+    var el=$('#pm-report');if(!el)return;var s=stats(),r=ui.tab==='30'?s.w30:s.w7,mx=Math.max(S.cfg.goal,1);r.forEach(function(x){if(x.n>mx)mx=x.n;});
+    if(!S.hist.length){el.innerHTML='<h3>📊 گزارش و میانگین‌ها</h3><div class="pm-card pm-empty">هنوز پومودورویی ثبت نشده. اولین جلسه‌ات را کامل کن تا میانگین‌ها، نمودار هفتگی و رکوردهایت اینجا ساخته شوند.</div>';return;}
+    function f1(v){return fa((Math.round(v*10)/10).toString().replace('.','٫'));}
+    var k=[
+      ['امروز',fa(s.today.n)+' پومودورو','🕒 '+fa(Math.round(s.today.sec/60))+' دقیقه تمرکز'],
+      ['میانگین روزانه (۷ روز اخیر)',f1(s.avg7.n)+' پومودورو','🕒 '+fa(Math.round(s.avg7.min))+' دقیقه · در روزهای فعال: '+f1(s.avg7.actN)+' ('+fa(s.avg7.act)+' روز فعال)'],
+      ['میانگین روزانه (۳۰ روز اخیر)',f1(s.avg30.n)+' پومودورو','🕒 '+fa(Math.round(s.avg30.min))+' دقیقه · '+fa(s.avg30.act)+' روز فعال'],
+      ['میانگین مدت هر جلسه',s.sessAvg?fa(Math.round(s.sessAvg))+' دقیقه':'—','فقط جلسه‌های کامل‌شدهٔ ۳۰ روز اخیر'],
+      ['نرخ تکمیل جلسه‌ها',s.comp.rate==null?'—':fa(Math.round(s.comp.rate*100))+'٪',fa(s.comp.ok)+' کامل · '+fa(s.comp.ab)+' نیمه‌کاره (۳۰ روز)'],
+      ['میانگین تمرکز (ستاره)',s.rate.avg==null?'—':f1(s.rate.avg)+' از ۵','بر اساس '+fa(s.rate.n)+' جلسهٔ امتیازداده‌شده'],
+      ['رکورد پیاپی',fa(s.streak)+' روز','بهترین: '+fa(s.best)+' روز'],
+      ['مجموع کل',fa(s.total.n)+' پومودورو','🕒 '+f1(s.total.h)+' ساعت تمرکز']
+    ];
+    var many=ui.tab==='30';
+    var bars=r.map(function(x){var h=x.n?Math.max(8,x.n/mx*84):0;return '<div class="pm-bar'+(x.n?'':' z')+(x.k===s.today.k?' t':'')+'" title="'+esc(jd(x.d))+' — '+fa(x.n)+' پومودورو، '+fa(Math.round(x.sec/60))+' دقیقه"><u>'+(x.n&&!many?fa(x.n):'')+'</u><i style="height:'+(x.n?h:3)+'%"></i></div>';}).join('');
+    var lbls=r.map(function(x,j){return '<span>'+(many?((j%5===4||j===r.length-1)?fa(x.d.getDate()):''):WL[x.d.getDay()])+'</span>';}).join('');
+    var gl=Math.min(84,S.cfg.goal/mx*84);
+    var heat=s.w28.map(function(x){var l=x.n===0?0:x.n>=S.cfg.goal?3:x.n>=Math.ceil(S.cfg.goal/2)?2:1;return '<i data-l="'+l+'" title="'+esc(jd(x.d))+' — '+fa(x.n)+' پومودورو"></i>';}).join('');
+    var sj=s.subj.length?s.subj.map(function(x){var m=s.subj[0].min||1;return '<div><span>'+esc(x.name)+'</span><i style="width:'+Math.max(6,x.min/m*100)+'%"></i><u>'+fa(x.min)+' د</u></div>';}).join(''):'<div class="pm-empty">درس را هنگام افزودن کار انتخاب کن تا سهم هر درس اینجا دیده شود.</div>';
+    var ins=[];if(s.peak!=null)ins.push('⏰ ساعت طلایی تمرکز تو: حدود '+fa(s.peak)+':۰۰');if(s.bestDay!=null)ins.push('📅 پربازده‌ترین روز هفته: '+WN[s.bestDay]);
+    var rec=s.recent.map(function(e){return '<div><b>'+esc(e.task||e.subj||'جلسهٔ آزاد')+(e.note?' — «'+esc(e.note)+'»':'')+'</b><small>'+(e.ok?'🍅 ':'⏸ ')+fa(Math.round(e.sec/60))+' د'+(e.rate?' · '+'★'.repeat(e.rate):'')+'</small></div>';}).join('');
+    el.innerHTML='<h3>📊 گزارش و میانگین‌ها</h3><div class="pm-kpis">'+k.map(function(x){return '<div class="pm-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><em>'+x[2]+'</em></div>';}).join('')+'</div>'
+      +'<div class="pm-rgrid"><div class="pm-card"><h4><span>نمودار پومودوروهای کامل‌شده</span><span class="pm-seg"><button type="button" data-pm="rtab" data-t="7" class="'+(ui.tab==='7'?'on':'')+'">۷ روز</button><button type="button" data-pm="rtab" data-t="30" class="'+(ui.tab==='30'?'on':'')+'">۳۰ روز</button></span></h4><div class="pm-plot"><div class="pm-gl" style="bottom:'+gl+'%"></div>'+bars+'</div><div class="pm-lbls">'+lbls+'</div>'
+      +(ins.length?'<div class="pm-insight">'+ins.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div>':'')+'</div>'
+      +'<div class="pm-card"><h4><span>۲۸ روز اخیر</span></h4><div class="pm-heat">'+heat+'</div></div></div>'
+      +'<div class="pm-rgrid" style="margin-top:14px"><div class="pm-card"><h4><span>سهم درس‌ها (۳۰ روز)</span></h4><div class="pm-sub">'+sj+'</div></div><div class="pm-card"><h4><span>آخرین جلسه‌ها</span></h4><div class="pm-recent">'+rec+'</div></div></div>';
+  }
+  /* ---------- راهنما و تنظیمات ---------- */
+  function helpHtml(){
+    return '<div class="pm-modal" id="pm-help-modal" role="dialog" aria-label="راهنمای پومودورو"><div class="pm-sheet"><div class="pm-sh-h"><span class="em">🍅</span><h2>روش پومودورو؛ تمرکز در بازه‌های کوتاه</h2><button type="button" data-pm="close-modal" aria-label="بستن">✕</button></div><div class="pm-sh-b">'
+    +'<h3>این روش چیست؟</h3><p>پومودورو یک روش مدیریت زمان است که «فرانچسکو چیریلو» در اواخر دههٔ ۱۹۸۰ ابداع کرد. نامش از تایمر آشپزخانهٔ گوجه‌فرنگی‌شکلِ او آمده (پومودورو در ایتالیایی یعنی گوجه‌فرنگی). ایده ساده است: به‌جای ساعت‌ها خواندنِ پراکنده، کار را به بازه‌های کوتاهِ کاملاً متمرکز تقسیم می‌کنی و بین آن‌ها استراحت می‌کنی.</p>'
+    +'<h3>چطور کار می‌کند؟ (۴ قدم)</h3><div class="pm-steps"><div class="pm-step"><b><i>۱</i> کار را انتخاب کن</b>یک کار مشخص بنویس؛ مثلاً «۲۰ تست حد و پیوستگی».</div><div class="pm-step"><b><i>۲</i> ۲۵ دقیقه تمرکز</b>تایمر را بزن و فقط روی همان کار باش؛ بدون گوشی و پرش بین کارها.</div><div class="pm-step"><b><i>۳</i> ۵ دقیقه استراحت</b>بلند شو، آب بخور، به دور نگاه کن. استراحت بخشی از روش است، نه وقت تلف‌شده.</div><div class="pm-step"><b><i>۴</i> بعد از ۴ بار، استراحت بلند</b>یک وقفهٔ ۱۵ تا ۳۰ دقیقه‌ای؛ سپس چرخهٔ بعدی.</div></div>'
+    +'<div class="pm-cycle"><i class="f" style="flex:25">۲۵</i><i class="s" style="flex:5">۵</i><i class="f" style="flex:25">۲۵</i><i class="s" style="flex:5">۵</i><i class="f" style="flex:25">۲۵</i><i class="s" style="flex:5">۵</i><i class="f" style="flex:25">۲۵</i><i class="l" style="flex:15">۱۵+</i></div><div class="pm-cap">یک چرخهٔ کامل: ۴ پومودورو + استراحت‌ها ≈ ۲ ساعت و ۱۰ دقیقه</div>'
+    +'<h3>چرا برای درس خواندن خوب است؟</h3><ul><li><b>شروع را آسان می‌کند:</b> «فقط ۲۵ دقیقه» از «امروز باید ۸ ساعت بخوانم» خیلی سبک‌تر است و جلوی تعلل را می‌گیرد.</li><li><b>جلوی خستگی را می‌گیرد:</b> تمرکز عمیق محدود است؛ استراحت‌های کوتاه کیفیت جلسهٔ بعد را حفظ می‌کند.</li><li><b>پیشرفت را قابل‌اندازه‌گیری می‌کند:</b> «امروز ۶ پومودورو» دقیق‌تر از «کلی خواندم» است.</li><li><b>چندوظیفگی را کم می‌کند:</b> هر بازه فقط یک کار دارد.</li></ul>'
+    +'<h3>قاعده‌های طلایی</h3><ul><li>هر پومودورو تقسیم‌ناپذیر است؛ وسطش گوشی و شبکهٔ اجتماعی نه.</li><li>فکر یا کار مزاحم آمد؟ در «دفتر حواس‌پرتی» بنویس و برگرد.</li><li>در استراحت اسکرول نکن؛ حرکت، آب و نگاه به دور بهتر است.</li><li>آخر هر جلسه، بدون نگاه به کتاب، سه نکتهٔ یادگرفته‌ات را بگو؛ این «یادآوری فعال» ماندگاری را بالا می‌برد.</li></ul>'
+    +'<h3>نکته‌هایی ویژهٔ درس و کنکور</h3><ul><li>برای مباحث سنگین (حل مسئلهٔ ریاضی و فیزیک) می‌توانی از تنظیمات حالت «عمیق» ۵۰ دقیقه + ۱۰ دقیقه را انتخاب کنی.</li><li>تست‌زنی با زمان‌بندی دقیق را در حالت «تست» همین بخش انجام بده و مرور و یادگیری را با پومودورو.</li><li>هدف روزانه را واقع‌بینانه بگذار (مثلاً ۶ تا ۸) و آن را کم‌کم بالا ببر.</li></ul>'
+    +'<h3>این بخش برایت چه می‌کند؟</h3><ul><li>هر پومودوروی کامل خودکار به «مجموع خالص مطالعهٔ امروز» اضافه می‌شود.</li><li>میانگین روزانه، میانگین مدت جلسه، نرخ تکمیل، رکورد پیاپی، ساعت طلایی و سهم هر درس را می‌بینی.</li><li>کارها با تعداد پومودوروی پیش‌بینی‌شده، دفتر حواس‌پرتی و ثبت میزان تمرکز.</li><li>صدای محیط، اعلان پایان جلسه و ادامهٔ تایمر حتی بعد از بستن صفحه.</li></ul>'
+    +'<h3>سؤال‌های رایج</h3><ul><li><b>وسط جلسه توقف کنم؟</b> تایمر نگه داشته می‌شود و با «ادامه» از همان‌جا پیش می‌رود.</li><li><b>جلسه را نیمه‌کاره رها کنم؟</b> با «رد کردن» اگر ۵ دقیقه یا بیشتر تمرکز کرده باشی، زمانش به مطالعه اضافه می‌شود ولی پومودورو کامل حساب نمی‌شود. «بازنشانی» چیزی ثبت نمی‌کند.</li><li><b>تایمر مطالعه هم روشن باشد؟</b> برای جلوگیری از حساب دوباره، زمان آن پومودورو به مطالعهٔ خالص اضافه نمی‌شود؛ فقط یکی از دو تایمر را استفاده کن.</li><li><b>زمان‌ها قابل تغییر است؟</b> بله، از «⚙️ تنظیمات».</li></ul>'
+    +'<button type="button" class="pm-cta" data-pm="help-go">متوجه شدم؛ شروع کنیم 🍅</button></div></div></div>';
+  }
+  function row(t,sub,ctl){return '<div class="pm-set-row"><label class="t">'+t+(sub?'<small>'+sub+'</small>':'')+'</label>'+ctl+'</div>';}
+  function sw(k){return '<label class="pm-sw"><input type="checkbox" data-pm="cfg" data-k="'+k+'"><i></i></label>';}
+  function num(k,a,b){return '<input class="pm-in" type="number" min="'+a+'" max="'+b+'" data-pm="cfg" data-k="'+k+'">';}
+  function settingsHtml(){
+    return '<div class="pm-modal" id="pm-set-modal" role="dialog" aria-label="تنظیمات پومودورو"><div class="pm-sheet" style="width:min(560px,100%)"><div class="pm-sh-h"><span class="em">⚙️</span><h2>تنظیمات پومودورو</h2><button type="button" data-pm="close-modal" aria-label="بستن">✕</button></div><div class="pm-sh-b" style="padding-top:8px">'
+    +'<div class="pm-presets"><button type="button" data-pm="preset" data-p="25,5,15">🍅 کلاسیک ۲۵/۵/۱۵</button><button type="button" data-pm="preset" data-p="50,10,20">🧠 عمیق ۵۰/۱۰/۲۰</button><button type="button" data-pm="preset" data-p="35,7,15">⚖️ متعادل ۳۵/۷/۱۵</button></div>'
+    +row('مدت تمرکز','دقیقه',num('focus',1,180))+row('استراحت کوتاه','دقیقه',num('short',1,60))+row('استراحت بلند','دقیقه',num('long',1,120))+row('استراحت بلند هر چند پومودورو؟','',num('every',2,8))+row('هدف روزانه','تعداد پومودورو',num('goal',1,24))
+    +row('شروع خودکار استراحت‌ها','بعد از پایان تمرکز',sw('autoBreak'))+row('شروع خودکار تمرکز بعدی','بعد از پایان استراحت',sw('autoFocus'))
+    +row('صدای پایان جلسه','',sw('sound'))+row('بلندی صدا','','<input type="range" min="0" max="100" data-pm="cfg" data-k="vol" style="width:120px;accent-color:#ff7a59">')
+    +row('اعلان سیستم','وقتی صفحه در پس‌زمینه است',sw('notify'))+row('روشن‌ماندن صفحه','هنگام تمرکز (اگر مرورگر پشتیبانی کند)',sw('wake'))
+    +'<div class="pm-danger"><button type="button" data-pm="clear-hist">🗑 پاک‌کردن تاریخچهٔ پومودورو</button><button type="button" data-pm="reset-cfg">↺ بازگشت به پیش‌فرض</button></div></div></div></div>';
+  }
+  function syncSettings(){
+    $$('#pm-set-modal [data-k]').forEach(function(el){var k=el.getAttribute('data-k'),v=S.cfg[k];if(el.type==='checkbox')el.checked=!!v;else if(document.activeElement!==el)el.value=v;});
+  }
+  function modal(id,on){var m=document.getElementById(id);if(m)m.classList.toggle('show',on);}
+  /* ---------- رویدادها ---------- */
+  function onCfg(el){
+    var k=el.getAttribute('data-k'),old=S.cfg[k];
+    if(el.type==='checkbox'){S.cfg[k]=el.checked;if(k==='notify'&&el.checked&&'Notification' in window&&Notification.permission==='default')Notification.requestPermission().then(function(p){if(p!=='granted'){S.cfg.notify=false;save();syncSettings();toast('اعلان‌ها مجاز نشد','در تنظیمات مرورگر اجازه بده.');}});}
+    else S.cfg[k]=Number(el.value);
+    var c=S.cfg;c.focus=clamp(c.focus,1,180,25);c.short=clamp(c.short,1,60,5);c.long=clamp(c.long,1,120,15);c.every=clamp(c.every,2,8,4);c.goal=clamp(c.goal,1,24,6);c.vol=clamp(c.vol,0,100,60);
+    if(!S.st.running&&S.st.left===S.st.total&&['focus','short','long'].indexOf(k)>-1&&k===S.st.mode){S.st.total=dur(S.st.mode);S.st.left=S.st.total;}
+    save();renderAll();sideEffects();
+  }
+  function act(el,e){
+    var a=el.getAttribute('data-pm'),id=el.getAttribute('data-id');
+    if(a==='go')toggle();
+    else if(a==='reset')reset();
+    else if(a==='skip')skip();
+    else if(a==='mode')setMode(el.getAttribute('data-m'));
+    else if(a==='help'){S.seenHelp=true;save();modal('pm-help-modal',true);var h=$('#pm-help-btn');if(h)h.classList.remove('pulse');}
+    else if(a==='help-go'){modal('pm-help-modal',false);}
+    else if(a==='settings'){syncSettings();modal('pm-set-modal',true);}
+    else if(a==='close-modal'){el.closest('.pm-modal').classList.remove('show');}
+    else if(a==='toreport'){var r=$('#pm-report');if(r)r.scrollIntoView({behavior:'smooth',block:'start'});}
+    else if(a==='add-task'){addTask();}
+    else if(a==='sel-task'){if(e.target.closest('[data-pm="done-task"],[data-pm="del-task"]'))return;S.st.task=S.st.task===id?null:id;save();renderAll();}
+    else if(a==='done-task'){S.tasks.forEach(function(t){if(t.id===id)t.done=!t.done;});save();renderAll();}
+    else if(a==='del-task'){S.tasks=S.tasks.filter(function(t){return t.id!==id;});if(S.st.task===id)S.st.task=null;save();renderAll();}
+    else if(a==='clear-done'){S.tasks=S.tasks.filter(function(t){return !t.done;});save();renderAll();}
+    else if(a==='add-park'){addPark();}
+    else if(a==='done-park'){S.park.forEach(function(t){if(t.id===id)t.done=!t.done;});save();renderPark();}
+    else if(a==='del-park'){S.park=S.park.filter(function(t){return t.id!==id;});save();renderPark();}
+    else if(a==='rate'){S.hist.forEach(function(x){if(x.id===S.reflect)x.rate=Number(el.getAttribute('data-n'));});save();renderReflect();renderReport();}
+    else if(a==='ref-save'){var inp=$('#pm-note');S.hist.forEach(function(x){if(x.id===S.reflect&&inp)x.note=inp.value.trim().slice(0,140);});S.reflect=null;save();renderReflect();renderReport();toast('✅ ثبت شد','تمرکز و یادداشتت ذخیره شد.');}
+    else if(a==='ref-skip'){S.reflect=null;save();renderReflect();}
+    else if(a==='amb'){S.cfg.amb=el.getAttribute('data-a');save();renderAmb();ambSync();}
+    else if(a==='rtab'){ui.tab=el.getAttribute('data-t');renderReport();}
+    else if(a==='preset'){var p=el.getAttribute('data-p').split(',').map(Number);S.cfg.focus=p[0];S.cfg.short=p[1];S.cfg.long=p[2];if(!S.st.running){S.st.total=dur(S.st.mode);S.st.left=S.st.total;}save();renderAll();sideEffects();}
+    else if(a==='clear-hist'){if(confirm('همهٔ تاریخچه و آمار پومودورو پاک شود؟ (زمان مطالعهٔ ثبت‌شده در «مجموع خالص مطالعه» دست نمی‌خورد)')){S.hist=[];S.reflect=null;S.tasks.forEach(function(t){t.fin=0;});save();renderAll();}}
+    else if(a==='reset-cfg'){if(confirm('تنظیمات به حالت پیش‌فرض برگردد؟')){S.cfg=JSON.parse(JSON.stringify(DEF.cfg));if(!S.st.running){S.st.total=dur(S.st.mode);S.st.left=S.st.total;}save();renderAll();sideEffects();}}
+  }
+  function addTask(){
+    var i=$('#pm-t-in'),t=i.value.trim();if(!t){i.focus();return;}
+    if(S.tasks.length>=60){toast('حداکثر ۶۰ کار','چند کار انجام‌شده را پاک کن.');return;}
+    S.tasks.unshift({id:uid(),t:t.slice(0,80),est:clamp($('#pm-t-est').value,1,12,2),fin:0,done:false,s:$('#pm-t-sub').value,ts:Date.now()});
+    if(!S.st.task)S.st.task=S.tasks[0].id;i.value='';save();renderAll();
+  }
+  function addPark(){var i=$('#pm-p-in'),t=i.value.trim();if(!t)return;S.park.push({id:uid(),t:t.slice(0,100),done:false,ts:Date.now()});if(S.park.length>100)S.park=S.park.slice(-100);i.value='';save();renderPark();}
+  function wire(){
+    document.addEventListener('click',function(e){
+      var el=e.target.closest&&e.target.closest('[data-pm]');if(!el)return;
+      var ok=root.contains(el)||el.closest('.pm-modal');if(!ok)return;
+      if(el.getAttribute('data-pm')==='cfg'||el.getAttribute('data-pm')==='ambvol')return;
+      if(el.classList&&el.classList.contains('pm-modal'))return;act(el,e);
+    });
+    document.addEventListener('change',function(e){var el=e.target;if(el.getAttribute&&el.getAttribute('data-pm')==='cfg')onCfg(el);});
+    document.addEventListener('input',function(e){var el=e.target;if(!el.getAttribute)return;var a=el.getAttribute('data-pm');
+      if(a==='ambvol'){S.cfg.ambVol=Number(el.value);save();ambSync();}
+      else if(a==='cfg'&&el.type==='range'){S.cfg.vol=Number(el.value);save();}});
+    document.addEventListener('keydown',function(e){
+      var t=e.target,tag=t&&t.tagName;
+      if(e.key==='Enter'){if(t.id==='pm-t-in'||t.id==='pm-t-est')addTask();else if(t.id==='pm-p-in')addPark();else if(t.id==='pm-note')act($('[data-pm="ref-save"]'),e);}
+      else if(e.key==='Escape'){$$('.pm-modal.show').forEach(function(m){m.classList.remove('show');});}
+      else if((e.key===' '||e.code==='Space')&&root&&root.offsetParent!==null&&tag!=='INPUT'&&tag!=='TEXTAREA'&&tag!=='SELECT'&&tag!=='BUTTON'&&!$('.pm-modal.show')&&!(t&&t.isContentEditable)){e.preventDefault();toggle();}
+    });
+    $$('.pm-modal').forEach(function(m){m.addEventListener('mousedown',function(e){if(e.target===m)m.classList.remove('show');});});
+    document.addEventListener('visibilitychange',function(){if(!document.hidden){tick();renderTimer();}wakeSync();});
+    window.addEventListener('pagehide',save);
+  }
+  /* ---------- راه‌اندازی ---------- */
+  function init(){
+    if(!document.getElementById('study-timer-panel'))return;
+    build();wire();
+    var late=false;
+    if(S.st.running&&Date.now()>=S.st.endAt){late=true;}
+    if(late){S.st.left=0;S.st.running=true;complete(true);toast('⏰ جلسه در غیاب تو تمام شد','وضعیت پومودورو به‌روز شد.');}
+    renderAll();sideEffects();
+    tickId=setInterval(tick,250);
+    if(typeof switchTimerMode==='function')switchTimerMode(localStorage.getItem('timer_active_mode')||'exam');
+  }
+  window.Pomodoro={open:function(){try{localStorage.setItem('study_sub_mode','pomo');}catch(e){}if(typeof switchTimerMode==='function')switchTimerMode('study');},onShow:function(){renderAll();renderTimer();},stats:stats,state:function(){return S;},help:function(){modal('pm-help-modal',true);}};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+<style id="tpx-css">
+/* ====================== ظاهر یکپارچهٔ تایمرها: تست / مطالعه / پومودورو ====================== */
+#timer-section-card{--pa:#22d3ee;--pb:#3b82f6;--pm-bg:rgba(255,255,255,.055);--pm-line:rgba(255,255,255,.11);--pm-mut:var(--text-secondary)}
+body.light-mode #timer-section-card{--pm-bg:rgba(255,255,255,.72);--pm-line:rgba(15,23,42,.1)}
+#timer-section-card.mode-study{--pa:#a78bfa;--pb:#6366f1}
+#timer-section-card.mode-pomo{--pa:#ff7a59;--pb:#ff3d6e}
+#timer-section-card.mode-pomo[data-pm="short"]{--pa:#2dd4bf;--pb:#22c55e}
+#timer-section-card.mode-pomo[data-pm="long"]{--pa:#818cf8;--pb:#38bdf8}
+html body #timer-section-card.timer-section{border-color:color-mix(in srgb,var(--pa) 42%,transparent)!important;box-shadow:0 22px 60px -26px var(--pa)!important;transition:box-shadow .6s,border-color .6s}
+/* کلید اصلی حالت‌ها */
+html body #timer-section-card .timer-mode-switch{display:flex;gap:5px;padding:5px;margin:0 0 18px;border-radius:20px;background:rgba(0,0,0,.18);border:1px solid var(--pm-line)}
+body.light-mode #timer-section-card .timer-mode-switch{background:rgba(15,23,42,.06)}
+html body #timer-section-card .timer-mode-btn{flex:1;min-height:0;height:46px;border-radius:15px;border:0!important;background:transparent!important;color:var(--pm-mut)!important;font-size:.92rem;font-weight:900;box-shadow:none!important;transition:background .3s,color .3s}
+html body #timer-section-card .timer-mode-btn.active{color:#fff!important;background:linear-gradient(135deg,var(--pa),var(--pb))!important;box-shadow:0 10px 24px -10px var(--pa)!important}
+html body #timer-section-card .timer-fullscreen-btn{display:flex;align-items:center;gap:7px;width:auto!important;min-height:0;height:34px;margin:0 0 12px;margin-inline-start:auto;padding:0 12px;border-radius:11px;border:1px solid var(--pm-line)!important;background:var(--pm-bg)!important;color:var(--pm-mut)!important;font-size:.72rem;font-weight:800;box-shadow:none!important}
+html body #timer-section-card .timer-fullscreen-btn svg{width:15px;height:15px}
+/* سرتیتر هر پنل */
+.tpx-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;text-align:right}
+.tpx-ic{flex:none;width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-size:1.4rem;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 12px 24px -10px var(--pa),inset 0 1px 0 rgba(255,255,255,.4)}
+.tpx-ht{flex:1;min-width:0}.tpx-ht .section-title{margin:0!important}.tpx-ht small{display:block;margin-top:3px;font-size:.72rem;color:var(--pm-mut);line-height:1.7}
+html body #timer-section-card .tpx-head .timer-mode-badge{margin:0;flex:none;padding:6px 12px;border-radius:999px;font-size:.72rem;font-weight:800;color:var(--text-primary);background:color-mix(in srgb,var(--pa) 16%,transparent);border:1px solid color-mix(in srgb,var(--pa) 45%,transparent)}
+/* فرم */
+.tpx-form{display:flex;flex-direction:column;gap:10px;padding:14px;margin-bottom:6px;border-radius:20px;border:1px solid var(--pm-line);background:var(--pm-bg);text-align:right}
+.tpx-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+html body #timer-section-card #exam-timer-panel select,html body #timer-section-card #exam-timer-panel input,html body #timer-section-card #study-free-view input{width:100%!important;min-height:0!important;height:44px!important;margin:0!important;padding:0 12px!important;border-radius:13px!important;border:1px solid var(--pm-line)!important;background:var(--pm-bg)!important;color:var(--text-primary)!important;font-size:.86rem!important;box-shadow:none!important;outline:0}
+html body #timer-section-card #exam-timer-panel select:focus,html body #timer-section-card #exam-timer-panel input:focus,html body #timer-section-card #study-free-view input:focus{border-color:var(--pa)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--pa) 25%,transparent)!important}
+#exam-timer-panel .rate-hint{margin:0;font-size:.74rem;color:var(--pm-mut);text-align:center}
+@media (max-width:520px){.tpx-row2{grid-template-columns:1fr}}
+/* حلقهٔ نمایشگر: همان --timer-progress خود برنامه */
+html body #timer-section-card .timer-display{position:relative;display:grid!important;place-items:center;width:min(78vw,290px)!important;height:min(78vw,290px)!important;margin:16px auto 20px!important;border-radius:50%!important;background:transparent!important;border:0!important;box-shadow:none!important;animation:none!important;overflow:visible}
+html body #timer-section-card .timer-display::before{content:""!important;position:absolute;inset:0;width:auto;height:auto;border-radius:50%;border:10px solid var(--pm-line)!important;background:none!important;box-shadow:none!important;animation:none!important;transform:none!important;opacity:1}
+html body #timer-section-card .timer-display::after{content:""!important;position:absolute;inset:0;width:auto;height:auto;border-radius:50%;border:0!important;transform:rotate(0)!important;opacity:1!important;animation:none!important;background:conic-gradient(from 0deg,var(--pa),var(--pb) calc(100% - var(--timer-progress,100%)),transparent 0)!important;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px));mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 9px));filter:drop-shadow(0 0 9px color-mix(in srgb,var(--pa) 65%,transparent))}
+html body #timer-section-card #study-timer.timer-display::after{background:conic-gradient(from 0deg,var(--pa),var(--pb) var(--timer-progress,0%),transparent 0)!important}
+html body #timer-section-card .timer-display.timer-running::after{filter:drop-shadow(0 0 16px var(--pa))}
+html body #timer-section-card .timer-display .timer-hud{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;line-height:1.1;direction:rtl}
+html body #timer-section-card .timer-display .timer-core-dot{display:none!important}
+html body #timer-section-card .timer-display .timer-label{display:block;margin:0!important;font-size:.82rem!important;letter-spacing:0!important;font-weight:800;color:var(--pa)!important;text-shadow:none!important}
+html body #timer-section-card .timer-display .timer-digits{display:block;font-family:inherit!important;font-size:clamp(2.6rem,9vw,3.6rem)!important;font-weight:900!important;letter-spacing:.01em!important;color:var(--text-primary)!important;text-shadow:none!important;direction:ltr;font-variant-numeric:tabular-nums;min-width:0!important}
+html body #timer-section-card #study-timer .timer-digits{font-size:clamp(2rem,7vw,2.7rem)!important}
+html body #timer-section-card #timer.timer-display .timer-digits,html body #timer-section-card #timer.timer-display.timer-running .timer-digits,html body #timer-section-card #study-timer.timer-display .timer-digits,html body #timer-section-card #study-timer.timer-display.timer-running .timer-digits{color:var(--text-primary)!important;text-shadow:none!important;animation:none!important;-webkit-text-fill-color:currentColor!important;background:none!important}
+html body #timer-section-card .timer-display .timer-sub{display:block;margin:2px 0 0!important;font-size:.72rem!important;letter-spacing:0!important;color:var(--pm-mut)!important;font-weight:700}
+/* دکمه‌های کنترل */
+html body #timer-section-card #exam-timer-panel .controls,html body #timer-section-card #study-free-view .controls{display:flex!important;justify-content:center;align-items:center;gap:12px;grid-template-columns:none;max-width:none}
+html body #timer-section-card #startPauseBtn,html body #timer-section-card #startStudyBtn{min-width:170px;min-height:0;height:54px;padding:0 28px;border-radius:18px;border:1px solid rgba(255,255,255,.35)!important;color:#fff!important;font-size:1.05rem;font-weight:900;background:linear-gradient(135deg,var(--pa),var(--pb))!important;box-shadow:0 16px 34px -14px var(--pa),inset 0 1px 0 rgba(255,255,255,.5)!important;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+html body #timer-section-card #startPauseBtn:hover,html body #timer-section-card #startStudyBtn:hover{transform:translateY(-2px)}
+html body #timer-section-card #exam-timer-panel:has(.timer-display.timer-running) #startPauseBtn,html body #timer-section-card #study-free-view:has(.timer-display.timer-running) #startStudyBtn{background:var(--pm-bg)!important;color:var(--text-primary)!important;border-color:var(--pm-line)!important;box-shadow:none!important}
+html body #timer-section-card .controls .btn-danger{min-height:0;height:46px;padding:0 18px;border-radius:15px;font-size:.82rem;font-weight:800;color:var(--text-primary)!important;background:var(--pm-bg)!important;border:1px solid var(--pm-line)!important;box-shadow:none!important}
+/* مطالعه: زیرکلید، توضیح، مجموع امروز، ثبت دستی */
+.tpx-sub-switch{display:flex;gap:4px;padding:4px;margin:0 auto 16px;width:fit-content;max-width:100%;border-radius:16px;background:rgba(0,0,0,.18);border:1px solid var(--pm-line)}
+body.light-mode .tpx-sub-switch{background:rgba(15,23,42,.06)}
+.tpx-sub-switch button{min-height:0;height:38px;padding:0 16px;border-radius:12px;border:0;background:transparent;color:var(--pm-mut);font:inherit;font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s}
+.tpx-sub-switch button.on{color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 8px 20px -8px var(--pa)}
+.tpx-sub-switch i{font-style:normal;font-size:.6rem;font-weight:900;padding:2px 7px;margin-inline-start:6px;border-radius:999px;background:rgba(255,255,255,.25)}
+.tpx-info{margin-bottom:6px;border-radius:16px;border:1px solid var(--pm-line);background:var(--pm-bg);text-align:right}
+.tpx-info summary{cursor:pointer;padding:10px 14px;font-size:.78rem;font-weight:800;color:var(--pm-mut);list-style:none}
+.tpx-info summary::-webkit-details-marker{display:none}
+.tpx-info p{margin:0!important;padding:0 14px 12px;font-size:.74rem!important;line-height:1.95!important}
+html body #timer-section-card #study-today-total{display:block;width:fit-content;max-width:100%;margin:14px auto 0!important;padding:8px 16px;border-radius:999px;font-size:.8rem!important;font-weight:800;color:var(--text-primary)!important;background:color-mix(in srgb,var(--pa) 14%,transparent);border:1px solid color-mix(in srgb,var(--pa) 40%,transparent)}
+.tpx-card{margin-top:18px;padding:14px;border-radius:20px;border:1px solid var(--pm-line);background:var(--pm-bg);text-align:right}
+.tpx-card .as-toggle-btn{min-height:0;height:34px;padding:0 16px;border-radius:11px}
+html body #timer-section-card #study-free-view .tpx-card .btn-primary{min-height:0;height:46px;border-radius:14px;font-weight:800;background:linear-gradient(135deg,var(--pa),var(--pb))!important;border:0!important;color:#fff!important}
+/* تمام‌صفحه */
+#timer-section-card.timer-focus-mode #study-timer-panel.pomo-sub{max-width:560px}
+@media (prefers-reduced-motion:reduce){#timer-section-card *{transition:none!important}}
+</style>
+<style id="sm-css">
+/* ====================== روش‌های مطالعه: بازیابی فعال، مرور فاصله‌دار، زمان‌بندی بلوکی، ۳ روش برتر ====================== */
+#timer-section-card.mode-exam{--pa:#22d3ee;--pb:#3b82f6}
+#timer-section-card.mode-ar{--pa:#c084fc;--pb:#ec4899}
+#timer-section-card.mode-sr{--pa:#34d399;--pb:#0ea5e9}
+#timer-section-card.mode-tb{--pa:#fbbf24;--pb:#f97316}
+#timer-section-card.mode-top3{--pa:#f59e0b;--pb:#ef4444}
+#tab-timer.sm-nofs .timer-fullscreen-btn{display:none!important}
+.tpx-sub-switch{max-width:100%;overflow-x:auto;scrollbar-width:none}.tpx-sub-switch::-webkit-scrollbar{display:none}
+.tpx-sub-switch button{position:relative;flex:none}
+.tpx-sub-switch .bdg{position:absolute;top:-5px;left:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:none;place-items:center;font-size:.62rem;font-weight:900;color:#fff;background:#f43f5e;box-shadow:0 4px 10px -3px #f43f5e}
+.tpx-sub-switch .bdg.on{display:grid}
+.sm-panel{text-align:right;direction:rtl;display:none}
+.sm-panel button{min-height:0;font-family:inherit}
+.sm-panel .pm-in,.pm-modal .sm-in{width:100%!important;min-height:0!important;height:42px!important;margin:0!important;padding:0 12px!important;border-radius:12px!important;border:1px solid var(--pm-line)!important;background:var(--pm-bg)!important;color:var(--text-primary)!important;font-size:.86rem!important;box-shadow:none!important;outline:0}
+.sm-panel textarea.pm-in{height:auto!important;min-height:140px!important;padding:10px 12px!important;line-height:1.9;resize:vertical}
+.sm-panel .pm-in:focus{border-color:var(--pa)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--pa) 25%,transparent)!important}
+.sm-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sm-chips{display:flex;gap:8px;flex-wrap:wrap}
+.sm-chip{padding:7px 12px;border-radius:12px;font-size:.74rem;font-weight:800;border:1px solid var(--pm-line);background:var(--pm-bg)}
+.sm-chip b{color:var(--pa)}
+.sm-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px;align-items:start}
+@media (max-width:980px){.sm-grid{grid-template-columns:1fr}}
+.sm-card{padding:16px;border-radius:22px;border:1px solid var(--pm-line);background:var(--pm-bg);margin-bottom:14px}
+.sm-card:last-child{margin-bottom:0}
+.sm-card h4{margin:0 0 12px;font-size:.94rem;font-weight:900;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sm-hero{background:radial-gradient(80% 70% at 50% 0%,color-mix(in srgb,var(--pa) 18%,transparent),transparent 75%),var(--pm-bg)}
+.sm-hero h3{margin:0 0 6px;font-size:1.05rem;font-weight:900}.sm-hero p{margin:0 0 14px;font-size:.8rem;line-height:1.9;color:var(--pm-mut)}
+.sm-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.sm-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+@media (max-width:560px){.sm-row2,.sm-row3{grid-template-columns:1fr}}
+.sm-lab{display:block;margin-bottom:5px;font-size:.72rem;font-weight:700;color:var(--pm-mut)}
+.sm-go{display:block;width:100%;height:50px;border-radius:16px;border:1px solid rgba(255,255,255,.35);color:#fff;font-size:.95rem;font-weight:900;cursor:pointer;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 14px 30px -12px var(--pa),inset 0 1px 0 rgba(255,255,255,.45);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.sm-go:hover{transform:translateY(-2px)}.sm-go[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.sm-btn{height:40px;padding:0 16px;border-radius:13px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-size:.78rem;font-weight:800;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.sm-btn:hover{transform:translateY(-2px)}
+.sm-btn.pri{border-color:rgba(255,255,255,.35);color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));box-shadow:0 10px 22px -10px var(--pa)}
+.sm-btn.sm{height:30px;padding:0 11px;font-size:.7rem;border-radius:10px}
+.sm-btn.dng{border-color:color-mix(in srgb,#f43f5e 50%,transparent);background:color-mix(in srgb,#f43f5e 10%,transparent)}
+.sm-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sm-note{font-size:.76rem;line-height:1.9;color:var(--pm-mut)}
+.sm-empty{padding:16px 8px;text-align:center;font-size:.78rem;color:var(--pm-mut);line-height:1.9}
+/* مراحل */
+.sm-stepper{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.sm-stepper::-webkit-scrollbar{display:none}
+.sm-stepper span{flex:1;min-width:84px;padding:8px 6px;border-radius:12px;text-align:center;font-size:.7rem;font-weight:800;color:var(--pm-mut);border:1px solid var(--pm-line);background:var(--pm-bg);white-space:nowrap}
+.sm-stepper span.on{color:#fff;background:linear-gradient(135deg,var(--pa),var(--pb));border-color:transparent;box-shadow:0 8px 18px -8px var(--pa)}
+.sm-stepper span.ok{color:var(--text-primary);border-color:color-mix(in srgb,var(--pa) 55%,transparent)}
+.sm-st-h b{display:block;font-size:1rem;font-weight:900;margin-bottom:4px}.sm-st-h small{display:block;font-size:.78rem;line-height:1.9;color:var(--pm-mut);margin-bottom:12px}
+.sm-ts{display:flex;align-items:center;gap:14px;margin:6px 0 4px}
+.sm-ts b{font-size:2.3rem;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;min-width:106px}
+.sm-tb{flex:1;height:10px;border-radius:99px;background:var(--pm-line);overflow:hidden}
+.sm-tb i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--pa),var(--pb));transition:width .4s linear}
+.sm-lines{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.sm-line{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:13px;border:1px solid var(--pm-line);font-size:.8rem;line-height:1.8}
+.sm-line span{flex:1;min-width:0;word-break:break-word}
+.sm-line.ok{border-color:#34d399;background:color-mix(in srgb,#34d399 10%,transparent)}.sm-line.no{border-color:#f43f5e;background:color-mix(in srgb,#f43f5e 9%,transparent)}
+.sm-mk{width:34px;height:30px;border-radius:9px;border:1px solid var(--pm-line);background:transparent;color:var(--text-primary);cursor:pointer;font-size:.9rem}
+.sm-mk.y.on{background:#34d399;color:#fff;border-color:#34d399}.sm-mk.n.on{background:#f43f5e;color:#fff;border-color:#f43f5e}
+.sm-live{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.sm-live div{flex:1;min-width:110px;padding:10px;border-radius:14px;border:1px solid var(--pm-line);text-align:center}
+.sm-live b{display:block;font-size:1.25rem;font-weight:900}.sm-live small{font-size:.68rem;color:var(--pm-mut)}
+.sm-ring{position:relative;width:150px;height:150px;margin:6px auto 12px}
+.sm-ring svg{width:100%;height:100%;transform:rotate(-90deg)}.sm-ring .tr{fill:none;stroke:var(--pm-line);stroke-width:12}.sm-ring .pr{fill:none;stroke:url(#smG);stroke-width:12;stroke-linecap:round;stroke-dasharray:314.16;transition:stroke-dashoffset .8s}
+.sm-ring div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.sm-ring b{font-size:2rem;font-weight:900}.sm-ring small{font-size:.7rem;color:var(--pm-mut)}
+.sm-hist{display:flex;flex-direction:column;gap:8px}
+.sm-h{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid var(--pm-line);font-size:.78rem}
+.sm-h b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sm-h small{color:var(--pm-mut);white-space:nowrap}
+.sm-pct{flex:none;min-width:46px;text-align:center;padding:3px 8px;border-radius:999px;font-weight:900;font-size:.72rem;color:#fff}
+.sm-bars{display:flex;flex-direction:column;gap:9px}
+.sm-bars div{display:grid;grid-template-columns:84px 1fr 42px;align-items:center;gap:8px;font-size:.74rem;font-weight:700}
+.sm-bars i{display:block;height:9px;border-radius:9px;background:linear-gradient(90deg,var(--pa),var(--pb))}.sm-bars u{text-decoration:none;color:var(--pm-mut);text-align:left}
+/* مرور فاصله‌دار */
+.sr-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;border:1px solid var(--pm-line);margin-bottom:9px;background:var(--pm-bg)}
+.sr-item.due{border-color:color-mix(in srgb,var(--pa) 60%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--pa) 12%,transparent),transparent)}
+.sr-item.late{border-color:#f43f5e}
+.sr-item .tx{flex:1;min-width:0}.sr-item .tx b{display:block;font-size:.86rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sr-item .tx small{display:block;margin-top:3px;font-size:.7rem;color:var(--pm-mut)}
+.sr-dots{display:flex;gap:4px;margin-top:6px}.sr-dots i{width:16px;height:6px;border-radius:99px;background:var(--pm-line)}.sr-dots i.d{background:linear-gradient(90deg,var(--pa),var(--pb))}.sr-dots i.c{background:color-mix(in srgb,var(--pa) 45%,transparent);box-shadow:0 0 0 1px var(--pa)}
+.sr-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.sr-day{padding:8px 2px;border-radius:12px;border:1px solid var(--pm-line);text-align:center;font-size:.66rem;color:var(--pm-mut)}
+.sr-day b{display:block;margin-top:3px;font-size:.95rem;color:var(--text-primary)}.sr-day.t{border-color:var(--pa)}.sr-day.has{background:color-mix(in srgb,var(--pa) 14%,transparent)}
+.sr-plan{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}.sr-plan span{padding:5px 10px;border-radius:10px;font-size:.68rem;font-weight:800;border:1px solid var(--pm-line);background:var(--pm-bg)}
+.sr-rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.sr-rate button{padding:12px 6px;border-radius:14px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-weight:800;font-size:.78rem;cursor:pointer;line-height:1.7}
+.sr-rate button small{display:block;font-size:.64rem;font-weight:600;color:var(--pm-mut)}
+.sr-rate button:hover{border-color:var(--pa)}
+details.sr-card{margin:6px 0;border-radius:12px;border:1px solid var(--pm-line);padding:8px 12px;background:var(--pm-bg)}details.sr-card summary{cursor:pointer;font-weight:800;font-size:.78rem}
+/* زمان‌بندی بلوکی */
+.tb-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.tb-nav b{min-width:150px;text-align:center;font-size:.9rem}
+.tb-strip{position:relative;height:30px;border-radius:12px;background:var(--pm-line);overflow:hidden;margin:6px 0 4px}
+.tb-strip i{position:absolute;top:0;bottom:0;opacity:.92}.tb-strip .now{width:2px;background:#fff;box-shadow:0 0 8px #fff;opacity:1;z-index:2}
+.tb-scale{display:flex;justify-content:space-between;font-size:.62rem;color:var(--pm-mut);direction:rtl}
+.tb-t-study{--bc:#6366f1}.tb-t-test{--bc:#22c55e}.tb-t-analysis{--bc:#a855f7}.tb-t-review{--bc:#06b6d4}.tb-t-break{--bc:#94a3b8}
+.tb-strip i{background:var(--bc)}
+.tb-list{display:flex;flex-direction:column;gap:8px}
+.tb-b{display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:10px}
+.tb-time{font-size:.7rem;font-weight:800;color:var(--pm-mut);text-align:center;line-height:1.7;direction:ltr}
+.tb-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:15px;border:1px solid color-mix(in srgb,var(--bc) 50%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--bc) 18%,transparent),color-mix(in srgb,var(--bc) 6%,transparent));border-right:5px solid var(--bc)}
+.tb-card.done{opacity:.55}.tb-card.done .tt{text-decoration:line-through}.tb-card.cur{box-shadow:0 0 0 2px var(--bc),0 12px 26px -12px var(--bc)}
+.tb-card .tt{flex:1;min-width:0}.tb-card .tt b{display:block;font-size:.84rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tb-card .tt small{font-size:.68rem;color:var(--pm-mut)}
+.tb-gap{padding:4px 10px;font-size:.66rem;color:var(--pm-mut);text-align:center;border-radius:8px;border:1px dashed var(--pm-line)}
+.tb-now{padding:14px;border-radius:18px;border:1px solid color-mix(in srgb,var(--pa) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--pa) 16%,transparent),transparent);margin-bottom:14px}
+.tb-now h4{margin:0 0 6px}.tb-now .big{font-size:1.9rem;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;display:inline-block}
+.tb-insight{display:flex;flex-direction:column;gap:7px;margin-top:10px}.tb-insight div{padding:9px 12px;border-radius:13px;font-size:.76rem;line-height:1.8;border:1px solid var(--pm-line);display:flex;gap:8px;align-items:center;justify-content:space-between}
+.tb-insight .w{border-color:color-mix(in srgb,#fbbf24 60%,transparent);background:color-mix(in srgb,#fbbf24 10%,transparent)}.tb-insight .g{border-color:color-mix(in srgb,#34d399 55%,transparent);background:color-mix(in srgb,#34d399 9%,transparent)}
+.tb-stack{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--pm-line);margin:8px 0}.tb-stack i{display:block;background:var(--bc)}
+.tb-leg{display:flex;gap:10px;flex-wrap:wrap;font-size:.68rem;color:var(--pm-mut)}.tb-leg span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--bc);margin-inline-end:5px}
+.tb-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tb-chips button{height:30px;padding:0 11px;border-radius:10px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--text-primary);font-size:.7rem;font-weight:800;cursor:pointer}.tb-chips button.on{background:linear-gradient(135deg,var(--pa),var(--pb));color:#fff;border-color:transparent}
+/* ۳ روش برتر */
+.t3-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+.t3-c{padding:16px;border-radius:20px;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 16%,transparent),transparent 70%);display:flex;flex-direction:column;gap:8px}
+.t3-c .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:1.3rem;background:var(--c);color:#fff}
+.t3-c h4{margin:0;font-size:.98rem;font-weight:900}.t3-c h4 small{display:block;font-size:.68rem;font-weight:700;color:var(--pm-mut)}
+.t3-c p{margin:0;font-size:.76rem;line-height:1.9;color:var(--text-primary)}.t3-c .st{font-size:.72rem;font-weight:800;color:var(--c)}
+.t3-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0}
+.t3-pillars div{padding:12px;border-radius:16px;border:1px dashed var(--pm-line);text-align:center;font-size:.76rem;line-height:1.8}.t3-pillars b{display:block;font-size:.84rem;margin-bottom:2px}
+@media (prefers-reduced-motion:reduce){.sm-panel *{transition:none!important}}
+</style>
+<script id="sm-js">
+(function(){
+  'use strict';
+  var SUBJ=['ریاضی','حسابان','هندسه','آمار و احتمال','فیزیک','شیمی','زیست','ادبیات','عربی','دین و زندگی','زبان','سایر'];
+  var TYPES={study:['📖','مطالعه'],test:['🧪','تست‌زنی'],analysis:['🔍','تحلیل تست'],review:['🔁','مرور'],break:['☕','استراحت']};
+  /* ---------- ابزارهای مشترک ---------- */
+  function $(s,r){return (r||document).querySelector(s);}function $$(s,r){return (r||document).querySelectorAll(s);}
+  function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
+  var EM={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return EM[c];});}
+  function pad(n){return String(n).padStart(2,'0');}
+  function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  function dk(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+  function pdk(k){var p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2],12,0,0);}
+  function addDays(k,n){var d=pdk(k);d.setDate(d.getDate()+n);return dk(d);}
+  function diff(a,b){return Math.round((pdk(a)-pdk(b))/864e5);}
+  function jl(k){try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long'}).format(pdk(k));}catch(e){return k;}}
+  function js(k){try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric',month:'short'}).format(pdk(k));}catch(e){return k;}}
+  function jw(k){try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'short'}).format(pdk(k));}catch(e){return '';}}
+  function rel(k){var n=diff(k,dk());return n===0?'امروز':n===1?'فردا':n===-1?'دیروز':n>1?fa(n)+' روز دیگر':fa(-n)+' روز پیش';}
+  function ld(key,def){try{var v=JSON.parse(localStorage.getItem(key));return v&&typeof v==='object'?v:def;}catch(e){return def;}}
+  function sv(key,v){try{localStorage.setItem(key,JSON.stringify(v));}catch(e){}}
+  function toast(t,m){try{if(typeof showReminderToast==='function')showReminderToast(t,m||'');}catch(e){}}
+  var AC=null;
+  function chime(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();var t=AC.currentTime;[659.25,783.99,1046.5].forEach(function(f,i){var o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.2);g.gain.exponentialRampToValueAtTime(.18,t+i*.2+.03);g.gain.exponentialRampToValueAtTime(.0001,t+i*.2+.8);o.connect(g);g.connect(AC.destination);o.start(t+i*.2);o.stop(t+i*.2+.9);});}catch(e){}}
+  function studyRunning(){try{return typeof studyState!=='undefined'&&studyState==='running';}catch(e){return false;}}
+  function credit(sec){sec=Math.round(sec);if(sec<60||studyRunning())return false;try{if(typeof addStudySeconds==='function'){addStudySeconds(dk(),sec);if(typeof scheduleCloudSync==='function')scheduleCloudSync();if(typeof renderStudyStopwatch==='function')renderStudyStopwatch();return true;}}catch(e){}return false;}
+  function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return fa(pad(Math.floor(s/60))+':'+pad(s%60));}
+  function opts(list,sel){return list.map(function(s){return '<option'+(s===sel?' selected':'')+'>'+esc(s)+'</option>';}).join('');}
+  function mcol(m){return m>=85?'#22c55e':m>=65?'#84cc16':m>=40?'#f59e0b':'#ef4444';}
+  function mlab(m){return m>=85?'تسلط عالی':m>=65?'تسلط خوب':m>=40?'نیازمند مرور':'ضعیف؛ دوباره مطالعه کن';}
+  function helpBtn(k,em,t,seen){return '<button type="button" class="pm-help'+(seen?'':' pulse')+'" data-sm="help" data-k="'+k+'"><span>'+em+'</span><b>'+t+'</b><i>راهنما</i></button>';}
+  function mkModal(id,em,title,body,pa,pb){return '<div class="pm-modal" id="'+id+'" role="dialog" aria-label="'+esc(title)+'"><div class="pm-sheet" style="--pa:'+pa+';--pb:'+pb+'"><div class="pm-sh-h"><span class="em">'+em+'</span><h2>'+esc(title)+'</h2><button type="button" data-sm="close" aria-label="بستن">✕</button></div><div class="pm-sh-b" id="'+id+'-b">'+body+'</div></div></div>';}
+  function openM(id){var m=document.getElementById(id);if(m)m.classList.add('show');}
+  function steps(arr){return '<div class="pm-steps">'+arr.map(function(s,i){return '<div class="pm-step"><b><i>'+fa(i+1)+'</i> '+s[0]+'</b>'+s[1]+'</div>';}).join('')+'</div>';}
+  function ul(a){return '<ul>'+a.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+  var panels={};
+  function go(mode,sub){try{if(mode==='study'){localStorage.setItem('study_sub_mode',sub);}switchTimerMode(mode);if(mode==='study')switchStudySub(sub);var c=document.getElementById('timer-section-card');if(c)c.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}}
+
+  /* ======================= ۱) بازیابی فعال ======================= */
+  var A=ld('ar_v1',{});A.cfg=Object.assign({study:15,recall:5},A.cfg||{});A.hist=Array.isArray(A.hist)?A.hist.slice(-300):[];A.cur=A.cur||null;A.seen=!!A.seen;
+  function aSave(){sv('ar_v1',A);}
+  function tmNew(ms){return {total:ms,left:ms,on:false,end:0};}
+  function tmLeft(t){return t.on?Math.max(0,t.end-Date.now()):t.left;}
+  function tmEl(t){return Math.round((t.total-tmLeft(t))/1000);}
+  function tmGo(t){if(t.on)return;if(t.left<=0)t.left=t.total;t.end=Date.now()+t.left;t.on=true;}
+  function tmStop(t){if(!t.on)return;t.left=Math.max(0,t.end-Date.now());t.on=false;}
+  var ASTEPS=['مطالعه','بازیابی','مقایسه','خودآزمایی','نتیجه'];
+  function aLines(c){return String(c.recall||'').split(/\n+/).map(function(s){return s.trim();}).filter(Boolean).slice(0,60);}
+  function aCalc(c){var L=aLines(c),ok=0,bad=0;L.forEach(function(_,i){if(c.marks[i]===1)ok++;else if(c.marks[i]===-1)bad++;});ok+=Math.max(0,+c.oral||0);var fg=c.forgot.length,den=ok+bad+fg,recall=den?Math.round(ok/den*100):0;var quiz=(c.quizN>0)?Math.round(Math.min(c.quizC,c.quizN)/c.quizN*100):null;var m=quiz==null?recall:Math.round(.6*recall+.4*quiz);return {ok:ok,bad:bad,fg:fg,recall:recall,quiz:quiz,m:m,lines:L};}
+  function aStats(){var H=A.hist,n=H.length,sum=0,last=H.slice(-7),ls=0,by={},mins=0;H.forEach(function(h){sum+=h.mastery;mins+=h.sec/60;var o=by[h.subj]||(by[h.subj]={s:0,n:0});o.s+=h.mastery;o.n++;});last.forEach(function(h){ls+=h.mastery;});
+    var subj=Object.keys(by).map(function(k){return {name:k,avg:Math.round(by[k].s/by[k].n),n:by[k].n};}).sort(function(a,b){return b.avg-a.avg;});
+    return {n:n,avg:n?Math.round(sum/n):null,last7:last.length?Math.round(ls/last.length):null,mins:Math.round(mins),subj:subj};}
+  function aRender(){
+    var el=panels.ar;if(!el)return;var s=aStats();
+    var top='<div class="sm-top">'+helpBtn('ar','🧠','بازیابی فعال چیست و چطور کار می‌کند؟',A.seen)+'<div class="sm-chips"><span class="sm-chip">جلسه‌ها: <b>'+fa(s.n)+'</b></span><span class="sm-chip">میانگین تسلط: <b>'+(s.avg==null?'—':fa(s.avg)+'٪')+'</b></span></div></div>';
+    el.innerHTML=top+(A.cur?aCur():aSetup(s));
+  }
+  function aSetup(s){
+    var kp=[['تعداد جلسه‌ها',fa(s.n),'در کل'],['میانگین تسلط',s.avg==null?'—':fa(s.avg)+'٪',s.avg==null?'هنوز جلسه‌ای نداری':mlab(s.avg)],['میانگین ۷ جلسهٔ اخیر',s.last7==null?'—':fa(s.last7)+'٪','روند اخیر'],['زمان کل',fa(s.mins)+' دقیقه','مطالعه + بازیابی']];
+    var bars=s.subj.length?s.subj.slice(0,5).map(function(x){return '<div><span>'+esc(x.name)+'</span><i style="width:'+Math.max(6,x.avg)+'%"></i><u>'+fa(x.avg)+'٪</u></div>';}).join(''):'<div class="sm-empty">بعد از اولین جلسه، تسلط هر درس اینجا دیده می‌شود.</div>';
+    var hist=A.hist.slice(-8).reverse().map(function(h){return '<div class="sm-h"><span class="sm-pct" style="background:'+mcol(h.mastery)+'">'+fa(h.mastery)+'٪</span><b>'+esc(h.topic)+' · '+esc(h.subj)+'</b><small>'+esc(js(h.d))+' · بازیابی '+fa(h.recall)+'٪'+(h.quiz!=null?' · تست '+fa(h.quiz)+'٪':'')+'</small></div>';}).join('')||'<div class="sm-empty">هنوز جلسه‌ای ثبت نشده.</div>';
+    return '<div class="sm-grid"><div><div class="sm-card sm-hero"><h3>🧠 یک جلسهٔ بازیابی فعال شروع کن</h3><p>مبحث را با دقت بخوان، کتاب را ببند و از حافظه بازگو کن؛ بعد با جزوه بسنج و با چند تست تسلطت را اندازه بگیر.</p>'
+      +'<div class="sm-row2"><div><label class="sm-lab">درس</label><select class="pm-in" id="ar-subj">'+opts(SUBJ,'')+'</select></div><div><label class="sm-lab">مبحث</label><input class="pm-in" id="ar-topic" maxlength="80" placeholder="مثلاً مشتق تابع مرکب"></div></div>'
+      +'<div class="sm-row2"><div><label class="sm-lab">دقیقهٔ مطالعه</label><input class="pm-in" type="number" id="ar-sm" min="1" max="120" value="'+A.cfg.study+'"></div><div><label class="sm-lab">دقیقهٔ بازیابی</label><input class="pm-in" type="number" id="ar-rm" min="1" max="60" value="'+A.cfg.recall+'"></div></div>'
+      +'<button type="button" class="sm-go" data-sm="ar-start">▶ شروع جلسه</button></div>'
+      +'<div class="sm-card"><h4>📈 تسلط هر درس</h4><div class="sm-bars">'+bars+'</div></div></div>'
+      +'<div><div class="pm-kpis" style="grid-template-columns:1fr 1fr">'+kp.map(function(x){return '<div class="pm-kpi"><small>'+x[0]+'</small><b>'+x[1]+'</b><em>'+x[2]+'</em></div>';}).join('')+'</div><div class="sm-card" style="margin-top:14px"><h4>🕘 آخرین جلسه‌ها</h4><div class="sm-hist">'+hist+'</div></div></div></div>';
+  }
+  function aCur(){
+    var c=A.cur,st=c.step,h='<div class="sm-stepper">'+ASTEPS.map(function(n,i){return '<span class="'+(i+1===st?'on':i+1<st?'ok':'')+'">'+fa(i+1)+'. '+n+'</span>';}).join('')+'</div>';
+    h+='<div class="sm-card"><div class="sm-st-h">';
+    if(st===1){
+      h+='<b>مرحلهٔ ۱ — مطالعهٔ دقیق «'+esc(c.topic)+'»</b><small>مبحث را با دقت بخوان و بفهم. هنوز نیازی به حفظ‌کردن نیست؛ بعدش کتاب را می‌بندی.</small></div>'+aTs(c)
+        +'<div class="sm-acts"><button type="button" class="sm-btn pri" data-sm="ar-tgo">'+(c.tm.on?'توقف':'شروع مطالعه')+'</button><button type="button" class="sm-btn" data-sm="ar-next1">📕 کتاب را بستم ← بازیابی</button></div>';
+    }else if(st===2){
+      h+='<b>مرحلهٔ ۲ — کتاب بسته؛ از حافظه بنویس</b><small>نکته‌ها، فرمول‌ها و مفهوم‌ها را بدون نگاه‌کردن بنویس (هر خط یک نکته). می‌توانی هم‌زمان با صدای بلند توضیح بدهی.</small></div>'+aTs(c)
+        +'<textarea class="pm-in" id="ar-recall" placeholder="هر خط یک نکته…">'+esc(c.recall)+'</textarea><div class="sm-live"><div><b id="ar-cnt">'+fa(aLines(c).length)+'</b><small>نکته نوشته‌ای</small></div><div><label class="sm-lab">یا گفتاری (تعداد نکته)</label><input class="pm-in" type="number" min="0" max="60" id="ar-oral" value="'+(c.oral||0)+'"></div></div>'
+        +'<div class="sm-acts"><button type="button" class="sm-btn" data-sm="ar-tgo">'+(c.tm.on?'توقف تایمر':'شروع تایمر')+'</button><button type="button" class="sm-btn pri" data-sm="ar-next2">✅ بازیابی تمام شد ← مقایسه</button></div>';
+    }else if(st===3){
+      var L=aLines(c),x=aCalc(c);
+      h+='<b>مرحلهٔ ۳ — جزوه را باز کن و بسنج</b><small>هر نکته‌ای که نوشتی را با جزوه مقایسه کن: درست (✓) یا اشتباه/ناقص (✗). بعد آنچه فراموش کردی را اضافه کن.</small></div>'
+        +'<div class="sm-lines">'+(L.length?L.map(function(t,i){var m=c.marks[i];return '<div class="sm-line'+(m===1?' ok':m===-1?' no':'')+'"><span>'+esc(t)+'</span><button type="button" class="sm-mk y'+(m===1?' on':'')+'" data-sm="ar-mk" data-i="'+i+'" data-v="1" aria-label="درست">✓</button><button type="button" class="sm-mk n'+(m===-1?' on':'')+'" data-sm="ar-mk" data-i="'+i+'" data-v="-1" aria-label="اشتباه">✗</button></div>';}).join(''):'<div class="sm-empty">متنی ننوشتی؛ اگر گفتاری بازیابی کردی، فقط موارد فراموش‌شده را اضافه کن.</div>')+'</div>'
+        +'<label class="sm-lab">موارد فراموش‌شده (از جزوه)</label><div style="display:flex;gap:8px"><input class="pm-in" id="ar-fg" maxlength="120" placeholder="چه چیزی یادت نبود؟ Enter"><button type="button" class="sm-btn pri" data-sm="ar-fadd">＋</button></div>'
+        +'<div class="sm-lines">'+c.forgot.map(function(t,i){return '<div class="sm-line no"><span>'+esc(t)+'</span><button type="button" class="sm-mk" data-sm="ar-frm" data-i="'+i+'" aria-label="حذف">✕</button></div>';}).join('')+'</div>'
+        +'<div class="sm-live"><div><b id="ar-rp">'+fa(x.recall)+'٪</b><small>دقت بازیابی</small></div><div><b>'+fa(x.ok)+'</b><small>درست</small></div><div><b>'+fa(x.bad+x.fg)+'</b><small>اشتباه/فراموش‌شده</small></div></div>'
+        +'<div class="sm-acts"><button type="button" class="sm-btn" data-sm="ar-back">→ برگشت</button><button type="button" class="sm-btn pri" data-sm="ar-next3">ادامه ← خودآزمایی</button></div>';
+    }else if(st===4){
+      h+='<b>مرحلهٔ ۴ — خودآزمایی با چند سؤال یا تست</b><small>چند سؤال از همین مبحث حل کن (از کتاب، آزمون‌های قبل یا خودت بساز) و نتیجه را وارد کن. اگر نمی‌خواهی، رد کن.</small></div>'
+        +'<div class="sm-row2"><div><label class="sm-lab">تعداد سؤال</label><input class="pm-in" type="number" id="ar-qn" min="0" max="200" value="'+(c.quizN||'')+'"></div><div><label class="sm-lab">تعداد درست</label><input class="pm-in" type="number" id="ar-qc" min="0" max="200" value="'+(c.quizC||'')+'"></div></div>'
+        +'<div class="sm-acts"><button type="button" class="sm-btn" data-sm="ar-back">→ برگشت</button><button type="button" class="sm-btn" data-sm="ar-skip4">رد کردن</button><button type="button" class="sm-btn pri" data-sm="ar-next4">مشاهدهٔ نتیجه</button></div>';
+    }else{
+      var r=aCalc(c),weak=aWeak(c),dash=(1-r.m/100)*314.16;
+      h+='<b>مرحلهٔ ۵ — نتیجهٔ جلسه</b></div><div class="sm-ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="smG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--pa)"/><stop offset="1" style="stop-color:var(--pb)"/></linearGradient></defs><circle class="tr" cx="60" cy="60" r="50"/><circle class="pr" cx="60" cy="60" r="50" style="stroke-dashoffset:'+dash.toFixed(1)+'"/></svg><div><b>'+fa(r.m)+'٪</b><small>'+mlab(r.m)+'</small></div></div>'
+        +'<div class="sm-live"><div><b>'+fa(r.recall)+'٪</b><small>دقت بازیابی</small></div><div><b>'+(r.quiz==null?'—':fa(r.quiz)+'٪')+'</b><small>نتیجهٔ تست</small></div><div><b>'+fa(Math.round((c.s1+c.s2)/60))+' د</b><small>زمان فعال</small></div></div>'
+        +(weak.length?'<p class="sm-note">📌 '+fa(weak.length)+' مورد ضعیف شناسایی شد؛ به‌صورت «کارت ضعف» در مرورها نشانت می‌دهم.</p>':'<p class="sm-note">🎉 مورد ضعفی ثبت نشد.</p>')
+        +'<label class="sm-line" style="cursor:pointer"><input type="checkbox" id="ar-addsr" '+(c.addSR!==false?'checked':'')+' style="width:18px;height:18px"><span>این مبحث را به «مرور فاصله‌دار» اضافه کن (مرور اول: فردا)</span></label>'
+        +'<div class="sm-acts"><button type="button" class="sm-btn" data-sm="ar-back">→ برگشت</button><button type="button" class="sm-btn pri" data-sm="ar-finish">💾 ثبت جلسه</button></div>';
+    }
+    return h+(st<5?'<div class="sm-acts" style="margin-top:6px"><button type="button" class="sm-btn dng sm" data-sm="ar-cancel">لغو جلسه</button></div>':'<div class="sm-acts" style="margin-top:6px"><button type="button" class="sm-btn dng sm" data-sm="ar-cancel">لغو جلسه</button></div>')+'</div>';
+  }
+  function aWeak(c){var L=aLines(c),w=[];L.forEach(function(t,i){if(c.marks[i]===-1)w.push(t);});return c.forgot.concat(w).slice(0,30);}
+  function aTs(c){var l=tmLeft(c.tm),p=100-l/c.tm.total*100;return '<div class="sm-ts"><b id="ar-dig">'+mmss(l)+'</b><div class="sm-tb"><i id="ar-bar" style="width:'+p.toFixed(1)+'%"></i></div></div>'+(l<=0&&!c.tm.on?'<p class="sm-note">⏰ زمان این مرحله تمام شد.</p>':'');}
+  function aGo(step){var c=A.cur;if(!c)return;c.step=step;if(step===2){c.tm=tmNew(A.cfg.recall*60000);}aSave();aRender();}
+  function aAct(a,el){
+    var c=A.cur;
+    if(a==='ar-start'){var sj=$('#ar-subj').value,tp=$('#ar-topic').value.trim()||sj,sm=Math.min(120,Math.max(1,+$('#ar-sm').value||15)),rm=Math.min(60,Math.max(1,+$('#ar-rm').value||5));A.cfg.study=sm;A.cfg.recall=rm;A.cur={id:uid(),subj:sj,topic:tp,step:1,t0:Date.now(),tm:tmNew(sm*60000),s1:0,s2:0,recall:'',oral:0,marks:{},forgot:[],quizN:0,quizC:0,addSR:true};aSave();aRender();return;}
+    if(!c)return;
+    if(a==='ar-tgo'){c.tm.on?tmStop(c.tm):tmGo(c.tm);aSave();aRender();}
+    else if(a==='ar-next1'){tmStop(c.tm);c.s1=tmEl(c.tm);aGo(2);}
+    else if(a==='ar-next2'){var ta=$('#ar-recall');if(ta)c.recall=ta.value;var o=$('#ar-oral');if(o)c.oral=Math.max(0,+o.value||0);tmStop(c.tm);c.s2=tmEl(c.tm);if(!aLines(c).length&&!c.oral&&!confirm('چیزی از حافظه ننوشتی. با این حال به مرحلهٔ مقایسه بروم؟'))return;aGo(3);}
+    else if(a==='ar-mk'){var i=el.getAttribute('data-i'),v=+el.getAttribute('data-v');c.marks[i]=c.marks[i]===v?0:v;aSave();aRender();}
+    else if(a==='ar-fadd'){var f=$('#ar-fg'),t=f.value.trim();if(t&&c.forgot.length<30){c.forgot.push(t.slice(0,120));aSave();aRender();var n=$('#ar-fg');if(n)n.focus();}}
+    else if(a==='ar-frm'){c.forgot.splice(+el.getAttribute('data-i'),1);aSave();aRender();}
+    else if(a==='ar-next3'){aGo(4);}
+    else if(a==='ar-next4'){var n=Math.max(0,+$('#ar-qn').value||0),k=Math.max(0,+$('#ar-qc').value||0);if(k>n){toast('تعداد درست‌ها بیشتر از سؤال‌هاست','عدد را اصلاح کن.');return;}c.quizN=n;c.quizC=k;aGo(5);}
+    else if(a==='ar-skip4'){c.quizN=0;c.quizC=0;aGo(5);}
+    else if(a==='ar-back'){aGo(Math.max(1,c.step-1)===1?2:c.step-1);}
+    else if(a==='ar-cancel'){if(confirm('این جلسه لغو شود؟ (چیزی ثبت نمی‌شود)')){A.cur=null;aSave();aRender();}}
+    else if(a==='ar-finish'){
+      var ck=$('#ar-addsr');c.addSR=ck?ck.checked:true;var r=aCalc(c),weak=aWeak(c),sec=(c.s1||0)+(c.s2||0);
+      A.hist.push({id:c.id,ts:Date.now(),d:dk(),subj:c.subj,topic:c.topic,recall:r.recall,quiz:r.quiz,mastery:r.m,forgot:weak,sec:sec});if(A.hist.length>300)A.hist=A.hist.slice(-300);
+      var cr=credit(sec);if(c.addSR!==false){rAdd(c.subj,c.topic,dk(),weak);}
+      A.cur=null;aSave();aRender();toast('🧠 جلسه ثبت شد','تسلط: '+fa(r.m)+'٪'+(cr?' · زمان به مطالعهٔ خالص اضافه شد':'')+(c.addSR!==false?' · مرور اول فردا':''));
+    }
+  }
+  function aTick(){var c=A.cur;if(!c||!c.tm||!c.tm.on||(c.step!==1&&c.step!==2))return;var l=tmLeft(c.tm);var d=$('#ar-dig'),b=$('#ar-bar');if(d)d.textContent=mmss(l);if(b)b.style.width=(100-l/c.tm.total*100).toFixed(1)+'%';if(l<=0){c.tm.on=false;c.tm.left=0;chime();toast('⏰ زمان تمام شد',c.step===1?'کتاب را ببند و از حافظه بنویس.':'بازیابی را تمام کن و با جزوه مقایسه کن.');aSave();aRender();}}
+
+  /* ======================= ۲) مرور فاصله‌دار ======================= */
+  var R=ld('sr_v1',{});R.items=Array.isArray(R.items)?R.items:[];R.log=Array.isArray(R.log)?R.log.slice(-600):[];R.seen=!!R.seen;
+  var GAPS=[1,2,3,7,16],RN=['مرور اول (روز ۲)','مرور دوم (روز ۴)','مرور سوم (روز ۷)','مرور چهارم (روز ۱۴)','مرور پنجم (روز ۳۰)'];
+  function rSave(){sv('sr_v1',R);badge();}
+  function rAdd(subj,topic,start,weak){var it={id:uid(),subj:subj,topic:topic,start:start,stage:0,due:addDays(start,GAPS[0]),weak:(weak||[]).slice(0,30),miss:0,hist:[],done:false,ts:Date.now()};R.items.unshift(it);if(R.items.length>400)R.items=R.items.slice(0,400);rSave();return it;}
+  function rFind(id){for(var i=0;i<R.items.length;i++)if(R.items[i].id===id)return R.items[i];return null;}
+  function rDue(){var t=dk();return R.items.filter(function(i){return !i.done&&i.due&&i.due<=t;}).sort(function(a,b){return a.due<b.due?-1:a.due>b.due?1:0;});}
+  function rApply(id,rate){
+    var it=rFind(id);if(!it)return null;var t=dk();it.hist.push({d:t,r:rate,s:it.stage});R.log.push({ts:Date.now(),d:t,id:id,r:rate});
+    if(rate==='weak'){it.miss++;it.due=addDays(t,1);}
+    else{it.stage++;if(it.stage>=5){it.done=true;it.due=null;}else{var g=GAPS[it.stage];if(rate==='good')g=Math.ceil(g*1.5);it.due=addDays(t,g);}}
+    rSave();return it;
+  }
+  function rPlan(start){var d=start,out=[];for(var i=0;i<5;i++){d=addDays(d,GAPS[i]);out.push(d);}return out;}
+  function badge(){var n=rDue().length,b=$('#sr-badge');if(b){b.textContent=fa(n);b.classList.toggle('on',n>0);}}
+  function dots(it){var h='';for(var i=0;i<5;i++)h+='<i class="'+(i<it.stage?'d':i===it.stage&&!it.done?'c':'')+'"></i>';return '<div class="sr-dots">'+h+'</div>';}
+  function rRender(){
+    var el=panels.sr;if(!el)return;var t=dk(),due=rDue(),late=due.filter(function(i){return i.due<t;}).length,act=R.items.filter(function(i){return !i.done;}),done=R.items.filter(function(i){return i.done;}).length;
+    var rated=R.log.filter(function(l){return true;}),good=R.log.filter(function(l){return l.r==='good';}).length,mid=R.log.filter(function(l){return l.r==='mid';}).length;
+    var top='<div class="sm-top">'+helpBtn('sr','🔁','مرور فاصله‌دار چیست و چطور کار می‌کند؟',R.seen)+'<div class="sm-chips"><span class="sm-chip">امروز: <b>'+fa(due.length)+'</b></span><span class="sm-chip">عقب‌افتاده: <b>'+fa(late)+'</b></span><span class="sm-chip">در جریان: <b>'+fa(act.length)+'</b></span><span class="sm-chip">تثبیت‌شده: <b>'+fa(done)+'</b></span></div></div>';
+    var dueH=due.length?due.map(function(i){var l=i.due<t;return '<div class="sr-item '+(l?'late':'due')+'"><div class="tx"><b>'+esc(i.topic)+'</b><small>'+esc(i.subj)+' · '+RN[Math.min(4,i.stage)]+' · '+(l?'⏰ '+fa(diff(t,i.due))+' روز عقب‌افتاده':'موعد امروز')+(i.weak.length?' · 📌 '+fa(i.weak.length)+' کارت ضعف':'')+'</small>'+dots(i)+'</div><button type="button" class="sm-btn pri" data-sm="sr-rev" data-id="'+i.id+'">شروع مرور</button></div>';}).join(''):'<div class="sm-empty">🎉 مرور امروز نداری. مبحث تازه‌ای را اضافه کن یا از «بازیابی فعال» جلسه بساز.</div>';
+    var cnt={};act.forEach(function(i){var k=i.due<t?t:i.due;cnt[k]=(cnt[k]||0)+1;});
+    var strip='';for(var d=0;d<7;d++){var k=addDays(t,d);strip+='<div class="sr-day'+(d===0?' t':'')+(cnt[k]?' has':'')+'">'+esc(jw(k))+'<b>'+fa(cnt[k]||0)+'</b>'+esc(js(k))+'</div>';}
+    var strip2='';for(var d2=7;d2<14;d2++){var k2=addDays(t,d2);strip2+='<div class="sr-day'+(cnt[k2]?' has':'')+'">'+esc(jw(k2))+'<b>'+fa(cnt[k2]||0)+'</b>'+esc(js(k2))+'</div>';}
+    var all=R.items.length?R.items.slice(0,40).map(function(i){return '<div class="sr-item"><div class="tx"><b>'+esc(i.topic)+'</b><small>'+esc(i.subj)+' · '+(i.done?'✅ تثبیت شد':'بعدی: '+esc(rel(i.due))+' ('+esc(js(i.due))+')')+(i.miss?' · '+fa(i.miss)+' بار ضعیف':'')+'</small>'+dots(i)+'</div><button type="button" class="sm-btn sm dng" data-sm="sr-del" data-id="'+i.id+'" aria-label="حذف">🗑</button></div>';}).join(''):'<div class="sm-empty">هنوز مبحثی اضافه نکرده‌ای.</div>';
+    var prev=rPlan(t).map(function(k,i){return '<span>'+RN[i].split(' (')[0]+': '+esc(js(k))+'</span>';}).join('');
+    var tr=(good+mid+R.log.filter(function(l){return l.r==='weak';}).length)||0;
+    el.innerHTML=top+'<div class="sm-grid"><div><div class="sm-card"><h4>📬 مرورهای امروز</h4>'+dueH+'</div><div class="sm-card"><h4>🗓 برنامهٔ ۱۴ روز آینده</h4><div class="sr-strip">'+strip+'</div><div class="sr-strip" style="margin-top:6px">'+strip2+'</div></div></div>'
+      +'<div><div class="sm-card sm-hero"><h3>➕ مبحث تازه‌خوانده‌ات را ثبت کن</h3><p>برنامهٔ مرور خودکار ساخته می‌شود: روز ۲، ۴، ۷، ۱۴ و ۳۰ (از روز مطالعه).</p>'
+      +'<div class="sm-row2"><div><label class="sm-lab">درس</label><select class="pm-in" id="sr-subj">'+opts(SUBJ,'')+'</select></div><div><label class="sm-lab">زمان مطالعه</label><select class="pm-in" id="sr-when"><option value="0">امروز</option><option value="1">دیروز</option><option value="2">۲ روز پیش</option><option value="3">۳ روز پیش</option></select></div></div>'
+      +'<label class="sm-lab">مبحث</label><input class="pm-in" id="sr-topic" maxlength="80" placeholder="مثلاً حد و پیوستگی" style="margin-bottom:10px!important"><div class="sr-plan" id="sr-plan">'+prev+'</div>'
+      +'<button type="button" class="sm-go" data-sm="sr-add">ثبت مبحث و ساخت برنامهٔ مرور</button></div><div class="sm-card"><h4>📚 همهٔ مباحث</h4>'+all+'</div></div></div>';
+  }
+  function rOpenReview(id){
+    var it=rFind(id);if(!it)return;var weak=it.weak.length?it.weak.map(function(w,i){return '<details class="sr-card"><summary>کارت ضعف '+fa(i+1)+' — اول از حافظه بگو</summary><p style="margin:8px 0 0">'+esc(w)+'</p></details>';}).join(''):'<p class="sm-note">کارت ضعفی برای این مبحث نداری.</p>';
+    var b=$('#sr-rev-modal-b');b.innerHTML='<h3>'+esc(it.topic)+' <small style="font-weight:600">· '+esc(it.subj)+'</small></h3><p>'+RN[Math.min(4,it.stage)]+' — شروع‌شده از '+esc(js(it.start))+'</p>'
+      +steps([['کتاب را ببند','بدون نگاه به جزوه، آنچه از «'+esc(it.topic)+'» یادت هست بگو یا بنویس.'],['کارت‌های ضعف','پیش از دیدن پاسخ، سعی کن خودت جواب بدهی.'],['با جزوه چک کن','موارد فراموش‌شده را علامت بزن.'],['چند تست حل کن','تسلطت را با سؤال بسنج.']])
+      +'<h3>📌 کارت‌های ضعف</h3>'+weak+'<h3>تسلطت چقدر بود؟</h3><p class="sm-note">فاصلهٔ مرور بعدی بر اساس پاسخ تو تنظیم می‌شود.</p><div class="sr-rate"><button type="button" data-sm="sr-rate" data-r="weak" data-id="'+id+'">😕 ضعیف<small>فردا دوباره</small></button><button type="button" data-sm="sr-rate" data-r="mid" data-id="'+id+'">🙂 متوسط<small>فاصلهٔ عادی</small></button><button type="button" data-sm="sr-rate" data-r="good" data-id="'+id+'">😎 مسلط<small>فاصلهٔ بیشتر</small></button></div>';
+    openM('sr-rev-modal');
+  }
+  function rAct(a,el){
+    var id=el.getAttribute('data-id');
+    if(a==='sr-add'){var tp=$('#sr-topic').value.trim(),sj=$('#sr-subj').value,off=+$('#sr-when').value||0;if(!tp){$('#sr-topic').focus();toast('نام مبحث را بنویس','');return;}rAdd(sj,tp,addDays(dk(),-off),[]);rRender();toast('🔁 برنامهٔ مرور ساخته شد','مرور اول: '+rel(rPlan(addDays(dk(),-off))[0]));}
+    else if(a==='sr-rev')rOpenReview(id);
+    else if(a==='sr-rate'){var it=rApply(id,el.getAttribute('data-r'));$('#sr-rev-modal').classList.remove('show');rRender();if(it){toast(it.done?'🎓 این مبحث تثبیت شد!':'✅ مرور ثبت شد',it.done?'هر ۵ مرور را تمام کردی.':'مرور بعدی: '+rel(it.due)+' ('+js(it.due)+')');}}
+    else if(a==='sr-del'){if(confirm('این مبحث از برنامهٔ مرور حذف شود؟')){R.items=R.items.filter(function(i){return i.id!==id;});rSave();rRender();}}
+  }
+
+  /* ======================= ۳) زمان‌بندی بلوکی ======================= */
+  var T=ld('tb_v1',{});T.days=T.days&&typeof T.days==='object'?T.days:{};T.run=T.run||null;T.seen=!!T.seen;var tbDay=dk(),notified={};
+  function tSave(){sv('tb_v1',T);}
+  function tm2(m){return pad(Math.floor(m/60))+':'+pad(m%60);}
+  function t2m(s){var p=String(s).split(':');return (+p[0])*60+(+p[1]||0);}
+  function tBl(day){return (T.days[day]||[]).slice().sort(function(a,b){return a.s-b.s;});}
+  function nowMin(){var n=new Date();return n.getHours()*60+n.getMinutes();}
+  function bTitle(b){return b.title||((TYPES[b.type]||['',''])[1]+(b.subj?' '+b.subj:''));}
+  function tOverlap(day,s,e,skip){var L=tBl(day);for(var i=0;i<L.length;i++){if(L[i].id!==skip&&s<L[i].e&&e>L[i].s)return L[i];}return null;}
+  function tFree(day,dur,from){for(var s=Math.ceil(from/5)*5;s+dur<=1380;s+=5){if(!tOverlap(day,s,s+dur))return s;}return null;}
+  function tAdd(day,b){var L=T.days[day]=T.days[day]||[];b.id=uid();b.done=false;L.push(b);tSave();return b;}
+  function tStats(day){var L=tBl(day),m={study:0,test:0,analysis:0,review:0,break:0},plan=0,dn=0;L.forEach(function(b){var d=b.e-b.s;m[b.type]=(m[b.type]||0)+d;if(b.type!=='break'){plan+=d;if(b.done)dn+=d;}});return {m:m,plan:plan,done:dn,adh:plan?Math.round(dn/plan*100):null,L:L};}
+  function tWeek(){var s=0,n=0;for(var i=0;i<7;i++){var k=addDays(dk(),-i),x=tStats(k);if(x.adh!=null){s+=x.adh;n++;}}return n?Math.round(s/n):null;}
+  var SAMPLE=[[480,570,'study','حسابان'],[570,600,'break',''],[600,690,'study','فیزیک'],[690,720,'break',''],[720,780,'test','شیمی'],[960,1020,'review','']];
+  function tInsights(day,L){
+    var out=[],st=tStats(day);
+    if(!L.length)return [['w','هنوز برنامه‌ای برای این روز نچیده‌ای؛ از «الگوی نمونه» شروع کن.']];
+    for(var i=0;i<L.length-1;i++){var a=L[i],b=L[i+1];if(a.type!=='break'&&b.type!=='break'&&a.e>=b.s&&a.e-a.s>=60)out.push(['w','بین «'+bTitle(a)+'» و «'+bTitle(b)+'» استراحت نیست؛ یک وقفهٔ کوتاه بگذار.']);}
+    L.forEach(function(b){if(b.type==='test'&&!L.some(function(x){return x.type==='analysis'&&x.s>=b.e;}))out.push(['w','بعد از «'+bTitle(b)+'» بلوک «تحلیل تست» نگذاشته‌ای. تست بدون تحلیل نصف اثر را دارد.','tb-addan:'+b.id]);});
+    var due=rDue().length;if(due&&!L.some(function(b){return b.type==='review';}))out.push(['w','امروز '+fa(due)+' مرور فاصله‌دار داری ولی بلوک «مرور» نداری.','tb-addrev']);
+    if(st.plan>600)out.push(['w','بیش از ۱۰ ساعت مطالعه چیده‌ای؛ واقع‌بینانه‌اش کن تا بتوانی پایبند بمانی.']);
+    if(!out.length)out.push(['g','✅ برنامه متعادل است: استراحت‌ها و تحلیل تست در جایشان قرار دارند.']);
+    return out;
+  }
+  function tRender(){
+    var el=panels.tb;if(!el)return;var day=tbDay,L=tBl(day),st=tStats(day),isT=day===dk(),n=nowMin(),wk=tWeek();
+    var top='<div class="sm-top">'+helpBtn('tb','🗓','زمان‌بندی بلوکی چیست و چطور کار می‌کند؟',T.seen)+'<div class="tb-nav"><button type="button" class="sm-btn sm" data-sm="tb-nav" data-d="1" aria-label="روز بعد">‹</button><b>'+esc(jl(day))+'</b><button type="button" class="sm-btn sm" data-sm="tb-nav" data-d="-1" aria-label="روز قبل">›</button><button type="button" class="sm-btn sm" data-sm="tb-today">امروز</button></div></div>';
+    var cur=null,nxt=null;if(isT){L.forEach(function(b){if(b.s<=n&&n<b.e)cur=b;else if(b.s>n&&!nxt)nxt=b;});}
+    var now='';
+    if(isT){
+      if(cur){var run=T.run&&T.run.day===day&&T.run.id===cur.id;now='<div class="tb-now tb-t-'+cur.type+'"><h4>⏱ الان: '+(TYPES[cur.type]||[''])[0]+' '+esc(bTitle(cur))+'</h4><div class="big" id="tb-left">'+fa(pad(Math.floor((cur.e-n)/60))+':'+pad((cur.e-n)%60))+'</div> <span class="sm-note">تا پایان بلوک ('+esc(tm2(cur.e))+')</span><p class="sm-note" style="margin:6px 0 0">در این بازه فقط روی همین کار باش.'+(nxt?' بعدی: '+esc(bTitle(nxt))+' ('+esc(tm2(nxt.s))+')':'')+'</p><div class="sm-acts">'+(cur.type!=='break'?'<button type="button" class="sm-btn pri" data-sm="tb-run" data-id="'+cur.id+'">'+(run?'⏸ در حال ثبت زمان…':'▶ شروع ثبت زمان این بلوک')+'</button>':'')+'<button type="button" class="sm-btn" data-sm="tb-done" data-id="'+cur.id+'">✓ انجام شد</button></div></div>';}
+      else if(nxt){now='<div class="tb-now"><h4>⏭ بلوک بعدی: '+(TYPES[nxt.type]||[''])[0]+' '+esc(bTitle(nxt))+'</h4><p class="sm-note" style="margin:0">ساعت '+esc(tm2(nxt.s))+' · '+fa(nxt.s-n)+' دقیقهٔ دیگر</p></div>';}
+    }
+    var strip='<div class="tb-strip">'+L.map(function(b){return '<i class="tb-t-'+b.type+'" style="right:'+((b.s-300)/1140*100).toFixed(2)+'%;width:'+Math.max(.6,(b.e-b.s)/1140*100).toFixed(2)+'%" title="'+esc(bTitle(b))+'"></i>';}).join('')+(isT&&n>=300?'<i class="now" style="right:'+((n-300)/1140*100).toFixed(2)+'%"></i>':'')+'</div><div class="tb-scale"><span>۰۵</span><span>۱۰</span><span>۱۵</span><span>۲۰</span><span>۲۴</span></div>';
+    var rows='',prevE=null;
+    L.forEach(function(b){if(prevE!=null&&b.s-prevE>=15)rows+='<div class="tb-gap">فاصلهٔ آزاد '+fa(b.s-prevE)+' دقیقه</div>';
+      rows+='<div class="tb-b"><div class="tb-time">'+esc(tm2(b.s))+'<br>'+esc(tm2(b.e))+'</div><div class="tb-card tb-t-'+b.type+(b.done?' done':'')+(cur&&cur.id===b.id?' cur':'')+'"><span style="font-size:1.2rem">'+(TYPES[b.type]||[''])[0]+'</span><div class="tt"><b>'+esc(bTitle(b))+'</b><small>'+fa(b.e-b.s)+' دقیقه · '+(TYPES[b.type]||['',''])[1]+'</small></div>'+(b.type!=='break'||true?'<button type="button" class="sm-btn sm" data-sm="tb-done" data-id="'+b.id+'" title="انجام شد">'+(b.done?'↩':'✓')+'</button>':'')+'<button type="button" class="sm-btn sm dng" data-sm="tb-del" data-id="'+b.id+'" aria-label="حذف">🗑</button></div><span></span></div>';prevE=b.e;});
+    if(!rows)rows='<div class="sm-empty">برای این روز بلوکی نداری. با فرم کنار یا «الگوی نمونه» برنامه بچین.</div>';
+    var tot=st.plan+st.m.break||1,stack='<div class="tb-stack">'+['study','test','analysis','review','break'].map(function(t){return st.m[t]?'<i class="tb-t-'+t+'" style="width:'+(st.m[t]/tot*100).toFixed(1)+'%"></i>':'';}).join('')+'</div><div class="tb-leg">'+['study','test','analysis','review','break'].map(function(t){return st.m[t]?'<span class="tb-t-'+t+'">'+TYPES[t][1]+' '+fa(Math.round(st.m[t]))+'د</span>':'';}).join('')+'</div>';
+    var ins=tInsights(day,L).map(function(x){var b=x[2]?'<button type="button" class="sm-btn sm" data-sm="'+x[2].split(':')[0]+'" data-id="'+(x[2].split(':')[1]||'')+'">افزودن</button>':'';return '<div class="'+x[0]+'"><span>'+esc(x[1])+'</span>'+b+'</div>';}).join('');
+    var defStart=L.length?L[L.length-1].e:(isT?Math.min(1320,Math.ceil((n+5)/30)*30):480);
+    var form='<div class="sm-card sm-hero"><h3>➕ بلوک جدید</h3><div class="tb-chips" id="tb-types">'+['study','test','analysis','review','break'].map(function(t,i){return '<button type="button" data-sm="tb-type" data-t="'+t+'" class="'+(i===0?'on':'')+'">'+TYPES[t][0]+' '+TYPES[t][1]+'</button>';}).join('')+'</div>'
+      +'<div class="sm-row2"><div><label class="sm-lab">درس</label><select class="pm-in" id="tb-subj"><option value="">—</option>'+opts(SUBJ,'')+'</select></div><div><label class="sm-lab">عنوان (اختیاری)</label><input class="pm-in" id="tb-title" maxlength="50" placeholder="مثلاً فصل ۳"></div></div>'
+      +'<div class="sm-row2"><div><label class="sm-lab">ساعت شروع</label><input class="pm-in" type="time" id="tb-start" value="'+tm2(Math.min(defStart,1380))+'"></div><div><label class="sm-lab">مدت (دقیقه)</label><input class="pm-in" type="number" id="tb-dur" min="5" max="600" value="60"></div></div>'
+      +'<div class="tb-chips">'+[15,30,45,60,90,120].map(function(m){return '<button type="button" data-sm="tb-dur" data-m="'+m+'">'+fa(m)+'د</button>';}).join('')+'</div><button type="button" class="sm-go" data-sm="tb-add">افزودن به برنامه</button></div>';
+    el.innerHTML=top+now+'<div class="sm-grid"><div><div class="sm-card"><h4><span>📅 برنامهٔ این روز</span><span class="sm-chip">پایبندی: <b>'+(st.adh==null?'—':fa(st.adh)+'٪')+'</b></span></h4>'+strip+'<div class="tb-list" style="margin-top:12px">'+rows+'</div></div></div>'
+      +'<div>'+form+'<div class="sm-card"><h4>🧭 تحلیل برنامه</h4>'+stack+'<div class="tb-insight">'+ins+'</div><div class="sm-acts"><button type="button" class="sm-btn sm" data-sm="tb-tpl">📋 الگوی نمونه</button><button type="button" class="sm-btn sm" data-sm="tb-copy">➡ کپی به فردا</button><button type="button" class="sm-btn sm dng" data-sm="tb-clear">پاک‌کردن روز</button></div>'+(wk!=null?'<p class="sm-note" style="margin-top:10px">میانگین پایبندی ۷ روز اخیر: <b>'+fa(wk)+'٪</b></p>':'')+'</div></div></div>';
+  }
+  var tbType='study';
+  function tAct(a,el){
+    var id=el.getAttribute('data-id'),day=tbDay;
+    if(a==='tb-nav'){tbDay=addDays(tbDay,+el.getAttribute('data-d'));tRender();}
+    else if(a==='tb-today'){tbDay=dk();tRender();}
+    else if(a==='tb-type'){tbType=el.getAttribute('data-t');$$('#tb-types button').forEach(function(b){b.classList.toggle('on',b===el);});}
+    else if(a==='tb-dur'){$('#tb-dur').value=el.getAttribute('data-m');}
+    else if(a==='tb-add'){var s=t2m($('#tb-start').value||'08:00'),d=Math.max(5,Math.min(600,+$('#tb-dur').value||60)),e=s+d;if(e>1440){toast('بلوک از نیمه‌شب می‌گذرد','مدت یا ساعت شروع را کم کن.');return;}
+      var ov=tOverlap(day,s,e);if(ov){toast('با «'+bTitle(ov)+'» همپوشانی دارد',tm2(ov.s)+' تا '+tm2(ov.e));return;}
+      tAdd(day,{s:s,e:e,type:tbType,subj:$('#tb-subj').value,title:$('#tb-title').value.trim()});tRender();}
+    else if(a==='tb-del'){T.days[day]=(T.days[day]||[]).filter(function(b){return b.id!==id;});if(T.run&&T.run.id===id)T.run=null;tSave();tRender();}
+    else if(a==='tb-done'){var b=(T.days[day]||[]).filter(function(x){return x.id===id;})[0];if(b){if(!b.done&&T.run&&T.run.id===id){tFinishRun(true);return;}b.done=!b.done;tSave();tRender();}}
+    else if(a==='tb-run'){var cb=(T.days[day]||[]).filter(function(x){return x.id===id;})[0];if(!cb)return;if(T.run&&T.run.id===id){tFinishRun(false);}else{T.run={day:day,id:id,start:Date.now()};tSave();tRender();toast('▶ ثبت زمان شروع شد','وقتی «انجام شد» را بزنی یا بلوک تمام شود، زمان به مطالعهٔ خالص اضافه می‌شود.');}}
+    else if(a==='tb-tpl'){if((T.days[day]||[]).length&&!confirm('بلوک‌های فعلی این روز با الگوی نمونه جایگزین شود؟'))return;T.days[day]=[];SAMPLE.forEach(function(x){tAdd(day,{s:x[0],e:x[1],type:x[2],subj:x[3],title:''});});tRender();}
+    else if(a==='tb-copy'){var nx=addDays(day,1);if((T.days[nx]||[]).length&&!confirm('برنامهٔ فردا جایگزین شود؟'))return;T.days[nx]=tBl(day).map(function(b){return {id:uid(),s:b.s,e:b.e,type:b.type,subj:b.subj,title:b.title,done:false};});tSave();toast('➡ کپی شد','برنامهٔ '+jl(nx)+' ساخته شد.');tRender();}
+    else if(a==='tb-clear'){if(confirm('همهٔ بلوک‌های این روز پاک شود؟')){T.days[day]=[];if(T.run&&T.run.day===day)T.run=null;tSave();tRender();}}
+    else if(a==='tb-addan'){var ref=(T.days[day]||[]).filter(function(x){return x.id===id;})[0];if(!ref)return;var s2=tFree(day,30,ref.e);if(s2==null){toast('جای خالی پیدا نشد','');return;}tAdd(day,{s:s2,e:s2+30,type:'analysis',subj:ref.subj,title:''});tRender();}
+    else if(a==='tb-addrev'){var n=rDue().length,dur=Math.min(60,Math.max(15,n*15)),from=day===dk()?nowMin():420,s3=tFree(day,dur,from);if(s3==null){toast('جای خالی پیدا نشد','');return;}tAdd(day,{s:s3,e:s3+dur,type:'review',subj:'',title:'مرور فاصله‌دار ('+fa(n)+' مبحث)'});tRender();}
+  }
+  function tFinishRun(markDone){
+    var r=T.run;if(!r)return;var b=(T.days[r.day]||[]).filter(function(x){return x.id===r.id;})[0];T.run=null;
+    if(b){var endTs=new Date(pdk(r.day).getFullYear(),pdk(r.day).getMonth(),pdk(r.day).getDate(),0,b.e).getTime(),el=Math.max(0,(Math.min(Date.now(),endTs)-r.start)/1000);var c=credit(el);if(markDone)b.done=true;tSave();toast(c?'✅ '+fa(Math.round(el/60))+' دقیقه به مطالعهٔ خالص اضافه شد':'✅ ثبت شد','');}
+    else tSave();tRender();
+  }
+  function tTick(){
+    var n=nowMin(),k=dk(),L=tBl(k);
+    L.forEach(function(b){var key=k+b.id;if(n>=b.e&&n<=b.e+1&&!notified[key]){notified[key]=1;if(T.run&&T.run.id===b.id)tFinishRun(true);chime();var nx=L.filter(function(x){return x.s>=b.e;})[0];toast('⏰ بلوک «'+bTitle(b)+'» تمام شد',nx?'بعدی: '+bTitle(nx)+' ('+tm2(nx.s)+')':'برنامهٔ امروز تمام شد.');if(panels.tb&&panels.tb.style.display!=='none')tRender();}});
+    var lf=$('#tb-left');if(lf&&tbDay===k){var cur=L.filter(function(b){return b.s<=n&&n<b.e})[0];if(cur)lf.textContent=fa(pad(Math.floor((cur.e-n)/60))+':'+pad((cur.e-n)%60));}
+  }
+
+  /* ======================= ۳ روش برتر (در حالت تست) ======================= */
+  function t3Render(){
+    var el=panels.top3;if(!el)return;var st=aStats(),due=rDue().length,tbs=tStats(dk()),cur=null,n=nowMin(),nx=null;tBl(dk()).forEach(function(b){if(b.s<=n&&n<b.e)cur=b;else if(b.s>n&&!nx)nx=b;});
+    el.innerHTML='<div class="sm-top"><button type="button" class="pm-help'+(T.seen3?'':' pulse')+'" data-sm="help" data-k="top3"><span>🏆</span><b>راهنمای کامل ۳ روش برتر مطالعه و یادگیری</b><i>راهنما</i></button><div class="sm-chips"><span class="sm-chip">مرور امروز: <b>'+fa(due)+'</b></span><span class="sm-chip">پایبندی امروز: <b>'+(tbs.adh==null?'—':fa(tbs.adh)+'٪')+'</b></span></div></div>'
+      +'<div class="sm-card sm-hero"><h3>🏆 سه روش برتر؛ یک سیستم کامل</h3><p>این سه روش مکمل‌اند: <b>زمان‌بندی بلوکی</b> می‌گوید «چه زمانی» درس بخوانی، <b>بازیابی فعال</b> می‌گوید «چگونه» یاد بگیری، و <b>مرور فاصله‌دار</b> می‌گوید «کی» مرور کنی. ترکیبشان یک سیستم منظم و مؤثر برای آمادگی کنکور می‌سازد.</p></div>'
+      +'<div class="t3-cards">'
+      +'<div class="t3-c" style="--c:#f59e0b"><div class="ic">🗓</div><h4>Time Blocking<small>زمان‌بندی بلوکی</small></h4><p>روز را به بازه‌های مشخص تقسیم کن و برای هر بازه فقط یک فعالیت بگذار؛ مطالعه، تست‌زنی، تحلیل و مرور را جدا کن و بینشان استراحت بگذار.</p><div class="st">'+(cur?'الان: '+esc(bTitle(cur)):nx?'بعدی: '+esc(bTitle(nx))+' ('+esc(tm2(nx.s))+')':'برنامهٔ امروز: '+(tbs.L.length?fa(tbs.L.length)+' بلوک':'خالی'))+'</div><button type="button" class="sm-btn pri" data-sm="t3-go" data-t="tb">باز کردن</button></div>'
+      +'<div class="t3-c" style="--c:#c084fc"><div class="ic">🧠</div><h4>Active Recall<small>بازیابی فعال</small></h4><p>به‌جای چندبار خواندن، کتاب را ببند و از حافظه بازیابی کن؛ بعد با جزوه بسنج و با چند تست تسلطت را اندازه بگیر.</p><div class="st">'+(st.avg==null?'هنوز جلسه‌ای نداری':'میانگین تسلط: '+fa(st.avg)+'٪')+'</div><button type="button" class="sm-btn pri" data-sm="t3-go" data-t="ar">باز کردن</button></div>'
+      +'<div class="t3-c" style="--c:#34d399"><div class="ic">🔁</div><h4>Spaced Repetition<small>مرور فاصله‌دار</small></h4><p>مطالب را در روزهای ۲، ۴، ۷، ۱۴ و ۳۰ مرور کن تا فراموشی کم شود و در حافظهٔ بلندمدت بماند.</p><div class="st">'+(due?fa(due)+' مرور امروز منتظر توست':'امروز مروری نداری')+'</div><button type="button" class="sm-btn pri" data-sm="t3-go" data-t="sr">باز کردن</button></div></div>'
+      +'<div class="sm-card"><h4>🔗 بعد از هر آزمون چه کنم؟</h4><p class="sm-note" style="margin:0 0 10px">مبحثی که در آزمون ضعیف بود را بنویس؛ با یک کلیک وارد سیستم می‌شود.</p><div class="sm-row2"><div><label class="sm-lab">درس</label><select class="pm-in" id="t3-subj">'+opts(SUBJ,'')+'</select></div><div><label class="sm-lab">مبحث ضعیف</label><input class="pm-in" id="t3-topic" maxlength="80" placeholder="مثلاً مشتق تابع مرکب"></div></div>'
+      +'<div class="sm-acts"><button type="button" class="sm-btn pri" data-sm="t3-sr">🔁 افزودن به مرور فاصله‌دار</button><button type="button" class="sm-btn" data-sm="t3-ar">🧠 شروع بازیابی فعال روی آن</button><button type="button" class="sm-btn" data-sm="t3-an">🔍 بلوک تحلیل تست در برنامهٔ امروز</button></div></div>'
+      +'<div class="t3-pillars"><div><b>🗓 چه زمانی؟</b>زمان‌بندی بلوکی</div><div><b>🧠 چگونه؟</b>بازیابی فعال</div><div><b>🔁 کی مرور کنم؟</b>مرور فاصله‌دار</div></div>';
+  }
+  function t3Act(a,el){
+    if(a==='t3-go'){var t=el.getAttribute('data-t');go('study',t);return;}
+    var sj=$('#t3-subj').value,tp=$('#t3-topic').value.trim();
+    if(a==='t3-an'){var day=dk(),from=nowMin(),s=tFree(day,30,from);if(s==null){toast('جای خالی در برنامهٔ امروز پیدا نشد','');return;}tAdd(day,{s:s,e:s+30,type:'analysis',subj:sj,title:'تحلیل تست'+(tp?' — '+tp:'')});toast('🔍 بلوک تحلیل اضافه شد',tm2(s)+' تا '+tm2(s+30));return;}
+    if(!tp){$('#t3-topic').focus();toast('نام مبحث را بنویس','');return;}
+    if(a==='t3-sr'){rAdd(sj,tp,dk(),[]);$('#t3-topic').value='';t3Render();toast('🔁 به مرور فاصله‌دار اضافه شد','مرور اول: فردا');}
+    else if(a==='t3-ar'){go('study','ar');setTimeout(function(){var s=$('#ar-subj'),t=$('#ar-topic');if(s)s.value=sj;if(t)t.value=tp;},60);}
+  }
+
+  /* ======================= راهنماها ======================= */
+  var HELP={
+   ar:['🧠','Active Recall؛ بازیابی فعال','#c084fc','#ec4899','<h3>هدف</h3><p>یادگیری عمیق و تقویت حافظه.</p><p>در این روش به‌جای چندین بار خواندن یک مطلب، تلاش می‌کنی اطلاعات را بدون نگاه‌کردن به کتاب از حافظهٔ خودت بازیابی کنی.</p><h3>نحوهٔ اجرا</h3>'+steps([['مطالعهٔ دقیق','یک مبحث را با دقت مطالعه کن.'],['کتاب را ببند','کتاب یا جزوه را ببند.'],['از حافظه بیاور','نکات مهم، فرمول‌ها و مفاهیم را به یاد بیاور.'],['بنویس یا بگو','آنچه به خاطر آوردی را روی کاغذ بنویس یا با صدای بلند توضیح بده.'],['با جزوه بسنج','جزوه را باز کن و موارد فراموش‌شده را بررسی کن.'],['خودآزمایی','با چند سؤال یا تست، میزان یادگیری‌ات را بسنج.']])+'<h3>مثال</h3><p>بعد از مطالعهٔ مبحث مشتق در حسابان، بدون نگاه‌کردن به جزوه فرمول‌ها و روش حل مسائل را به یاد بیاور.</p><h3>این بخش برایت چه می‌کند؟</h3>'+ul(['جلسه را مرحله‌به‌مرحله جلو می‌برد: مطالعه، بازیابی، مقایسه، خودآزمایی و نتیجه.','«دقت بازیابی» را از روی نکته‌های درست، اشتباه و فراموش‌شده حساب می‌کند و با نتیجهٔ تست، «تسلط» را می‌سازد (۶۰٪ بازیابی + ۴۰٪ تست).','موارد فراموش‌شده و اشتباه، «کارت ضعف» می‌شوند و در مرورهای فاصله‌دار نشانت داده می‌شوند.','زمان مطالعه و بازیابی به «مجموع خالص مطالعهٔ امروز» اضافه می‌شود.','میانگین تسلط هر درس و روند جلسه‌ها را می‌بینی.'])],
+   sr:['🔁','Spaced Repetition؛ مرور فاصله‌دار','#34d399','#0ea5e9','<h3>هدف</h3><p>جلوگیری از فراموشی و تثبیت مطالب در حافظهٔ بلندمدت.</p><p>در این روش مطالب را به‌جای مرور فشرده و پشت‌سرهم، در فاصله‌های زمانی مشخص مرور می‌کنی تا احتمال فراموشی کم شود.</p><h3>برنامهٔ پیشنهادی مرور</h3>'+ul(['روز اول: مطالعهٔ اولیه','روز دوم: مرور اول','روز چهارم: مرور دوم','روز هفتم: مرور سوم','روز چهاردهم: مرور چهارم','روز سی‌ام: مرور پنجم'])+'<p><b>نکته:</b> در مرورها بهتر است از Active Recall و حل تست استفاده کنی و فاصلهٔ مرورها را بر اساس میزان تسلطت تنظیم کنی.</p><h3>این بخش برایت چه می‌کند؟</h3>'+ul(['با ثبت یک مبحث، تاریخ هر ۵ مرور را خودکار می‌سازد.','هر روز «مرورهای امروز» و مرورهای عقب‌افتاده را نشانت می‌دهد؛ تعدادشان روی دکمهٔ این بخش هم دیده می‌شود.','بعد از هر مرور، تسلطت را می‌پرسد و فاصلهٔ بعدی را تنظیم می‌کند: <b>ضعیف</b> ← فردا دوباره، <b>متوسط</b> ← فاصلهٔ عادی، <b>مسلط</b> ← فاصلهٔ ۵۰٪ بیشتر.','کارت‌های ضعفِ جلسه‌های بازیابی فعال را در هر مرور نشانت می‌دهد.','بعد از ۵ مرور موفق، مبحث «تثبیت‌شده» می‌شود.'])],
+   tb:['🗓','Time Blocking؛ زمان‌بندی بلوکی','#fbbf24','#f97316','<h3>هدف</h3><p>مدیریت بهتر زمان و افزایش تمرکز.</p><p>در این روش کل زمان روزانه را به بازه‌های مشخص تقسیم می‌کنی و برای هر بازه یک درس یا فعالیت مشخص در نظر می‌گیری.</p><h3>نحوهٔ اجرا</h3>'+steps([['فهرست','درس‌ها و فعالیت‌های روزانه را مشخص کن.'],['بازهٔ زمانی','برای هر درس یک بازهٔ زمانی مشخص در نظر بگیر.'],['تفکیک','زمان مطالعه، تست‌زنی، تحلیل تست و مرور را از هم جدا کن.'],['استراحت','بین بازه‌های مطالعاتی زمان استراحت بگذار.'],['تمرکز','در هر بازه فقط روی همان فعالیت تمرکز کن.']])+'<h3>مثال برنامهٔ روزانه</h3>'+ul(['ساعت ۸ تا ۹:۳۰: مطالعهٔ حسابان','ساعت ۹:۳۰ تا ۱۰:۰۰: استراحت','ساعت ۱۰ تا ۱۱:۳۰: مطالعهٔ فیزیک','ساعت ۱۱:۳۰ تا ۱۲:۰۰: استراحت','ساعت ۱۲ تا ۱۳:۰۰: تست‌زنی شیمی','ساعت ۱۶ تا ۱۷:۰۰: مرور مطالب قبلی'])+'<h3>این بخش برایت چه می‌کند؟</h3>'+ul(['برنامهٔ هر روز را روی نوار زمانی و فهرست رنگی نشان می‌دهد و از همپوشانی بلوک‌ها جلوگیری می‌کند.','«بلوک جاری» و زمان باقی‌مانده را نشان می‌دهد و پایان هر بلوک را اعلام می‌کند.','هشدار می‌دهد: استراحت نیست، بعد از تست‌زنی تحلیل تست نیست، یا مرور فاصله‌دارِ امروز در برنامه نیست.','با «شروع ثبت زمان»، زمان واقعی بلوک به مطالعهٔ خالص اضافه می‌شود (فقط همان زمان، نه کل بلوک).','پایبندی به برنامه (درصد انجام‌شده) را روزانه و میانگین ۷ روز اخیر می‌بینی.','الگوی نمونه و کپی‌کردن برنامه به فردا کار چیدن را سریع می‌کند.'])],
+   top3:['🏆','۳ روش برتر مطالعه و یادگیری','#f59e0b','#ef4444','<p>این سه روش مکمل یکدیگر هستند:</p>'+ul(['<b>Time Blocking:</b> مشخص می‌کند چه زمانی درس بخوانی.','<b>Active Recall:</b> مشخص می‌کند چگونه مطالب را بهتر یاد بگیری.','<b>Spaced Repetition:</b> مشخص می‌کند چه زمانی مطالب را مرور کنی.'])+'<p>ترکیب این سه روش می‌تواند یک سیستم مطالعاتی منظم، مؤثر و مناسب برای آمادگی کنکور ایجاد کند.</p><h3>۱. Active Recall (بازیابی فعال)</h3><p>به‌جای چندین بار خواندن، بدون نگاه‌کردن به کتاب از حافظه بازیابی کن؛ بعد با جزوه و چند تست بسنج. مثال: بعد از مبحث مشتق، فرمول‌ها و روش حل را بدون جزوه به یاد بیاور.</p><h3>۲. Spaced Repetition (مرور فاصله‌دار)</h3><p>مرور در روزهای ۲، ۴، ۷، ۱۴ و ۳۰ از روز مطالعه؛ در مرورها از Active Recall و تست استفاده کن و فاصله را با تسلطت تنظیم کن.</p><h3>۳. Time Blocking (زمان‌بندی بلوکی)</h3><p>روز را به بازه‌های مشخص تقسیم کن؛ مطالعه، تست‌زنی، تحلیل و مرور را جدا کن و بینشان استراحت بگذار.</p><h3>چطور در برنامه به هم وصل شده‌اند؟</h3>'+ul(['جلسهٔ «بازیابی فعال» می‌تواند مبحث را خودکار وارد «مرور فاصله‌دار» کند.','«مرور فاصله‌دار» مرورهای امروز را به «بلوک مرور» در برنامه تبدیل می‌کند.','«زمان‌بندی بلوکی» برای هر تست‌زنی یک «بلوک تحلیل تست» پیشنهاد می‌دهد.','بعد از هر آزمون، مبحث ضعیف را همین‌جا با یک کلیک وارد سیستم کن.'])]
+  };
+  function helpModal(k){var h=HELP[k];return mkModal('sm-help-'+k,h[0],h[1],h[4]+'<button type="button" class="pm-cta" data-sm="close" style="background:linear-gradient(135deg,'+h[2]+','+h[3]+')">متوجه شدم ✓</button>',h[2],h[3]);}
+
+  /* ======================= نصب و اتصال ======================= */
+  function mk(id){var p=document.createElement('div');p.id=id;p.className='sm-panel';return p;}
+  function init(){
+    var sp=document.getElementById('study-timer-panel'),ep=document.getElementById('exam-timer-panel');if(!sp||!ep)return;
+    ['ar','sr','tb'].forEach(function(k){panels[k]=mk(k+'-panel');sp.appendChild(panels[k]);});
+    panels.top3=mk('top3-panel');ep.appendChild(panels.top3);
+    document.body.insertAdjacentHTML('beforeend',['ar','sr','tb','top3'].map(helpModal).join('')+mkModal('sr-rev-modal','🔁','مرور مبحث','','#34d399','#0ea5e9'));
+    document.addEventListener('click',function(e){
+      var el=e.target.closest&&e.target.closest('[data-sm]');if(!el)return;var a=el.getAttribute('data-sm');
+      if(a==='close'){var m=el.closest('.pm-modal');if(m)m.classList.remove('show');return;}
+      if(a==='help'){var k=el.getAttribute('data-k');if(k==='ar')A.seen=true;if(k==='sr')R.seen=true;if(k==='tb')T.seen=true;if(k==='top3')T.seen3=true;aSave();rSave();tSave();el.classList.remove('pulse');openM('sm-help-'+k);return;}
+      if(a.indexOf('ar-')===0)aAct(a,el);else if(a.indexOf('sr-')===0)rAct(a,el);else if(a.indexOf('tb-')===0)tAct(a,el);else if(a.indexOf('t3-')===0)t3Act(a,el);
+    });
+    document.addEventListener('input',function(e){var t=e.target;if(t.id==='ar-recall'&&A.cur){A.cur.recall=t.value;var c=$('#ar-cnt');if(c)c.textContent=fa(aLines(A.cur).length);clearTimeout(init._t);init._t=setTimeout(aSave,400);}});
+    document.addEventListener('keydown',function(e){var t=e.target;if(e.key==='Enter'){if(t.id==='ar-fg'){e.preventDefault();aAct('ar-fadd',t);}else if(t.id==='sr-topic'){rAct('sr-add',t);}else if(t.id==='t3-topic'){t3Act('t3-sr',t);}}else if(e.key==='Escape'){$$('.pm-modal.show').forEach(function(m){m.classList.remove('show');});}});
+    $$('.pm-modal').forEach(function(m){m.addEventListener('mousedown',function(e){if(e.target===m)m.classList.remove('show');});});
+    setInterval(function(){aTick();tTick();},1000);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden){badge();}});
+    badge();
+    var sb=document.getElementById('sub-btn-sr');if(sb&&!document.getElementById('sr-badge'))sb.insertAdjacentHTML('beforeend','<span class="bdg" id="sr-badge"></span>');
+    badge();
+    if(T.run&&T.run.day&&diff(dk(),T.run.day)>=0){var rb=(T.days[T.run.day]||[]).filter(function(x){return x.id===T.run.id;})[0];if(!rb||diff(dk(),T.run.day)>0||nowMin()>=rb.e)tFinishRun(true);}
+    if(typeof switchTimerMode==='function')switchTimerMode(localStorage.getItem('timer_active_mode')||'exam');
+  }
+  window.StudyMethods={show:function(sub){if(sub==='ar')aRender();else if(sub==='sr'){rRender();}else if(sub==='tb'){tbDay=tbDay||dk();tRender();}else if(sub==='top3')t3Render();badge();},rAdd:rAdd,rDue:rDue,tAdd:tAdd,tBl:tBl,A:function(){return A;},R:function(){return R;},T:function(){return T;},calc:aCalc,apply:rApply,plan:rPlan};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 </body>
