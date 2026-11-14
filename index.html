@@ -21050,5 +21050,295 @@ details.sr-card{margin:6px 0;border-radius:12px;border:1px solid var(--pm-line);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+<style id="glow-frames-v3">
+/* ==========================================================================
+   Glow Frames v2 — قاب‌های درخشان، نور چرخان روی لبه، اسپات‌لایت موس،
+   آیکن‌های اوربی، آرورای همرنگ صفحه، و مودال‌های کاملاً مات و خوانا
+   ========================================================================== */
+@property --pg{syntax:"<color>";inherits:true;initial-value:#38bdf8}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes pgSpin{to{--ang:360deg}}
+
+body{transition:--pg .9s ease}
+body:has(#tab-dashboard.active){--pg:#559bf7}
+body:has(#tab-timer.active){--pg:#fb923c}
+body:has(#tab-timer.active .timer-section.mode-study){--pg:#559bf7}
+body:has(#tab-timer.active .timer-section.mode-pomo){--pg:#ff5d8f}
+body:has(#tab-as.active){--pg:#facc15}
+body:has(#tab-exams.active){--pg:#a78bfa}
+body:has(#tab-stats.active){--pg:#5c95f6}
+body:has(#tab-errors.active){--pg:#06b6d4}
+body:has(#tab-notes-ve.active){--pg:#10b981}
+body:has(#tab-settings.active){--pg:#fb923c}
+body:has(#tab-planner.active){--pg:#34d399}
+body:has(#tab-gallery.active){--pg:#22d3ee}
+body:has(#tab-trash.active){--pg:#f43f5e}
+#tab-dashboard{--pg:#559bf7}#tab-timer{--pg:#fb923c}#tab-as{--pg:#facc15}#tab-exams{--pg:#a78bfa}
+#tab-stats{--pg:#5c95f6}#tab-errors{--pg:#06b6d4}#tab-notes-ve{--pg:#10b981}#tab-settings{--pg:#fb923c}
+#tab-planner{--pg:#34d399}#tab-gallery{--pg:#22d3ee}#tab-trash{--pg:#f43f5e}
+#tab-timer:has(.timer-section.mode-study){--pg:#559bf7}
+#tab-timer:has(.timer-section.mode-pomo){--pg:#ff5d8f}
+
+/* ---------- آرورای زنده‌ی همرنگ صفحه (پشت همه‌چیز) ---------- */
+body::after{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(34% 30% at 82% 12%,color-mix(in srgb,var(--pg) 26%,transparent),transparent 70%),
+    radial-gradient(30% 28% at 8% 78%,color-mix(in srgb,var(--pg) 18%,transparent),transparent 70%),
+    radial-gradient(26% 22% at 50% 100%,color-mix(in srgb,var(--pg) 14%,transparent),transparent 70%);
+  animation:pgDrift 24s ease-in-out infinite alternate}
+@keyframes pgDrift{to{transform:translate3d(-3%,2.5%,0) scale(1.08)}}
+body.light-mode::after{opacity:.5}
+
+/* ---------- قاب‌های اصلی: درخشش + نور چرخان + اسپات‌لایت موس ---------- */
+@keyframes pgBreath{
+  0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 40%,transparent),0 0 18px -3px color-mix(in srgb,var(--pg) 38%,transparent),0 0 56px -16px color-mix(in srgb,var(--pg) 50%,transparent),inset 0 0 40px -24px color-mix(in srgb,var(--pg) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.12)}
+  50%{box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 60%,transparent),0 0 28px -2px color-mix(in srgb,var(--pg) 58%,transparent),0 0 84px -14px color-mix(in srgb,var(--pg) 66%,transparent),inset 0 0 54px -22px color-mix(in srgb,var(--pg) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.2)}
+}
+:where(html body .tab-content .glass-card:not(.as-sticky-head)){position:relative}
+html body .tab-content .glass-card,
+html body .tab-content .adm-card,
+html body .tab-content .em-hero{
+  border:1px solid color-mix(in srgb,var(--pg) 36%,rgba(255,255,255,.08))!important;
+  background-image:
+    radial-gradient(320px circle at var(--mx,-999px) var(--my,-999px),color-mix(in srgb,var(--pg) 24%,transparent),transparent 70%),
+    radial-gradient(120% 70% at 100% 0%,color-mix(in srgb,var(--pg) 14%,transparent),transparent 60%),
+    radial-gradient(90% 60% at 0% 100%,color-mix(in srgb,var(--pg) 9%,transparent),transparent 65%),
+    linear-gradient(150deg,rgba(255,255,255,.10),rgba(255,255,255,0) 55%)!important;
+  animation:pgBreath 4.8s ease-in-out infinite!important}
+/* نور دنباله‌دار که دور قاب می‌چرخد */
+html body .tab-content .glass-card::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;z-index:2;
+  background:conic-gradient(from var(--ang),transparent 0 62%,color-mix(in srgb,var(--pg) 90%,transparent) 80%,#fff 90%,color-mix(in srgb,var(--pg) 90%,transparent) 94%,transparent 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  filter:drop-shadow(0 0 6px var(--pg));
+  animation:pgSpin 8s linear infinite;opacity:.95}
+html body .tab-content .glass-card:hover,html body .tab-content .adm-card:hover{
+  border-color:color-mix(in srgb,var(--pg) 70%,#fff 6%)!important;animation-play-state:paused!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 75%,transparent),0 0 32px -2px color-mix(in srgb,var(--pg) 65%,transparent),0 0 96px -12px color-mix(in srgb,var(--pg) 70%,transparent),inset 0 0 58px -20px color-mix(in srgb,var(--pg) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.22)!important}
+html body .tab-content .glass-card:hover::before{animation-duration:3s}
+html body .tab-content .home-goal-card::before{inset:-1px!important;transform:none!important}
+
+/* زیرکارت‌ها + تیلت سه‌بعدی */
+html body .tab-content .stat-box,html body .tab-content .study-period-card,
+html body .tab-content .daily-ring-card,html body .tab-content .planner-day-card{
+  border:1px solid color-mix(in srgb,var(--pg) 30%,rgba(255,255,255,.07))!important;
+  background-image:radial-gradient(220px circle at var(--mx,-999px) var(--my,-999px),color-mix(in srgb,var(--pg) 26%,transparent),transparent 70%)!important;
+  box-shadow:0 0 18px -8px color-mix(in srgb,var(--pg) 55%,transparent),inset 0 0 26px -20px color-mix(in srgb,var(--pg) 60%,transparent)!important;
+  transition:box-shadow .3s,border-color .3s,transform .25s ease-out!important;will-change:transform}
+html body .tab-content .stat-box:hover,html body .tab-content .study-period-card:hover,
+html body .tab-content .daily-ring-card:hover,html body .tab-content .planner-day-card:hover{
+  transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-3px)!important;
+  border-color:color-mix(in srgb,var(--pg) 70%,transparent)!important;
+  box-shadow:0 14px 30px -10px rgba(0,0,0,.5),0 0 28px -4px color-mix(in srgb,var(--pg) 70%,transparent),inset 0 0 30px -16px color-mix(in srgb,var(--pg) 75%,transparent)!important}
+
+html body .tab-content select:focus,html body .tab-content input:focus,html body .tab-content textarea:focus{
+  border-color:var(--pg)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--pg) 22%,transparent),0 0 22px -4px var(--pg)!important}
+
+/* ---------- مودال‌ها: کاملاً مات و خوانا (رفع شفافیتِ پنجره‌ی برنامه) ---------- */
+@keyframes pgModalIn{from{opacity:0;transform:translateY(16px) scale(.965);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+html body .planner-modal{
+  background:radial-gradient(70% 60% at 50% 35%,color-mix(in srgb,var(--pg) 16%,rgba(3,6,14,.93)),rgba(3,6,14,.96))!important;
+  -webkit-backdrop-filter:blur(18px) saturate(120%)!important;backdrop-filter:blur(18px) saturate(120%)!important}
+html body .planner-modal-box,html body.light-mode .planner-modal-box{
+  background:
+    radial-gradient(90% 50% at 100% 0%,color-mix(in srgb,var(--pg) 16%,transparent),transparent 62%),
+    linear-gradient(160deg,#18233a 0%,#0e1627 55%,#0a1020 100%)!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  border:1px solid color-mix(in srgb,var(--pg) 55%,rgba(255,255,255,.1))!important;
+  box-shadow:0 30px 90px -10px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.5),0 0 40px -6px color-mix(in srgb,var(--pg) 60%,transparent),0 0 110px -24px color-mix(in srgb,var(--pg) 65%,transparent),inset 0 1px 0 rgba(255,255,255,.14)!important;
+  color:#eef2ff}
+html body .planner-modal.show .planner-modal-box{animation:pgModalIn .38s cubic-bezier(.2,.9,.3,1.15) both!important}
+html body .planner-modal-title{text-shadow:0 0 18px color-mix(in srgb,var(--pg) 55%,transparent)}
+html body .planner-modal-box .planner-modal-head{padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--pg) 30%,rgba(255,255,255,.08))}
+html body .planner-close{background:rgba(255,255,255,.1)!important;transition:transform .3s,background .2s,box-shadow .3s}
+html body .planner-close:hover{transform:rotate(90deg) scale(1.08);background:color-mix(in srgb,var(--pg) 40%,transparent)!important;box-shadow:0 0 18px -2px var(--pg)}
+html body .planner-modal-box .planner-modal-intro,html body .planner-modal-box .planner-range-box,
+html body .planner-modal-box .daily-table{background:rgba(255,255,255,.055)!important;border:1px solid color-mix(in srgb,var(--pg) 28%,rgba(255,255,255,.1))!important}
+html body .planner-modal-box .parts-summary>div{background:rgba(255,255,255,.06)!important;border:1px solid color-mix(in srgb,var(--pg) 30%,rgba(255,255,255,.1))!important;border-radius:14px}
+html body .planner-modal-box .parts-summary b{color:color-mix(in srgb,var(--pg) 70%,#fff);text-shadow:0 0 14px var(--pg)}
+html body .planner-modal-box .daily-head{background:color-mix(in srgb,var(--pg) 20%,transparent)!important;color:#fff}
+html body .planner-modal-box .daily-row:not(.daily-head):hover{background:color-mix(in srgb,var(--pg) 8%,transparent)}
+html body.light-mode .planner-modal-box input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),
+html body .planner-modal-box input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),
+html body.light-mode .planner-modal-box textarea,html body .planner-modal-box textarea,
+html body.light-mode .planner-modal-box select,html body .planner-modal-box select{
+  background:rgba(8,13,26,.9)!important;border:1px solid rgba(255,255,255,.2)!important;color:#fff!important;color-scheme:dark}
+html body .planner-modal-box input:focus,html body .planner-modal-box textarea:focus{border-color:var(--pg)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--pg) 25%,transparent)!important}
+html body.light-mode .planner-modal-box label,html body.light-mode .planner-modal-box small,html body.light-mode .planner-modal-box span{color:inherit}
+html body #announcement-popup,html body #countdown-popup{
+  background:linear-gradient(160deg,#18233a,#0b1220)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  border:1px solid color-mix(in srgb,var(--pg) 50%,transparent)!important;
+  box-shadow:0 20px 60px -10px rgba(0,0,0,.75),0 0 34px -6px color-mix(in srgb,var(--pg) 60%,transparent)!important}
+
+/* ---------- تقویم برنامه: روزها واضح‌تر، روز انتخاب‌شده و امروز درخشان ---------- */
+#bd-cal .bdc-c{background:rgba(255,255,255,.085)!important;border:1px solid color-mix(in srgb,var(--pg) 32%,rgba(255,255,255,.14))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:transform .22s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,background .2s!important}
+#bd-cal .bdc-c:hover{transform:translateY(-3px) scale(1.06)!important;background:color-mix(in srgb,var(--pg) 24%,rgba(255,255,255,.08))!important;box-shadow:0 10px 22px -8px var(--pg),0 0 0 1px var(--pg)!important}
+#bd-cal .bdc-c.t{background:radial-gradient(circle at 30% 15%,rgba(255,255,255,.4),transparent 55%),linear-gradient(145deg,#38bdf8,#6366f1)!important;box-shadow:0 0 0 2px rgba(255,255,255,.35),0 8px 22px -4px #6366f1,0 0 26px -2px #38bdf8!important;animation:pgTodayPulse 2.6s ease-in-out infinite}
+@keyframes pgTodayPulse{50%{box-shadow:0 0 0 2px rgba(255,255,255,.5),0 8px 26px -2px #6366f1,0 0 38px 2px #38bdf8}}
+#bd-cal .bdc-c.s{outline:none!important;background:linear-gradient(145deg,color-mix(in srgb,#f472b6 55%,#1a1030),color-mix(in srgb,#f472b6 28%,#0b1020))!important;border-color:#f9a8d4!important;box-shadow:0 0 0 2px #f472b6,0 0 24px -2px #f472b6,0 8px 20px -8px #f472b6!important}
+#bd-cal .bdc-it{background:rgba(255,255,255,.075)!important;border:1px solid color-mix(in srgb,var(--dc,#f472b6) 40%,rgba(255,255,255,.12))!important}
+#bd-cal .bdc-wd span{color:color-mix(in srgb,var(--pg) 70%,#fff)}
+
+/* ---------- لبه‌ی درخشان نوار بالا و ریل کناری ---------- */
+@media (min-width:860px){
+html body .app-bar-icons{border-color:color-mix(in srgb,var(--pg) 42%,rgba(255,255,255,.08))!important;
+  box-shadow:0 0 0 1px rgba(0,0,0,.4),0 24px 60px -18px rgba(0,0,0,.7),0 0 36px -8px color-mix(in srgb,var(--pg) 58%,transparent),0 0 100px -30px color-mix(in srgb,var(--pg) 62%,transparent),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 44px -26px color-mix(in srgb,var(--pg) 62%,transparent)!important}
+html body .tabs{border-color:color-mix(in srgb,var(--pg) 42%,rgba(255,255,255,.08))!important;
+  box-shadow:0 0 0 1px rgba(0,0,0,.45),0 30px 80px -14px rgba(0,0,0,.75),0 0 36px -8px color-mix(in srgb,var(--pg) 58%,transparent),0 0 90px -26px color-mix(in srgb,var(--pg) 62%,transparent),inset 0 1px 0 rgba(255,255,255,.11)!important}
+}
+
+/* ---------- آیکن‌های ریل کناری: اوربِ براق ---------- */
+html body .tabs .tab-icon{position:relative!important;overflow:hidden;
+  background:radial-gradient(circle at 30% 20%,color-mix(in srgb,var(--tc,#38bdf8) 44%,transparent),transparent 62%),linear-gradient(145deg,color-mix(in srgb,var(--tc,#38bdf8) 26%,#0c1226),color-mix(in srgb,var(--tc,#38bdf8) 7%,#080c1a))!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tc,#38bdf8) 50%,transparent),inset 0 1px 0 rgba(255,255,255,.3),0 8px 18px -8px var(--tc,#38bdf8),0 0 14px -4px color-mix(in srgb,var(--tc,#38bdf8) 62%,transparent)!important}
+html body .tabs .tab-icon::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,0) 46%);opacity:.55}
+html body .tabs .tab-icon::after{content:"";position:absolute;top:-60%;left:-80%;width:50%;height:220%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:rotate(20deg);transition:left .7s ease}
+html body .tabs .tab-btn:hover .tab-icon::after{left:140%}
+html body .tabs .tab-icon svg{stroke-width:2.1!important;position:relative;z-index:1;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--tc,#38bdf8) 85%,transparent))!important}
+@keyframes pgHalo{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 22px -6px var(--tc),0 0 0 0 color-mix(in srgb,var(--tc) 55%,transparent)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 28px -4px var(--tc),0 0 0 8px transparent}}
+html body .tabs .tab-btn.active .tab-icon{
+  border:2px solid transparent!important;background-origin:border-box!important;background-clip:padding-box,padding-box,border-box!important;
+  background-image:radial-gradient(circle at 30% 18%,rgba(255,255,255,.42),transparent 55%),linear-gradient(145deg,var(--tc,#38bdf8),color-mix(in srgb,var(--tc,#38bdf8) 55%,#000)),conic-gradient(from var(--ang),rgba(255,255,255,.15) 0 55%,#fff 80%,rgba(255,255,255,.15))!important;
+  animation:pgHalo 2.4s ease-in-out infinite,pgSpin 3s linear infinite!important}
+html body .tabs .tab-btn.active .tab-icon svg{filter:drop-shadow(0 1px 3px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(255,255,255,.55))!important}
+
+/* ---------- آیکن‌های نوار بالا: اوربِ شیشه‌ای با حلقه‌ی نور چرخان ---------- */
+html body .app-bar-icons button:not(#cloud-account-btn){--ic:var(--pg);
+  border:2px solid transparent!important;background-origin:border-box!important;background-clip:padding-box,padding-box,border-box!important;
+  background-image:radial-gradient(circle at 28% 14%,rgba(255,255,255,.5),transparent 52%),linear-gradient(150deg,color-mix(in srgb,var(--ic) 92%,#fff 8%),color-mix(in srgb,var(--ic) 60%,#000)),conic-gradient(from var(--ang),rgba(255,255,255,.28) 0 55%,rgba(255,255,255,.95) 80%,rgba(255,255,255,.28))!important;
+  box-shadow:inset 0 -6px 10px -6px rgba(0,0,0,.4),0 8px 18px -6px color-mix(in srgb,var(--ic) 72%,transparent),0 0 16px -4px color-mix(in srgb,var(--ic) 58%,transparent)!important;
+  color:#fff!important;animation:none!important;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1),box-shadow .3s!important}
+html body .app-bar-icons button:not(#cloud-account-btn):hover{animation:pgSpin 1.1s linear infinite!important;
+  box-shadow:0 14px 26px -6px color-mix(in srgb,var(--ic) 88%,transparent),0 0 30px -2px color-mix(in srgb,var(--ic) 78%,transparent)!important}
+html body .app-bar-icons button:not(#cloud-account-btn) svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.35)) drop-shadow(0 0 4px rgba(255,255,255,.45))}
+html body #books-notes-badge{--ic:#f43f5e}html body #finals-badge{--ic:#fb7a4b}html body #budget-badge{--ic:#f97316}
+html body #qt-focus-btn{--ic:#10b981}html body #qt-notebook-btn{--ic:#ec4899}html body #qt-reminder-btn{--ic:#6366f1}
+html body #guide-badge{--ic:#3b82f6}html body #maz-badge{--ic:#0ea5e9}html body #settings-badge{--ic:#64748b}
+html body #calculator-badge{--ic:#14b8a6}html body #calculus-badge{--ic:#8b5cf6}html body #subject-library-badge{--ic:#22c55e}
+html body #lab-badge{--ic:#38bdf8}html body #eitaa-badge{--ic:#f59e0b}html body #chatgpt-badge{--ic:#7c83fd}
+html body #translate-badge{--ic:#f43f8e}html body #chatgpt-external-badge{--ic:#10a37f}html body #sample-questions-badge{--ic:#f87171}
+html body #countdown-badge{--ic:#fbbf24}html body #announcement-badge{--ic:#a78bfa}
+html body #maz-badge,html body #eitaa-badge{font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+
+/* ---------- حالت روشن ---------- */
+body.light-mode .tab-content .glass-card,body.light-mode .tab-content .adm-card{animation:none!important;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 35%,transparent),0 10px 36px -14px color-mix(in srgb,var(--pg) 55%,transparent)!important}
+body.light-mode .tab-content .glass-card::before{opacity:.7}
+body.light-mode .app-bar-icons,body.light-mode .tabs{box-shadow:0 20px 50px -20px rgba(15,23,42,.35),0 0 26px -10px color-mix(in srgb,var(--pg) 50%,transparent)!important}
+
+@media (prefers-reduced-motion:reduce){
+  html body .tab-content .glass-card,html body .tab-content .adm-card,html body .tabs .tab-btn.active .tab-icon,body::after,
+  html body .tab-content .glass-card::before,#bd-cal .bdc-c.t{animation:none!important}}
+
+/* ==========================================================================
+   v3 — رفع باگ‌های ظاهری + بازطراحی نرم ظاهر سایت
+   ========================================================================== */
+
+/* ---- باگ ۱: تب «نکات» از زیر ریل کناری بیرون می‌زد و عنوانش بریده بود ---- */
+@media (min-width:860px){
+  html body #tab-notes-ve.smart-notes-section{
+    width:min(1380px,calc(100vw - 232px))!important;max-width:none!important;
+    margin:0 auto!important;box-sizing:border-box!important;
+    border-radius:28px;padding:26px!important;
+    border:1px solid color-mix(in srgb,var(--pg) 36%,rgba(255,255,255,.08));
+    background:radial-gradient(120% 70% at 100% 0%,color-mix(in srgb,var(--pg) 13%,transparent),transparent 60%),linear-gradient(150deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 30%,transparent),0 0 40px -8px color-mix(in srgb,var(--pg) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.14);
+    animation:pgBreath 4.8s ease-in-out infinite}
+}
+html body #tab-notes-ve .smart-notes-header h2{font-size:1.35rem;margin:0 0 4px}
+html body #tab-notes-ve .smart-notes-search input{width:100%;box-sizing:border-box}
+html body #tab-notes-ve .smart-subject-btn{border:1px solid color-mix(in srgb,var(--pg) 30%,rgba(255,255,255,.1))}
+html body #tab-notes-ve .smart-subject-btn.active{background:linear-gradient(135deg,var(--pg),color-mix(in srgb,var(--pg) 55%,#000))!important;color:#fff!important;box-shadow:0 8px 22px -8px var(--pg)}
+
+/* ---- باگ ۲: لکه‌ی مورب (انیمیشن قدیمی goalSweep) ---- */
+html body .home-goal-card::after,html body .goal-dashboard-v2::after{display:none!important}
+
+/* ---- باگ ۳: پیام‌های شناور روی آیکن سطل زباله می‌افتادند ---- */
+@media (min-width:860px){
+  html body .reminder-toast,html body .study-focus-check{right:auto!important;left:104px!important;bottom:18px!important}
+}
+
+/* ---- ظاهر جدید: عنوان گرادیانی با درخشش ---- */
+html body #atxt-app-title{
+  background:linear-gradient(100deg,#a5b4fc 0%,#7dd3fc 30%,#f0abfc 60%,#a5b4fc 100%);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:pgTitle 9s linear infinite;filter:drop-shadow(0 0 22px color-mix(in srgb,var(--pg) 45%,transparent))}
+@keyframes pgTitle{to{background-position:220% 0}}
+html body .title-pro-badge{background:linear-gradient(135deg,var(--pg),color-mix(in srgb,var(--pg) 40%,#7c3aed))!important;color:#fff!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 6px 20px -4px var(--pg);letter-spacing:.08em}
+body.light-mode #atxt-app-title{background:linear-gradient(100deg,#3b5bdb,#0ea5e9,#c026d3,#3b5bdb);background-size:220% 100%;-webkit-background-clip:text;background-clip:text}
+
+/* ---- پس‌زمینه: شبکه‌ی نقطه‌ای ظریف + وینیت ---- */
+body{background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.045) 1px,transparent 0)!important;background-size:26px 26px!important}
+body.light-mode{background-image:radial-gradient(circle at 1px 1px,rgba(15,23,42,.06) 1px,transparent 0)!important}
+
+/* ---- دکمه‌ها: براق‌تر، با جاروی نور و حس فشار ---- */
+html body .tab-content .btn,html body .planner-modal-box .btn{position:relative;overflow:hidden;
+  transition:transform .22s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,filter .2s!important}
+html body .tab-content .btn::after,html body .planner-modal-box .btn::after{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .6s ease;pointer-events:none}
+html body .tab-content .btn:hover::after,html body .planner-modal-box .btn:hover::after{left:130%}
+html body .tab-content .btn:hover,html body .planner-modal-box .btn:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 12px 26px -10px var(--pg)}
+html body .tab-content .btn:active,html body .planner-modal-box .btn:active{transform:translateY(0) scale(.97)}
+
+/* ---- فیلدها: گردتر و با سایه‌ی داخلی ---- */
+html body .tab-content input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),
+html body .tab-content select,html body .tab-content textarea{border-radius:14px!important;box-shadow:inset 0 2px 8px rgba(0,0,0,.28)}
+
+/* ---- اسکرول‌بار همرنگ صفحه ---- */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--pg) 55%,#334) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,color-mix(in srgb,var(--pg) 70%,#223),color-mix(in srgb,var(--pg) 35%,#111));border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--pg);background-clip:padding-box}
+
+/* ---- انتخاب متن و تیترها ---- */
+::selection{background:color-mix(in srgb,var(--pg) 55%,transparent);color:#fff}
+html body .tab-content .glass-card h2,html body .tab-content .glass-card h3{letter-spacing:-.01em;text-shadow:0 0 22px color-mix(in srgb,var(--pg) 30%,transparent)}
+
+@media (prefers-reduced-motion:reduce){html body #atxt-app-title,html body #tab-notes-ve{animation:none!important}}
+
+/* ---- باگ ۴: آیکن تب فعال در ریل کناری هم‌رنگ پس‌زمینه و نامرئی بود ---- */
+html body .tabs .tab-btn.active .tab-icon svg,
+html body .tabs .tab-btn.active .tab-icon svg *{color:#fff!important;stroke:#fff!important}
+html body .tabs .tab-btn.active .tab-icon svg{stroke-width:2.3!important}
+
+/* ---- باگ ۵: کادر دوتایی دور فیلد جستجوی نکات ---- */
+html body #tab-notes-ve .smart-notes-search input{background:transparent!important;border:0!important;box-shadow:none!important;margin:0!important}
+</style>
+<script id="glow-frames-v3-js">
+/* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
+(function(){
+  if(window.__pgGlowInit) return; window.__pgGlowInit=true;
+  var SEL='.glass-card,.adm-card,.em-hero,.stat-box,.study-period-card,.daily-ring-card,.planner-day-card';
+  var TILT='.stat-box,.study-period-card,.daily-ring-card,.planner-day-card';
+  var raf=0,last=null,ev=null;
+  function apply(){
+    raf=0; if(!ev) return;
+    var t=ev.target; if(!t||!t.closest) return;
+    var el=t.closest(SEL);
+    if(last && last!==el){ last.style.removeProperty('--mx'); last.style.removeProperty('--my'); last.style.removeProperty('--rx'); last.style.removeProperty('--ry'); }
+    last=el; if(!el) return;
+    var r=el.getBoundingClientRect();
+    var x=ev.clientX-r.left, y=ev.clientY-r.top;
+    el.style.setProperty('--mx',x+'px'); el.style.setProperty('--my',y+'px');
+    if(el.matches(TILT) && r.width>0){
+      var px=x/r.width-.5, py=y/r.height-.5;
+      el.style.setProperty('--ry',(px*8).toFixed(2)+'deg');
+      el.style.setProperty('--rx',(-py*8).toFixed(2)+'deg');
+    }
+  }
+  document.addEventListener('pointermove',function(e){
+    if(e.pointerType==='touch') return;
+    ev=e; if(!raf) raf=requestAnimationFrame(apply);
+  },{passive:true});
+  document.addEventListener('pointerleave',function(){
+    if(last){ last.style.removeProperty('--mx'); last.style.removeProperty('--my'); last.style.removeProperty('--rx'); last.style.removeProperty('--ry'); last=null; }
+  },true);
+})();
+</script>
 </body>
 </html>
