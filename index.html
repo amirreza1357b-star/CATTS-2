@@ -5057,6 +5057,7 @@ body.light-mode .ckg-stat{ background:#fff; }
         <button class="tab-btn" style="--tc:#fb923c" data-adm-tab="tab-settings" onclick="switchTab('tab-settings', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></span><span class="tab-label">اهداف</span></button>
         <button class="tab-btn" style="--tc:#34d399" data-adm-tab="tab-planner" onclick="switchTab('tab-planner', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18"></path><path d="M8 2v5M16 2v5"></path></svg></span><span class="tab-label">برنامه هفتگی</span></button>
         <button class="tab-btn" style="--tc:#22d3ee" data-adm-tab="tab-gallery" onclick="switchTab('tab-gallery', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="9" r="1.6" fill="currentColor" stroke="none"></circle><path d="M21 15l-5.2-5.2a2 2 0 0 0-2.8 0L4 19"></path></svg></span><span class="tab-label">گالری</span></button>
+        <button class="tab-btn" style="--tc:#f472b6" data-adm-tab="tab-advice" onclick="switchTab('tab-advice', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></span><span class="tab-label">مشاوره</span></button>
         <button class="tab-btn" style="--tc:#f43f5e" data-adm-tab="tab-trash" onclick="switchTab('tab-trash', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"></path></svg><span id="trash-total-badge" class="trash-badge"></span></span><span class="tab-label">سطل زباله</span></button>
     </div>
 
@@ -5733,6 +5734,8 @@ body.light-mode .ckg-stat{ background:#fff; }
           <div id="planner-archives" class="planner-archives"></div>
         </div>
     </div>
+
+    <div id="tab-advice" class="tab-content"></div>
 
     <!-- تب ششم: سطل زباله -->
     <div id="tab-trash" class="tab-content">
@@ -20243,17 +20246,9 @@ body.light-mode::before{opacity:.75}
       g.gain.setValueAtTime(.0001,t+i*.22);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),t+i*.22+.03);g.gain.exponentialRampToValueAtTime(.0001,t+i*.22+.9);o.connect(g);g.connect(a.destination);o.start(t+i*.22);o.stop(t+i*.22+1);});
   }
   function noise(a,brown){var n=a.sampleRate*3,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0),l=0;for(var i=0;i<n;i++){var w=Math.random()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5;}else d[i]=w*.5;}return b;}
-  function ambStart(){
-    var a=ac();if(!a||amb.src||S.cfg.amb==='off')return;var ty=S.cfg.amb,s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();
-    s.buffer=noise(a,ty==='brown');s.loop=true;g.gain.value=0;
-    if(ty==='rain'){f.type='bandpass';f.frequency.value=1800;f.Q.value=.35;}else if(ty==='white'){f.type='lowpass';f.frequency.value=9000;}else{f.type='lowpass';f.frequency.value=700;}
-    s.connect(f);f.connect(g);g.connect(a.destination);s.start();g.gain.linearRampToValueAtTime(S.cfg.ambVol/100*.5,a.currentTime+.8);amb={src:s,gain:g,type:ty};
-  }
-  function ambStop(){if(!amb.src)return;var s=amb.src,g=amb.gain;try{g.gain.cancelScheduledValues(AC.currentTime);g.gain.linearRampToValueAtTime(0,AC.currentTime+.5);setTimeout(function(){try{s.stop();}catch(e){}},600);}catch(e){}amb={src:null,gain:null,type:null};}
-  function ambSync(){
-    var want=S.cfg.amb!=='off'&&S.st.running&&S.st.mode==='focus';
-    if(want){if(amb.src&&amb.type!==S.cfg.amb)ambStop();ambStart();if(amb.gain)amb.gain.gain.value=S.cfg.ambVol/100*.5;}else ambStop();
-  }
+  function ambStop(){amb={src:null,gain:null,type:null};if(window.CalmSounds)CalmSounds.pomo(null);}
+  function ambStart(){}
+  function ambSync(){var want=S.cfg.amb!=='off'&&S.st.running&&S.st.mode==='focus';if(window.CalmSounds)CalmSounds.pomo(want?S.cfg.amb:null,S.cfg.ambVol/100);}
   function wakeSync(){
     if(!('wakeLock' in navigator))return;var want=S.cfg.wake&&S.st.running&&!document.hidden;
     if(want&&!wl){navigator.wakeLock.request('screen').then(function(l){wl=l;l.addEventListener('release',function(){wl=null;});}).catch(function(){});}
@@ -20398,8 +20393,8 @@ body.light-mode::before{opacity:.75}
     box.innerHTML='<div class="pm-ref"><b>🎉 پومودورو کامل شد! تمرکزت چطور بود؟</b><div class="pm-stars">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-pm="rate" data-n="'+n+'" class="'+(e.rate>=n?'on':'')+'" aria-label="'+n+' ستاره">★</button>';}).join('')+'</div><input class="pm-in" id="pm-note" type="text" maxlength="140" placeholder="یک جمله از چیزی که یاد گرفتی (اختیاری)" value="'+esc(e.note||'')+'"><div class="row"><button type="button" class="pm-chip" style="flex:1" data-pm="ref-save">ثبت</button><button type="button" class="pm-chip" data-pm="ref-skip">رد</button></div></div>';
   }
   function renderAmb(){
-    var o=[['off','خاموش'],['rain','🌧 باران'],['brown','🌊 نویز قهوه‌ای'],['white','⚪ نویز سفید']];
-    $('#pm-amb').innerHTML='<span>🎧 صدای محیط (فقط هنگام تمرکز):</span>'+o.map(function(x){return '<button type="button" data-pm="amb" data-a="'+x[0]+'" class="'+(S.cfg.amb===x[0]?'on':'')+'">'+x[1]+'</button>';}).join('')+'<input type="range" min="0" max="100" value="'+S.cfg.ambVol+'" data-pm="ambvol" aria-label="بلندی صدا">';
+    var o=[['off','خاموش']].concat(window.CalmSounds?CalmSounds.list.map(function(x){return [x.id,x.icon+' '+x.name];}):[['rain','🌧 باران'],['brown','🟤 نویز قهوه‌ای'],['white','⚪ نویز سفید']]);
+    $('#pm-amb').innerHTML='<span>🎧 صدای محیط (فقط هنگام تمرکز):</span>'+o.map(function(x){return '<button type="button" data-pm="amb" data-a="'+x[0]+'" class="'+(S.cfg.amb===x[0]?'on':'')+'">'+x[1]+'</button>';}).join('')+'<input type="range" min="0" max="100" value="'+S.cfg.ambVol+'" style="--v:'+S.cfg.ambVol+'%" data-pm="ambvol" aria-label="بلندی صدا"><button type="button" class="calm-open" onclick="window.CalmSounds&&CalmSounds.open()">🎛 میکسر کامل</button>';
   }
   function renderGoal(){
     var s=stats(),n=s.today.n,g=S.cfg.goal,p=Math.min(1,n/g),c=263.9;
@@ -21050,7 +21045,376 @@ details.sr-card{margin:6px 0;border-radius:12px;border:1px solid var(--pm-line);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
-<style id="glow-frames-v3">
+<script id="advice-data" type="application/json">{"topics": [{"id": "night-before-exam", "icon": "🌙", "color": "#818cf8", "category": "امتحان", "title": "مرور شب قبل از امتحان", "summary": "شب آخر چه کنیم؟ برنامهٔ ۹۰ و ۱۲۰ دقیقه‌ای، روش مرور هر درس برای امتحان عمومی و آزمون جامع تخصصی، صبح امتحان و چک‌لیست نهایی.", "tags": ["امتحان", "مرور", "شب امتحان", "بازیابی فعال", "خواب"], "text": "night-before-exam/text.md", "audio": [{"file": "night-before-exam/PART1.mp3", "title": "قسمت ۱ — مقدمه و امتحانات عمومی", "from": 0, "to": 62, "duration": 300.024, "sync": [[0.0, 2.35], [2.35, 6.02], [6.02, 9.39], [9.39, 21.61], [21.61, 35.77], [35.77, 43.23], [43.23, 53.59], [53.59, 58.07], [58.07, 62.0], [62.0, 64.16], [64.16, 75.3], [75.3, 80.42], [80.42, 83.22], [83.22, 85.59], [85.59, 87.69], [87.69, 91.12], [91.12, 94.96], [94.96, 100.9], [100.9, 106.06], [106.06, 110.67], [110.67, 121.3], [121.3, 126.7], [126.7, 135.89], [135.89, 141.19], [141.19, 150.42], [150.42, 154.42], [154.42, 164.79], [164.79, 166.13], [166.13, 172.28], [172.28, 175.97], [175.97, 177.3], [177.3, 179.97], [179.97, 183.91], [183.91, 188.4], [188.4, 192.94], [192.94, 197.41], [197.41, 200.48], [200.48, 204.39], [204.39, 208.49], [208.49, 212.86], [212.86, 216.27], [216.27, 217.57], [217.57, 220.63], [220.63, 225.88], [225.88, 229.44], [229.44, 233.07], [233.07, 237.78], [237.78, 241.1], [241.1, 245.05], [245.05, 248.65], [248.65, 252.52], [252.52, 256.74], [256.74, 258.15], [258.15, 261.88], [261.88, 265.83], [265.83, 270.84], [270.84, 272.22], [272.22, 276.45], [276.45, 280.3], [280.3, 285.58], [285.58, 289.94], [289.94, 295.15], [295.15, 300.02]]}, {"file": "night-before-exam/PART2.mp3", "title": "قسمت ۲ — آزمون‌های جامع تخصصی", "from": 63, "to": 151, "duration": 382.08, "sync": [[0.0, 4.5], [4.5, 12.46], [12.46, 18.57], [18.57, 20.94], [20.94, 23.56], [23.56, 27.03], [27.03, 30.06], [30.06, 33.7], [33.7, 37.27], [37.27, 40.67], [40.67, 48.52], [48.52, 49.73], [49.73, 52.57], [52.57, 60.1], [60.1, 66.36], [66.36, 72.74], [72.74, 76.17], [76.17, 84.25], [84.25, 89.75], [89.75, 95.77], [95.77, 102.34], [102.34, 111.23], [111.23, 117.57], [117.57, 123.6], [123.6, 124.91], [124.91, 129.85], [129.85, 134.06], [134.06, 137.76], [137.76, 143.97], [143.97, 148.66], [148.66, 152.24], [152.24, 158.49], [158.49, 161.76], [161.76, 167.02], [167.02, 171.97], [171.97, 176.36], [176.36, 181.95], [181.95, 185.93], [185.93, 189.36], [189.36, 192.88], [192.88, 196.34], [196.34, 200.31], [200.31, 206.39], [206.39, 209.23], [209.23, 213.09], [213.09, 214.6], [214.6, 217.89], [217.89, 222.23], [222.23, 223.33], [223.33, 227.53], [227.53, 229.0], [229.0, 233.79], [233.79, 236.31], [236.31, 240.33], [240.33, 242.07], [242.07, 245.28], [245.28, 247.62], [247.62, 251.6], [251.6, 253.3], [253.3, 256.16], [256.16, 259.94], [259.94, 264.33], [264.33, 265.96], [265.96, 271.83], [271.83, 275.57], [275.57, 279.03], [279.03, 282.8], [282.8, 287.01], [287.01, 291.02], [291.02, 298.04], [298.04, 302.07], [302.07, 305.77], [305.77, 310.25], [310.25, 315.16], [315.16, 324.03], [324.03, 332.05], [332.05, 336.08], [336.08, 343.58], [343.58, 344.8], [344.8, 349.96], [349.96, 351.23], [351.23, 352.52], [352.52, 354.44], [354.44, 358.66], [358.66, 363.0], [363.0, 367.02], [367.02, 371.59], [371.59, 376.04], [376.04, 382.08]]}, {"file": "night-before-exam/PART3.mp3", "title": "قسمت ۳ — تکنیک‌ها، صبح امتحان و چک‌لیست", "from": 152, "to": 199, "duration": 195.36, "sync": [[0.0, 2.28], [2.28, 8.18], [8.18, 9.28], [9.28, 10.28], [10.28, 11.4], [11.4, 12.52], [12.52, 14.08], [14.08, 22.65], [22.65, 24.7], [24.7, 30.95], [30.95, 37.09], [37.09, 38.94], [38.94, 43.73], [43.73, 47.57], [47.57, 50.9], [50.9, 54.87], [54.87, 60.03], [60.03, 63.23], [63.23, 69.9], [69.9, 74.2], [74.2, 78.15], [78.15, 82.5], [82.5, 85.79], [85.79, 89.08], [89.08, 93.17], [93.17, 97.03], [97.03, 100.88], [100.88, 105.72], [105.72, 110.95], [110.95, 116.15], [116.15, 120.59], [120.59, 123.94], [123.94, 127.61], [127.61, 131.16], [131.16, 135.29], [135.29, 138.72], [138.72, 141.76], [141.76, 144.42], [144.42, 148.2], [148.2, 153.18], [153.18, 155.88], [155.88, 162.05], [162.05, 164.62], [164.62, 169.58], [169.58, 171.16], [171.16, 174.97], [174.97, 185.1], [185.1, 195.36]]}], "actions": [{"label": "🗓 برنامهٔ ۹۰ دقیقه‌ای امتحان عمومی را به برنامهٔ امروز اضافه کن", "kind": "plan", "blocks": [["study", 20, "مرور ساختاری"], ["study", 25, "بازیابی فعال"], ["study", 20, "رفع نقاط ضعف"], ["test", 15, "شبیه‌سازی امتحان"], ["review", 10, "جمع‌بندی نهایی"]]}, {"label": "🗓 برنامهٔ ۱۲۰ دقیقه‌ای آزمون جامع را به برنامهٔ امروز اضافه کن", "kind": "plan", "blocks": [["analysis", 15, "تحلیل عملکرد قبلی"], ["study", 20, "بازیابی مفاهیم و فرمول‌ها"], ["test", 40, "حل سؤالات منتخب"], ["analysis", 25, "تحلیل اشتباهات"], ["review", 20, "جمع‌بندی نهایی"]]}, {"label": "🧠 شروع یک جلسهٔ بازیابی فعال", "kind": "go", "mode": "study", "sub": "ar"}], "_md": "# راهنمای جامع مرور شب قبل از امتحان\n## بررسی تخصصی روش مرور در امتحانات عمومی و آزمون‌های جامع تخصصی\n\n### مقدمه: شب قبل از امتحان چه اتفاقی باید بیفتد؟\n\nشب قبل از امتحان، زمان یادگیری تمام مطالب از ابتدا نیست؛ بلکه فرصتی برای تثبیت اطلاعات، بازیابی آموخته‌ها، شناسایی نقاط ضعف و آماده‌سازی ذهن برای عملکرد بهتر است.\n\nیکی از اشتباهات رایج دانش‌آموزان این است که برای تمام امتحانات از یک روش مرور استفاده می‌کنند؛ درحالی‌که امتحانات عمومی و آزمون‌های جامع تخصصی از نظر نوع پردازش اطلاعات، نحوه پاسخ‌گویی و مهارت‌های موردنیاز تفاوت دارند.\n\nدر امتحانات عمومی، یادآوری دقیق اطلاعات، مفاهیم، تعاریف و توانایی پاسخ‌گویی تشریحی اهمیت بیشتری دارد.\n\nدر آزمون‌های جامع تخصصی، علاوه بر دانش علمی، سرعت بازیابی اطلاعات، تشخیص تیپ سؤال، انتخاب روش حل، دقت محاسباتی و مدیریت زمان نقش مهمی دارند.\n\nبنابراین باید برای هرکدام برنامه‌ای مستقل طراحی کرد.\n\n---\n\n# بخش اول: مرور شب قبل از امتحانات عمومی\n\n### ۱. هدف اصلی چیست؟\n\nهدف از مرور دروس عمومی این است که دانش‌آموز بتواند بدون مراجعه به کتاب، مطالب مهم را به خاطر بیاورد و آن‌ها را به شکل دقیق و منظم در پاسخ تشریحی ارائه دهد.\n\nدر این نوع امتحانات باید روی موارد زیر تمرکز کرد:\n\n- یادآوری تعاریف و مفاهیم اصلی\n- تسلط بر جزئیات مهم کتاب\n- درک ارتباط بین مطالب\n- یادآوری استثناها و نکات کلیدی\n- توانایی پاسخ‌گویی به سؤالات تشریحی\n- پرهیز از فراموشی مطالبی که قبلاً مطالعه شده‌اند\n\n### ۲. برنامه پیشنهادی ۹۰ دقیقه‌ای\n\n**مرحله اول: مرور ساختاری (۲۰ دقیقه)**\n\nابتدا فهرست فصل‌ها، تیترها، مفاهیم اصلی و ارتباط موضوعات را بررسی کنید. هدف این است که یک تصویر کلی از محتوای امتحان در ذهن ایجاد شود.\n\n**مرحله دوم: بازیابی فعال (۲۵ دقیقه)**\n\nکتاب را ببندید و سعی کنید تعاریف، نکات مهم و پاسخ پرسش‌ها را از حافظه بیان کنید یا بنویسید. در این مرحله مشخص می‌شود کدام مطالب واقعاً در حافظه باقی مانده‌اند.\n\n**مرحله سوم: رفع نقاط ضعف (۲۰ دقیقه)**\n\nفقط مطالبی را مجدداً مطالعه کنید که در مرحله قبل فراموش کرده‌اید یا اشتباه به یاد آورده‌اید. از صرف زمان زیاد برای مطالبی که کاملاً مسلط هستید خودداری کنید.\n\n**مرحله چهارم: شبیه‌سازی امتحان (۱۵ دقیقه)**\n\nچند سؤال تشریحی انتخاب کنید و بدون مشاهده پاسخ‌نامه به آن‌ها جواب دهید. به کامل بودن، دقت و نظم پاسخ‌ها توجه کنید.\n\n**مرحله پنجم: جمع‌بندی نهایی (۱۰ دقیقه)**\n\nتعاریف، نکات فراموش‌شده، استثناها و مطالبی را که احتمال اشتباه در آن‌ها بیشتر است، یک بار دیگر مرور کنید.\n\n### ۳. روش مرور اختصاصی دروس عمومی\n\n**الف) دینی:**\n\n- پیام و مفهوم آیات را مرور کنید.\n- ارتباط آیات با موضوع درس را بررسی کنید.\n- تعاریف و عبارت‌های مهم کتاب را بازیابی کنید.\n- به سؤالات چرا، چگونه و توضیح دهید پاسخ بدهید.\n- پاسخ‌ها را با واژه‌های دقیق و مرتبط کتاب تنظیم کنید.\n\n**ب) فارسی:**\n\n- معنی واژگان و عبارت‌های مهم را مرور کنید.\n- آرایه‌های ادبی و دستور زبان را با مثال بازیابی کنید.\n- مفهوم شعر و نثر را توضیح دهید.\n- نکات املایی و تاریخ ادبیات را بررسی کنید.\n\n**ج) عربی:**\n\n- قواعد را به شکل کاربردی مرور کنید.\n- چند جمله را از نظر ساختار و نقش کلمات بررسی کنید.\n- ترجمه عبارت‌های مهم را تمرین کنید.\n- روی تشخیص ساختار جمله و قواعد پرتکرار تمرکز کنید.\n\n**د) زبان انگلیسی:**\n\n- لغات را همراه با جمله و کاربردشان مرور کنید.\n- قواعد را با مثال‌های کوتاه بازیابی کنید.\n- متن‌های کتاب را از نظر مفهوم بررسی کنید.\n- مهارت درک مطلب را با خواندن یک متن کوتاه فعال کنید.\n\n**هـ) جغرافیا و سایر دروس حفظی:**\n\n- نقشه‌ها، نمودارها و طبقه‌بندی‌ها را بررسی کنید.\n- مطالب را به شکل دسته‌بندی‌شده مرور کنید.\n- ارتباط علت و معلولی موضوعات را بفهمید.\n- از خودتان سؤال بسازید و بدون نگاه کردن پاسخ دهید.\n\n### ۴. اشتباهات ممنوع در شب امتحان عمومی\n\n۱. چند بار خواندن کامل کتاب از ابتدا تا انتها بدون سنجش یادگیری.\n\n۲. صرف زمان بیش از اندازه برای مطالبی که کاملاً بلد هستید.\n\n۳. حفظ کردن پاسخ‌های طولانی بدون درک مفهوم آن‌ها.\n\n۴. نداشتن تمرین تشریحی پیش از امتحان.\n\n۵. شروع یک مبحث کاملاً جدید و سنگین در ساعات پایانی شب.\n\n۶. بیدار ماندن تا صبح برای افزایش زمان مطالعه.\n\n---\n\n# بخش دوم: مرور شب قبل از آزمون‌های جامع تخصصی\n\n### ۱. تفاوت اصلی آزمون جامع با امتحان عمومی\n\nدر آزمون جامع، دانستن فرمول‌ها و مفاهیم به‌تنهایی کافی نیست. دانش‌آموز باید بتواند در مدت‌زمان محدود، روش مناسب حل سؤال را تشخیص دهد.\n\nبرای این منظور باید بتواند:\n\n- موضوع و مبحث سؤال را تشخیص دهد.\n- مفهوم علمی پشت سؤال را شناسایی کند.\n- روش حل مناسب را انتخاب کند.\n- داده‌های مهم صورت سؤال را استخراج کند.\n- گزینه‌های نادرست را با استدلال حذف کند.\n- زمان خود را بین سؤالات مدیریت کند.\n\nبنابراین مرور شب آزمون جامع باید بر پایه بازیابی مفاهیم، حل سؤالات منتخب و تحلیل اشتباهات باشد.\n\n### ۲. برنامه پیشنهادی ۱۲۰ دقیقه‌ای\n\n**مرحله اول: تحلیل عملکرد قبلی (۱۵ دقیقه)**\n\nآزمون‌های قبلی و دفترچه اشتباهات را بررسی کنید. مشخص کنید در کدام مباحث اشتباه مفهومی، محاسباتی، دانشی یا بی‌دقتی داشته‌اید.\n\n**مرحله دوم: بازیابی مفاهیم و فرمول‌ها (۲۰ دقیقه)**\n\nفرمول‌ها، قضیه‌ها، روابط و نکات کلیدی را بدون نگاه کردن به جزوه یادآوری کنید.\n\n**مرحله سوم: حل سؤالات منتخب (۴۰ دقیقه)**\n\nاز مباحث مهم، سؤالات استاندارد و متنوع انتخاب کنید. هدف، تشخیص روش حل و تثبیت مهارت است، نه افزایش تعداد تست‌ها.\n\n**مرحله چهارم: تحلیل اشتباهات (۲۵ دقیقه)**\n\nپاسخ‌ها را بررسی کنید. علت اشتباه را پیدا کنید و مسیر حل صحیح را یک بار دیگر بدون نگاه کردن بازسازی کنید.\n\n**مرحله پنجم: جمع‌بندی نهایی (۲۰ دقیقه)**\n\nفرمول‌ها، نکات پرتکرار، روش‌های حل و هشدارهای مربوط به بی‌دقتی را مرور کنید.\n\n> توجه: این برنامه برای دانش‌آموزی مناسب است که قبلاً مباحث را مطالعه کرده است. اگر مبحثی کاملاً جدید باشد، ابتدا باید مفهوم و پیش‌نیازهای آن را یاد بگیرد.\n\n### ۳. روش مرور اختصاصی دروس تخصصی\n\n**الف) ریاضی، حسابان، آمار و هندسه:**\n\n- فرمول‌های اصلی هر فصل را از حافظه بازیابی کنید.\n- شرایط استفاده از هر فرمول را مشخص کنید.\n- به جای حل تعداد زیادی سؤال مشابه، سؤالاتی با روش‌های حل متفاوت انتخاب کنید.\n- سؤالاتی را که قبلاً اشتباه حل کرده‌اید دوباره بررسی کنید.\n- ارتباط بین مباحث مختلف را مرور کنید.\n\nنمونه مباحث مهم:\n\n- مثلثات: تناوب، اتحادها، معادلات مثلثاتی و نمودارها.\n- حسابان: تابع، حد، پیوستگی و مشتق.\n- هندسه: قضیه‌ها، روابط هندسی و تشخیص ساختار مناسب برای حل.\n- آمار و احتمال: شمارش حالت‌ها، احتمال و تشخیص نوع مسئله.\n\n> نکته مهم: صرفاً دیدن راه‌حل یک سؤال کافی نیست. باید بتوانید پاسخ‌نامه را کنار بگذارید و مسیر حل را خودتان بازسازی کنید.\n\n**ب) فیزیک:**\n\n- مفهوم فیزیکی هر فرمول را مرور کنید.\n- یکاها و ابعاد کمیت‌ها را بررسی کنید.\n- شرایط استفاده از روابط را مشخص کنید.\n- چند مسئله مفهومی و محاسباتی حل کنید.\n- نمودارها و ارتباط بین کمیت‌ها را بررسی کنید.\n\nبرای هر مسئله این پنج سؤال را از خودتان بپرسید:\n\n۱. چه داده‌هایی در اختیار دارم؟\n\n۲. چه چیزی از من خواسته شده است؟\n\n۳. کدام قانون فیزیکی به مسئله مربوط است؟\n\n۴. آیا یکاها و علامت‌ها درست هستند؟\n\n۵. آیا جواب نهایی از نظر فیزیکی منطقی است؟\n\n**ج) شیمی:**\n\nشیمی ترکیبی از مفاهیم، حفظیات و محاسبات است؛ بنابراین باید در سه بخش مرور شود.\n\n**بخش اول: مفاهیم**\n\n- تعریف‌ها و ارتباط مفاهیم را مرور کنید.\n- علت پدیده‌ها را بفهمید.\n- جدول‌ها، نمودارها و تصاویر کتاب را بررسی کنید.\n\n**بخش دوم: محاسبات**\n\n- روابط و فرمول‌های اصلی را بازیابی کنید.\n- یکاها را کنترل کنید.\n- چند مسئله متنوع از محاسبات مهم حل کنید.\n\n**بخش سوم: حفظیات**\n\n- استثناها و نکات مهم را مرور کنید.\n- واکنش‌ها و معادله‌های ضروری را بررسی کنید.\n- مطالبی را که قبلاً فراموش کرده‌اید دوباره بازیابی کنید.\n\n**د) زیست‌شناسی:**\n\nزیست‌شناسی به دلیل حجم زیاد اطلاعات و ارتباط بین مفاهیم، به مرور فعال نیاز دارد.\n\n- متن کتاب درسی را مبنای مرور قرار دهید.\n- قیدها و عبارت‌های مهم را بررسی کنید.\n- شکل‌ها و اجزای آن‌ها را از حافظه توضیح دهید.\n- ارتباط بین فصل‌ها و دستگاه‌های مختلف را مرور کنید.\n- تست‌های ترکیبی و اشتباهات قبلی را بررسی کنید.\n\nبرای عمیق‌تر شدن مرور، این سؤالات را از خودتان بپرسید:\n\n۱. آیا این عبارت همیشه درست است؟\n\n۲. آیا این ویژگی فقط در یک ساختار دیده می‌شود؟\n\n۳. چه تفاوتی بین این دو فرایند وجود دارد؟\n\n۴. اگر یکی از شرایط تغییر کند، چه اتفاقی می‌افتد؟\n\nاین روش کمک می‌کند از حفظ سطحی مطالب به سمت درک دقیق‌تر و تحلیل ارتباطات حرکت کنید.\n\n---\n\n# بخش سوم: تکنیک‌های علمی مشترک برای هر دو نوع آزمون\n\n### ۱. بازیابی فعال (Active Recall)\n\nبه جای خواندن مکرر مطالب، کتاب را ببندید و تلاش کنید اطلاعات را از حافظه بیرون بکشید.\n\nمثال: به جای خواندن دوباره فرمول مشتق، یک کاغذ بردارید و فرمول‌ها و کاربردهای آن‌ها را از حافظه بنویسید.\n\nاین روش باعث می‌شود مغز برای بازیابی اطلاعات تلاش کند. پژوهش‌های یادگیری نشان داده‌اند که آزمون گرفتن از خود در بسیاری از شرایط از بازخوانی صرف مؤثرتر است.\n\n### ۲. تحلیل خطا (Error Analysis)\n\nهر اشتباه را به یک دسته مشخص تبدیل کنید:\n\n- اشتباه مفهومی: مطلب را درست متوجه نشده‌اید.\n- اشتباه دانشی: فرمول یا نکته را فراموش کرده‌اید.\n- اشتباه محاسباتی: در محاسبات دچار خطا شده‌اید.\n- بی‌دقتی: داده یا قید سؤال را اشتباه خوانده‌اید.\n- اشتباه راهبردی: روش حل نامناسب انتخاب کرده‌اید.\n- اشتباه زمانی: زمان زیادی برای سؤال صرف کرده‌اید.\n\nهدف این نیست که فقط جواب صحیح را بفهمید؛ باید علت اشتباه را شناسایی کنید.\n\n### ۳. تمرین درهم‌آمیخته (Interleaved Practice)\n\nدر آزمون جامع، سؤالات معمولاً از چند مبحث متفاوت هستند. بنابراین بهتر است در مرحله پایانی تمرین، سؤال‌های متنوع را با هم ترکیب کنید.\n\nمثلاً:\n\n- یک سؤال تابع\n- یک سؤال مثلثات\n- یک سؤال احتمال\n- یک سؤال هندسه\n\nاین روش به تشخیص تفاوت تیپ سؤال‌ها و انتخاب راهبرد مناسب کمک می‌کند. البته برای یادگیری اولیه یک مبحث، تمرین دسته‌بندی‌شده نیز می‌تواند مفید باشد.\n\n### ۴. مدیریت خواب\n\nیکی از اشتباهات جدی دانش‌آموزان، قربانی کردن خواب برای چند ساعت مطالعه بیشتر است.\n\nخواب در تثبیت حافظه، توجه و عملکرد شناختی نقش دارد.\n\nبنابراین:\n\n- مرور را در زمان مناسبی تمام کنید.\n- وسایل موردنیاز آزمون را آماده کنید.\n- از شروع مباحث سنگین در نیمه‌شب خودداری کنید.\n- برای نوجوانان، معمولاً ۸ تا ۱۰ ساعت خواب شبانه توصیه می‌شود.\n\n---\n\n# بخش چهارم: صبح روز امتحان چه کنیم؟\n\n### الف) امتحانات عمومی\n\n۱. ۱۰ تا ۱۵ دقیقه مفاهیم و تعاریف مهم را بازیابی کنید.\n\n۲. لغات، قواعد یا نکات فراموش‌شده را بررسی کنید.\n\n۳. یک یا دو سؤال تشریحی کوتاه پاسخ دهید.\n\n۴. از خواندن مطالب جدید و سنگین خودداری کنید.\n\n### ب) آزمون‌های جامع تخصصی\n\n۱. فرمول‌های اصلی را از حافظه مرور کنید.\n\n۲. نکات مهم دفترچه اشتباهات را بررسی کنید.\n\n۳. یک یا دو سؤال ساده و متوسط حل کنید.\n\n۴. سراغ آزمون سنگین و زمان‌بر نروید.\n\n۵. ذهن خود را با تعداد زیادی سؤال دشوار درگیر نکنید.\n\n---\n\n# بخش پنجم: چک‌لیست نهایی شب قبل آزمون\n\nپیش از پایان مطالعه، این موارد را بررسی کنید:\n\n- [ ] تمام مباحث آزمون را از نظر میزان تسلط بررسی کرده‌ام.\n- [ ] نکات و مطالب مهم را بدون نگاه کردن بازیابی کرده‌ام.\n- [ ] اشتباهات قبلی خودم را بررسی کرده‌ام.\n- [ ] قسمت‌های ضعیف را شناسایی و اصلاح کرده‌ام.\n- [ ] چند سؤال استاندارد و منتخب حل کرده‌ام.\n- [ ] مطالب جدید و غیرضروری را وارد برنامه نکرده‌ام.\n- [ ] وسایل موردنیاز آزمون را آماده کرده‌ام.\n- [ ] برای خواب کافی برنامه‌ریزی کرده‌ام.\n\n---\n\n# جمع‌بندی نهایی مشاوره\n\nاگر بخواهیم تمام این روش را در چند اصل خلاصه کنیم:\n\n**برای امتحانات عمومی:**\n\nتمرکز بر یادآوری دقیق، مفاهیم، تعاریف، جزئیات کتاب و توانایی پاسخ‌گویی تشریحی.\n\n**برای آزمون‌های جامع تخصصی:**\n\nتمرکز بر فرمول‌ها، ارتباط مباحث، تشخیص تیپ سؤال، حل مسئله و تحلیل اشتباهات.\n\n**برای هر دو:**\n\nبازیابی فعال، اصلاح نقاط ضعف و خواب کافی.\n\n> نکته پایانی: مرور شب امتحان جایگزین مطالعه مستمر نیست. بهترین نتیجه زمانی حاصل می‌شود که مطالب قبلاً در چند نوبت مطالعه شده باشند و شب آخر صرف بازیابی، تثبیت و آماده‌سازی ذهن شود.\n\n> **قانون طلایی: شب قبل آزمون قرار نیست همه‌چیز را از نو یاد بگیریم؛ قرار است هرآنچه یاد گرفته‌ایم، در زمان مناسب و با کمترین خطا به یاد بیاوریم.**\n"}]}</script>
+<style id="adv-css">
+/* ====================== مشاوره (متن + صوت هم‌زمان) ====================== */
+#tab-advice{--adv-c:#818cf8;--adv-line:rgba(255,255,255,.11);--adv-bg:rgba(255,255,255,.055);--adv-mut:var(--text-secondary)}
+body.light-mode #tab-advice{--adv-line:rgba(15,23,42,.1);--adv-bg:rgba(255,255,255,.72)}
+#tab-advice button{min-height:0;font-family:inherit}
+#tab-advice .adv-in{width:100%!important;min-height:0!important;height:44px!important;margin:0!important;padding:0 14px!important;border-radius:14px!important;border:1px solid var(--adv-line)!important;background:var(--adv-bg)!important;color:var(--text-primary)!important;font-size:.88rem!important;box-shadow:none!important;outline:0}
+#tab-advice textarea.adv-in{height:auto!important;min-height:110px!important;padding:12px 14px!important;line-height:1.9;resize:vertical}
+#tab-advice .adv-in:focus{border-color:var(--adv-c)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--adv-c) 25%,transparent)!important}
+.adv-hero{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.adv-hero .ic{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#f472b6,#818cf8);box-shadow:0 14px 30px -12px #818cf8}
+.adv-hero h2{margin:0;font-size:1.3rem;font-weight:900}.adv-hero p{margin:3px 0 0;font-size:.8rem;color:var(--adv-mut);line-height:1.8}
+.adv-hero .grow{flex:1;min-width:200px}
+.adv-hero .adv-in{max-width:320px}
+.adv-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.adv-chip{height:34px;padding:0 14px;border-radius:12px;border:1px solid var(--adv-line);background:var(--adv-bg);color:var(--text-primary);font-size:.78rem;font-weight:800;cursor:pointer}
+.adv-chip.on{color:#fff;border-color:transparent;background:linear-gradient(135deg,#f472b6,#818cf8)}
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.adv-card{position:relative;text-align:right;padding:18px;border-radius:24px;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 16%,transparent),var(--adv-bg) 65%);cursor:pointer;display:flex;flex-direction:column;gap:10px;color:var(--text-primary);transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .3s}
+.adv-card:hover{transform:translateY(-4px);box-shadow:0 22px 40px -22px var(--c)}
+.adv-card .top{display:flex;align-items:center;gap:12px}
+.adv-card .em{flex:none;width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:1.5rem;background:var(--c);box-shadow:0 10px 22px -10px var(--c)}
+.adv-card h3{margin:0;font-size:1.02rem;font-weight:900;line-height:1.6}.adv-card small{display:block;color:var(--adv-mut);font-size:.68rem;font-weight:700}
+.adv-card p{margin:0;font-size:.78rem;line-height:1.9;color:var(--adv-mut)}
+.adv-meta{display:flex;gap:7px;flex-wrap:wrap}.adv-meta span{padding:4px 10px;border-radius:999px;font-size:.68rem;font-weight:800;border:1px solid var(--adv-line);background:var(--adv-bg)}
+.adv-prog{height:5px;border-radius:99px;background:var(--adv-line);overflow:hidden}.adv-prog i{display:block;height:100%;width:0;border-radius:99px;background:var(--c)}
+.adv-empty{padding:40px 10px;text-align:center;color:var(--adv-mut);font-size:.86rem;line-height:2}
+.adv-soon{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px;border-radius:22px;border:1px dashed var(--adv-line);color:var(--adv-mut);font-size:.78rem;line-height:1.9;text-align:center}
+/* خواننده */
+#tab-advice .adv-reader{display:none}#tab-advice .adv-reader.on{display:block}#tab-advice .adv-list.off{display:none}
+.adv-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.adv-bar .grow{flex:1;min-width:150px}
+.adv-bar h2{margin:0;font-size:1.05rem;font-weight:900;display:flex;align-items:center;gap:10px}
+.adv-ib{height:40px;min-width:40px;padding:0 13px;border-radius:13px;border:1px solid var(--adv-line);background:var(--adv-bg);color:var(--text-primary);font-size:.78rem;font-weight:800;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.adv-ib:hover{transform:translateY(-2px)}.adv-ib.on{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--adv-c),#f472b6)}
+.adv-srch{display:flex;align-items:center;gap:8px;margin-bottom:14px}.adv-srch .adv-in{max-width:340px}.adv-srch small{color:var(--adv-mut);font-size:.72rem;font-weight:700;white-space:nowrap}
+.adv-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:22px;align-items:start}
+@media (max-width:1100px){.adv-layout{grid-template-columns:1fr}.adv-aside{display:none}}
+.adv-art{--fs:1;font-size:calc(1rem*var(--fs));line-height:2.1;padding:6px 0 30px}
+.adv-art h2.adv-h1{margin:34px 0 10px;padding:14px 16px;border-radius:18px;font-size:1.35em;font-weight:900;border:1px solid color-mix(in srgb,var(--adv-c) 45%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--adv-c) 20%,transparent),color-mix(in srgb,#f472b6 10%,transparent))}
+.adv-art h2.adv-h1:first-child{margin-top:0}
+.adv-art .adv-ttl{margin:0 0 6px;font-size:1.9em;font-weight:900;line-height:1.6;background:linear-gradient(90deg,#a5b4fc,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.adv-art .adv-sub{margin:0 0 14px;font-size:1.02em;color:var(--adv-mut);font-weight:700}
+.adv-art h3.adv-h3{margin:24px 0 6px;font-size:1.12em;font-weight:900;color:var(--adv-c)}
+.adv-b{position:relative;padding:5px 14px 5px 38px;border-radius:14px;border-right:3px solid transparent;cursor:default;transition:background .25s,border-color .25s}
+.adv-b.seek{cursor:pointer}.adv-b.seek:hover{background:var(--adv-bg)}
+.adv-b.on{border-right-color:var(--adv-c);background:linear-gradient(to left,color-mix(in srgb,var(--adv-c) 26%,transparent) var(--p,0%),color-mix(in srgb,var(--adv-c) 9%,transparent) var(--p,0%))}
+.adv-b.hit{outline:2px solid #fbbf24;outline-offset:-2px}
+.adv-art p.adv-b{margin:0 0 2px}.adv-art .adv-ul{margin:4px 0 10px;padding:0;list-style:none}
+.adv-art .adv-ul li{display:block;margin:2px 0}.adv-art .adv-ul li>span::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:10px;border-radius:50%;background:var(--adv-c);vertical-align:middle;transform:translateY(-1px)}
+.adv-art p.adv-num{display:flex;gap:10px;align-items:flex-start}.adv-art .adv-num .n{flex:none;width:26px;height:26px;margin-top:6px;border-radius:9px;display:grid;place-items:center;font-size:.72em;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--adv-c),#f472b6)}
+.adv-art blockquote.adv-q{margin:12px 0;padding:12px 38px 12px 16px;border-radius:16px;border:1px solid color-mix(in srgb,#fbbf24 55%,transparent);background:color-mix(in srgb,#fbbf24 10%,transparent);font-weight:700}
+.adv-art blockquote.adv-q.gold{border-color:#f59e0b;background:linear-gradient(135deg,color-mix(in srgb,#f59e0b 22%,transparent),color-mix(in srgb,#ef4444 10%,transparent));font-size:1.06em}
+.adv-art blockquote.adv-q.gold::before{content:"🏆";margin-inline-end:8px}
+.adv-art strong{font-weight:900}
+.adv-cks{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.adv-ck{display:flex;align-items:center;gap:12px;padding:11px 14px 11px 38px!important;border-radius:15px;border:1px solid var(--adv-line);background:var(--adv-bg);cursor:pointer}
+.adv-ck input{position:absolute;opacity:0;width:0!important;height:0!important;margin:0!important}
+.adv-ck i{flex:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--adv-line);display:grid;place-items:center;color:transparent;font-style:normal;font-size:.8rem;font-weight:900;transition:all .25s}
+.adv-ck input:checked+i{background:linear-gradient(135deg,#34d399,#0ea5e9);border-color:transparent;color:#fff}
+.adv-ck input:checked~span{opacity:.6;text-decoration:line-through}
+.adv-star{position:absolute;left:8px;top:6px;width:28px;height:28px;border:0;border-radius:9px;background:transparent;color:var(--adv-mut);font-size:1rem;cursor:pointer;opacity:0;transition:opacity .2s}
+.adv-b:hover .adv-star,.adv-star.on{opacity:1}.adv-star.on{color:#fbbf24}
+mark.adv-m{background:#fbbf24;color:#1f1300;border-radius:4px;padding:0 2px}mark.adv-m.cur{background:#f97316;color:#fff}
+.adv-ctas{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.adv-cta{padding:14px 16px;border-radius:18px;border:1px solid color-mix(in srgb,var(--adv-c) 50%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--adv-c) 16%,transparent),transparent);color:var(--text-primary);font-size:.86rem;font-weight:800;cursor:pointer;text-align:right}
+.adv-note{margin-top:20px;padding:16px;border-radius:20px;border:1px solid var(--adv-line);background:var(--adv-bg)}.adv-note h4{margin:0 0 8px;font-size:.92rem}
+/* فهرست مطالب */
+.adv-aside{position:sticky;top:12px;max-height:calc(100vh - 160px);overflow:auto;padding:14px;border-radius:22px;border:1px solid var(--adv-line);background:var(--adv-bg)}
+.adv-aside h4{margin:0 0 10px;font-size:.88rem;font-weight:900}.adv-aside h4:not(:first-child){margin-top:16px}
+.adv-toc{display:flex;flex-direction:column;gap:3px}
+.adv-toc button{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:right;padding:7px 10px;border-radius:11px;border:0;background:transparent;color:var(--text-primary);font-size:.76rem;font-weight:700;line-height:1.7;cursor:pointer}
+.adv-toc button.sub{padding-right:22px;font-weight:600;color:var(--adv-mut)}.adv-toc button:hover{background:var(--adv-line)}.adv-toc button.on{background:color-mix(in srgb,var(--adv-c) 22%,transparent);color:var(--text-primary)}
+.adv-toc button small{flex:none;font-size:.62rem;color:var(--adv-mut);direction:ltr}
+.adv-ring{display:flex;align-items:center;gap:10px;font-size:.74rem;color:var(--adv-mut);margin-bottom:6px}.adv-ring b{color:var(--text-primary)}
+/* پخش‌کننده */
+.adv-dock{position:sticky;bottom:14px;z-index:30;margin-top:10px;padding:14px 16px;border-radius:24px;border:1px solid color-mix(in srgb,var(--adv-c) 45%,transparent);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),var(--bg-solid);box-shadow:0 24px 50px -20px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.adv-d-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:.76rem;font-weight:800}
+.adv-d-top .sec{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adv-d-top .tm{direction:ltr;color:var(--adv-mut);font-variant-numeric:tabular-nums;white-space:nowrap}
+.adv-seekw{position:relative;height:22px;display:flex;align-items:center}
+.adv-seekw input[type=range]{-webkit-appearance:none;appearance:none;width:100%!important;height:8px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:99px!important;background:linear-gradient(to left,var(--adv-c) var(--sp,0%),var(--adv-line) var(--sp,0%))!important;box-shadow:none!important;direction:rtl;cursor:pointer}
+.adv-seekw input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--adv-c);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.adv-seekw input::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--adv-c)}
+.adv-ticks{position:absolute;inset:0;pointer-events:none}.adv-ticks i{position:absolute;top:50%;width:3px;height:14px;margin-top:-7px;border-radius:2px;background:rgba(255,255,255,.55)}
+.adv-d-ctl{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.adv-play{width:54px;height:54px;border-radius:50%;border:0;color:#fff;font-size:1.3rem;cursor:pointer;background:linear-gradient(135deg,var(--adv-c),#f472b6);box-shadow:0 12px 26px -10px var(--adv-c);transition:transform .25s cubic-bezier(.3,1.5,.5,1)}
+.adv-play:hover{transform:scale(1.07)}
+.adv-d-ctl .adv-ib{height:38px;min-width:38px;padding:0 10px}
+.adv-parts{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}.adv-parts button{height:30px;padding:0 12px;border-radius:10px;border:1px solid var(--adv-line);background:transparent;color:var(--adv-mut);font-size:.7rem;font-weight:800;cursor:pointer}.adv-parts button.on{color:var(--text-primary);border-color:var(--adv-c);background:color-mix(in srgb,var(--adv-c) 18%,transparent)}
+.adv-err{margin-top:8px;padding:9px 12px;border-radius:12px;font-size:.72rem;line-height:1.8;color:#fff;background:color-mix(in srgb,#f43f5e 55%,transparent);display:none}.adv-err.on{display:block}
+.adv-sync{margin-top:10px;padding:12px;border-radius:16px;border:1px dashed #fbbf24;background:color-mix(in srgb,#fbbf24 9%,transparent);font-size:.76rem;line-height:1.9;display:none}.adv-sync.on{display:block}
+.adv-sync .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.adv-b.stgt{outline:2px dashed #fbbf24;outline-offset:-2px}
+.adv-mini{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1100;display:none;align-items:center;gap:10px;padding:8px 10px 8px 16px;border-radius:999px;border:1px solid color-mix(in srgb,#818cf8 55%,transparent);background:var(--bg-solid);box-shadow:0 18px 40px -14px rgba(0,0,0,.7);font-size:.76rem;font-weight:800;max-width:calc(100vw - 24px)}
+.adv-mini.on{display:flex}.adv-mini span{max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adv-mini button{width:36px;height:36px;border-radius:50%;border:0;color:#fff;cursor:pointer;background:linear-gradient(135deg,#818cf8,#f472b6);min-height:0}
+.adv-mini .x{background:var(--adv-line,rgba(255,255,255,.12));color:var(--text-primary)}
+@media (max-width:600px){.adv-art{line-height:2}.adv-b{padding-left:30px}.adv-dock{bottom:76px}.adv-mini{bottom:84px}}
+@media (prefers-reduced-motion:reduce){#tab-advice *{transition:none!important}}
+</style>
+<script id="adv-js">
+(function(){
+  'use strict';
+  var BASE='advice/';
+  var BI={topics:[]};try{BI=JSON.parse(document.getElementById('advice-data').textContent);}catch(e){}
+  function $(s,r){return (r||document).querySelector(s);}function $$(s,r){return (r||document).querySelectorAll(s);}
+  function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
+  var EM={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return EM[c];});}
+  function inl(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');}
+  function pad(n){return String(n).padStart(2,'0');}
+  function ld(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v&&typeof v==='object'?v:d;}catch(e){return d;}}
+  function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function toast(t,m){try{if(typeof showReminderToast==='function')showReminderToast(t,m||'');}catch(e){}}
+  function clk(sec){sec=Math.max(0,Math.round(sec));return fa(Math.floor(sec/60)+':'+pad(sec%60));}
+  /* ---------- وضعیت ماندگار ---------- */
+  var S=ld('advice_v1',{});S.g=Object.assign({font:1,speed:1,follow:true},S.g||{});S.t=S.t||{};
+  function T(id){return S.t[id]||(S.t[id]={checks:{},stars:{},note:'',pos:0,read:0,off:0,done:0,opened:0});}
+  function save(){sv('advice_v1',S);}
+  var topics=[],cur=null,B=[],TL={parts:[],blocks:[],total:0},audio=null,pi=0,activeIdx=-1,sec=-1,rafId=0,pendSeek=null,lastFollow=0,searchHits=[],searchCur=-1;
+  var root=null,filterCat='همه',filterQ='',loaded=false,sleep=null,started=false,miniOff=false,syncMode=false,syncMarks={},syncPtr=0,syncPart=0;
+  /* ---------- بارگذاری فهرست موضوع‌ها (پوشهٔ advice + نسخهٔ داخلی) ---------- */
+  function norm(t){t.audio=(t.audio||[]);t.actions=t.actions||[];t.tags=t.tags||[];t.color=t.color||'#818cf8';t.icon=t.icon||'🧭';t.category=t.category||'عمومی';return t;}
+  function loadManifest(){
+    var map={},order=[];
+    (BI.topics||[]).forEach(function(t){map[t.id]=JSON.parse(JSON.stringify(t));order.push(t.id);});
+    function fin(){topics=order.map(function(id){return norm(map[id]);});loaded=true;renderList();}
+    if(location.protocol==='file:'){fin();return;}
+    var c=new AbortController(),to=setTimeout(function(){c.abort();},3500);
+    fetch(BASE+'advice.json',{cache:'no-cache',signal:c.signal}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(m){
+      clearTimeout(to);(m.topics||[]).forEach(function(t){if(!map[t.id]){map[t.id]={};order.push(t.id);}var md=map[t.id]._md;Object.assign(map[t.id],t);if(md)map[t.id]._md=md;});fin();
+    }).catch(function(){clearTimeout(to);fin();});
+  }
+  function topic(id){for(var i=0;i<topics.length;i++)if(topics[i].id===id)return topics[i];return null;}
+  function getText(t){
+    return new Promise(function(res,rej){
+      var done=false;function use(md){if(done)return;done=true;res(md);}
+      if(t.text&&location.protocol!=='file:'){fetch(BASE+t.text,{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.text();}).then(use).catch(function(){if(t._md)use(t._md);else if(!done){done=true;rej(new Error('text'));}});}
+      else if(t._md)use(t._md);else{rej(new Error('text'));}
+    });
+  }
+  /* ---------- تجزیهٔ متن (بند به بند؛ هم‌ترازِ زمان‌بندی صوت) ---------- */
+  function parse(md){var out=[];String(md).split('\n').forEach(function(line){var s=line.trim();if(!s||s==='---')return;var k='p',t=s,m;
+    if(s.charAt(0)==='#'){m=s.match(/^(#+)\s*(.*)$/);k='h'+m[1].length;t=m[2];}else if(s.indexOf('> ')===0){k='q';t=s.slice(2);}else if(s.indexOf('- [ ] ')===0){k='c';t=s.slice(6);}else if(s.indexOf('- ')===0){k='li';t=s.slice(2);}
+    out.push({k:k,t:t});});return out;}
+  function words(md){return (String(md).match(/\S+/g)||[]).length;}
+  function totalDur(t){return (t.audio||[]).reduce(function(s,p){return s+(p.duration||0);},0);}
+  /* ---------- لیست موضوع‌ها ---------- */
+  function mount(){
+    var tab=document.getElementById('tab-advice');if(!tab)return false;
+    tab.innerHTML='<div class="glass-card"><div class="adv-list" id="adv-list"></div><div class="adv-reader" id="adv-reader"></div></div>';
+    root=tab;return true;
+  }
+  function renderList(){
+    var el=$('#adv-list');if(!el)return;
+    var cats=['همه'];topics.forEach(function(t){if(cats.indexOf(t.category)<0)cats.push(t.category);});
+    var q=filterQ.trim().toLowerCase(),L=topics.filter(function(t){return (filterCat==='همه'||t.category===filterCat)&&(!q||(t.title+' '+(t.summary||'')+' '+t.tags.join(' ')).toLowerCase().indexOf(q)>-1);});
+    var cards=L.map(function(t){var st=T(t.id),ck=0,tot=0;var ct=Object.keys(st.checks).filter(function(k){return st.checks[k];}).length;var dur=totalDur(t);
+      return '<button type="button" class="adv-card" style="--c:'+t.color+'" data-adv="open" data-id="'+esc(t.id)+'"><div class="top"><span class="em">'+t.icon+'</span><div><h3>'+esc(t.title)+'</h3><small>'+esc(t.category)+'</small></div></div><p>'+esc(t.summary||'')+'</p><div class="adv-meta">'+(t._md?'<span>📖 '+fa(Math.max(1,Math.round(words(t._md)/180)))+' دقیقه مطالعه</span>':'')+(dur?'<span>🎧 '+fa(Math.round(dur/60))+' دقیقه صوت · '+fa(t.audio.length)+' قسمت</span>':'')+(ct?'<span>✅ '+fa(ct)+' مورد چک‌لیست</span>':'')+(st.done?'<span>✔ گوش داده‌ای</span>':'')+'</div><div class="adv-prog"><i style="width:'+Math.round((st.read||0)*100)+'%"></i></div></button>';}).join('');
+    el.innerHTML='<div class="adv-hero"><span class="ic">🧭</span><div class="grow"><h2>مشاوره</h2><p>راهنماهای کاربردی درس‌خواندن و امتحان؛ هر موضوع را می‌خوانی یا گوش می‌دهی و متن هم‌زمان با صدا دنبال می‌شود.</p></div><input class="adv-in" id="adv-q" type="search" placeholder="جست‌وجو در موضوع‌ها…" value="'+esc(filterQ)+'"></div>'
+      +'<div class="adv-cats">'+cats.map(function(c){return '<button type="button" class="adv-chip'+(c===filterCat?' on':'')+'" data-adv="cat" data-c="'+esc(c)+'">'+esc(c)+'</button>';}).join('')+'</div>'
+      +(cards?'<div class="adv-grid">'+cards+'</div>':'<div class="adv-empty">'+(loaded?'موضوعی پیدا نشد.':'در حال بارگذاری…')+'</div>')
+      +'<details class="adv-soon" style="margin-top:20px;display:block;text-align:right"><summary style="cursor:pointer;font-weight:800">📁 افزودن موضوع جدید (برای سازندهٔ برنامه)</summary><p style="margin:10px 0 0">پوشهٔ <b dir="ltr">advice</b> را کنار <b dir="ltr">index.html</b> بگذار: فایل <b dir="ltr">advice.json</b> فهرست موضوع‌هاست و هر موضوع یک پوشه دارد با <b dir="ltr">text.md</b> و فایل‌های صوتی (هر تعداد قسمت). متن، «بند به بند» با صدا هم‌زمان می‌شود.</p></details>';
+    var qi=$('#adv-q');if(qi&&filterQ){var v=qi.value;qi.focus();qi.setSelectionRange(v.length,v.length);}
+  }
+  /* ---------- باز کردن موضوع ---------- */
+  function open(id){
+    var t=topic(id);if(!t)return;cur=t;var st=T(id);st.opened=Date.now();save();
+    $('#adv-list').classList.add('off');var rd=$('#adv-reader');rd.classList.add('on');rd.innerHTML='<div class="adv-empty">در حال بارگذاری متن…</div>';root.style.setProperty('--adv-c',t.color);
+    getText(t).then(function(md){B=parse(md);t._md=md;buildTL();renderReader();restorePos();window.scrollTo({top:0,behavior:'instant'});}).catch(function(){rd.innerHTML='<div class="adv-bar"><button class="adv-ib" data-adv="back">→ بازگشت</button></div><div class="adv-empty">متن این موضوع بارگذاری نشد.<br><span dir="ltr">'+esc(BASE+(t.text||''))+'</span><br>پوشهٔ <b>advice</b> باید کنار index.html باشد و از روی سرور باز شود.</div>';});
+  }
+  function close(){if(audio&&!audio.paused&&started){/* پخش ادامه دارد؛ مینی‌پلیر نشان داده می‌شود */}savePos();$('#adv-reader').classList.remove('on');$('#adv-list').classList.remove('off');renderList();}
+  function buildTL(){
+    var ov=ld('advice_sync_'+cur.id,null);TL={parts:[],blocks:[],total:0};var off=0;
+    (cur.audio||[]).forEach(function(p,i){var sy=(ov&&ov[i])||p.sync||[],dur=p.duration||(sy.length?sy[sy.length-1][1]:0);TL.parts.push({file:p.file,title:p.title,from:p.from,to:p.to,dur:dur,off:off,sync:sy,ci:0});sy.forEach(function(r,k){TL.blocks[p.from+k]={part:i,s:r[0],e:r[1],g:off+r[0]};});off+=dur;});
+    TL.total=off;
+  }
+  /* ---------- نمایش مقاله ---------- */
+  function renderReader(){
+    var t=cur,st=T(t.id),h='',inUl=false,inCk=false,ckN=0,toc=[];
+    B.forEach(function(b,i){
+      var star=(b.k!=='h1'&&b.k!=='h2'&&b.k!=='h3'&&b.k!=='c')?'<button type="button" class="adv-star'+(st.stars[i]?' on':'')+'" data-adv="star" data-i="'+i+'" aria-label="نشان‌کردن">'+(st.stars[i]?'★':'☆')+'</button>':'';
+      if(b.k==='li'){if(inCk){h+='</div>';inCk=false;}if(!inUl){h+='<ul class="adv-ul">';inUl=true;}h+='<li class="adv-b" data-i="'+i+'"><span>'+inl(b.t)+'</span>'+star+'</li>';return;}
+      if(b.k==='c'){if(inUl){h+='</ul>';inUl=false;}if(!inCk){h+='<div class="adv-cks">';inCk=true;}ckN++;h+='<label class="adv-ck adv-b" data-i="'+i+'"><input type="checkbox" data-adv="ck" data-i="'+i+'"'+(st.checks[i]?' checked':'')+'><i>✓</i><span>'+inl(b.t)+'</span></label>';return;}
+      if(inUl){h+='</ul>';inUl=false;}if(inCk){h+='</div>';inCk=false;}
+      if(b.k==='h1'){toc.push({i:i,t:b.t,d:0});h+='<h2 class="adv-h1 adv-b" id="adv-b'+i+'" data-i="'+i+'">'+inl(b.t)+'</h2>';}
+      else if(b.k==='h2'){h+='<p class="adv-sub adv-b" data-i="'+i+'">'+inl(b.t)+'</p>';}
+      else if(b.k==='h3'){toc.push({i:i,t:b.t,d:toc.length&&toc[toc.length-1].d===0&&B[toc[toc.length-1].i].k==='h1'||(toc.length&&toc[toc.length-1].d===1)?1:0});h+='<h3 class="adv-h3 adv-b" id="adv-b'+i+'" data-i="'+i+'">'+inl(b.t)+'</h3>';}
+      else if(b.k==='q'){h+='<blockquote class="adv-q adv-b'+(/^\s*(\*\*)?قانون طلایی/.test(b.t)?' gold':'')+'" data-i="'+i+'">'+inl(b.t)+star+'</blockquote>';}
+      else{var m=b.t.match(/^([۰-۹0-9]+)\.\s*(.*)$/);if(m)h+='<p class="adv-b adv-num" data-i="'+i+'"><span class="n">'+m[1]+'</span><span>'+inl(m[2])+'</span>'+star+'</p>';else h+='<p class="adv-b" data-i="'+i+'">'+inl(b.t)+star+'</p>';}
+    });
+    if(inUl)h+='</ul>';if(inCk)h+='</div>';
+    h=h.replace('<h2 class="adv-h1 adv-b" id="adv-b'+B.findIndex(function(x){return x.k==='h1';})+'"','<h2 class="adv-h1 adv-b" id="adv-b'+B.findIndex(function(x){return x.k==='h1';})+'"');
+    // the very first heading is the title
+    var f0=h.indexOf('<h2 class="adv-h1 adv-b" id="adv-b0"');if(f0===0)h=h.replace(/^<h2 class="adv-h1 adv-b" id="adv-b0" data-i="0">(.*?)<\/h2>/,'<h1 class="adv-ttl adv-b" id="adv-b0" data-i="0">$1</h1>');
+    t._toc=toc;
+    var ctas=(t.actions||[]).map(function(a,i){return '<button type="button" class="adv-cta" data-adv="act" data-a="'+i+'">'+esc(a.label)+'</button>';}).join('');
+    var hasA=TL.parts.length>0;
+    $('#adv-reader').innerHTML='<div class="adv-bar"><button type="button" class="adv-ib" data-adv="back">→ بازگشت</button><div class="grow"><h2><span>'+t.icon+'</span>'+esc(t.title)+'</h2></div><button type="button" class="adv-ib" data-adv="font" data-d="-1" aria-label="کوچک‌کردن">A−</button><button type="button" class="adv-ib" data-adv="font" data-d="1" aria-label="بزرگ‌کردن">A+</button><button type="button" class="adv-ib'+(S.g.follow?' on':'')+'" data-adv="follow" id="adv-follow">دنبال‌کردن متن</button></div>'
+      +'<div class="adv-srch"><input class="adv-in" id="adv-s" type="search" placeholder="جست‌وجو در متن…" autocomplete="off"><small id="adv-sc"></small><button type="button" class="adv-ib" data-adv="snext" aria-label="بعدی">↓</button><button type="button" class="adv-ib" data-adv="sprev" aria-label="قبلی">↑</button></div>'
+      +'<div class="adv-layout"><div><article class="adv-art" id="adv-art" style="--fs:'+S.g.font+'">'+h+'<div class="adv-ctas">'+ctas+'</div><div class="adv-note"><h4>📝 یادداشت شخصی من</h4><textarea class="adv-in" id="adv-note" placeholder="نکته‌های خودت دربارهٔ این موضوع… (فقط روی همین دستگاه ذخیره می‌شود)">'+esc(st.note||'')+'</textarea></div></article>'+(hasA?dockHtml():'<div class="adv-soon" style="margin-top:14px">🎧 برای این موضوع هنوز فایل صوتی ثبت نشده است.</div>')+'</div>'
+      +'<aside class="adv-aside" id="adv-aside"></aside></div>';
+    renderAside();
+    if(hasA){initAudio();$$('.adv-b').forEach(function(e){var i=+e.getAttribute('data-i');if(TL.blocks[i])e.classList.add('seek');});}
+    $('#adv-art').addEventListener('scroll',function(){});
+  }
+  function dockHtml(){
+    return '<div class="adv-dock" id="adv-dock"><div class="adv-d-top"><span class="sec" id="adv-sec">—</span><span class="tm" id="adv-tm">۰:۰۰ / '+clk(TL.total)+'</span></div>'
+      +'<div class="adv-seekw"><input type="range" id="adv-seek" min="0" max="'+TL.total.toFixed(1)+'" step="0.1" value="0" aria-label="موقعیت"><div class="adv-ticks" id="adv-ticks"></div></div>'
+      +'<div class="adv-d-ctl"><button type="button" class="adv-ib" data-adv="bprev" title="بند قبلی" aria-label="بند قبلی">⏮</button><button type="button" class="adv-ib" data-adv="skip" data-d="-10" aria-label="۱۰ ثانیه عقب">⟲ ۱۰</button><button type="button" class="adv-play" id="adv-play" data-adv="play" aria-label="پخش">▶</button><button type="button" class="adv-ib" data-adv="skip" data-d="10" aria-label="۱۰ ثانیه جلو">۱۰ ⟳</button><button type="button" class="adv-ib" data-adv="bnext" title="بند بعدی" aria-label="بند بعدی">⏭</button>'
+      +'<button type="button" class="adv-ib" data-adv="speed" id="adv-speed" title="سرعت">'+fa(S.g.speed)+'×</button><button type="button" class="adv-ib" data-adv="sleep" id="adv-sleep" title="خاموشی خودکار">😴</button><button type="button" class="adv-ib" data-adv="syncpanel" title="تنظیم همگام‌سازی متن و صدا">⚙</button></div>'
+      +'<div class="adv-parts" id="adv-parts">'+TL.parts.map(function(p,i){return '<button type="button" data-adv="part" data-p="'+i+'">'+esc(p.title||('قسمت '+fa(i+1)))+' · '+clk(p.dur)+'</button>';}).join('')+'</div>'
+      +'<div class="adv-err" id="adv-err"></div><div class="adv-sync" id="adv-sync"></div></div>';
+  }
+  function renderAside(){
+    var t=cur,st=T(t.id),a=$('#adv-aside');if(!a)return;
+    var ck=B.filter(function(b){return b.k==='c';}).length,cd=Object.keys(st.checks).filter(function(k){return st.checks[k];}).length;
+    var stars=Object.keys(st.stars).filter(function(k){return st.stars[k];}).map(Number).sort(function(x,y){return x-y;});
+    a.innerHTML='<div class="adv-ring">📖 پیشرفت مطالعه: <b id="adv-rp">'+fa(Math.round((st.read||0)*100))+'٪</b></div>'+(ck?'<div class="adv-ring">✅ چک‌لیست: <b id="adv-cp">'+fa(cd)+' از '+fa(ck)+'</b></div>':'')
+      +'<h4>فهرست مطالب</h4><div class="adv-toc" id="adv-toc">'+(t._toc||[]).map(function(x){var tb=TL.blocks[x.i];return '<button type="button" data-adv="toc" data-i="'+x.i+'" class="'+(x.d?'sub':'')+'"><span>'+esc(x.t)+'</span>'+(tb?'<small>'+clk(tb.g)+'</small>':'')+'</button>';}).join('')+'</div>'
+      +(stars.length?'<h4>⭐ نشان‌شده‌ها</h4><div class="adv-toc">'+stars.map(function(i){return '<button type="button" data-adv="toc" data-i="'+i+'"><span>'+esc(B[i].t.slice(0,46))+'…</span></button>';}).join('')+'</div>':'');
+  }
+  /* ---------- صوت ---------- */
+  function initAudio(){
+    if(!audio){audio=new Audio();audio.preload='metadata';
+      audio.addEventListener('play',function(){started=true;setPlay(true);loop();mediaSession();miniSync();});
+      audio.addEventListener('pause',function(){setPlay(false);savePos();miniSync();});
+      audio.addEventListener('ended',function(){if(pi<TL.parts.length-1){loadPart(pi+1,0,true);}else{T(cur.id).done=1;save();setPlay(false);paint();}});
+      audio.addEventListener('error',function(){var e=$('#adv-err');if(e){e.textContent='فایل صوتی پیدا نشد: '+BASE+(TL.parts[pi]?TL.parts[pi].file:'')+' — پوشهٔ advice (با فایل‌های mp3) باید کنار index.html باشد. متن بدون مشکل کار می‌کند.';e.classList.add('on');}});
+      audio.addEventListener('loadedmetadata',function(){var P=TL.parts[pi];if(P&&isFinite(audio.duration)&&Math.abs(audio.duration-P.dur)>.6){P.dur=audio.duration;var off=0;TL.parts.forEach(function(p){p.off=off;off+=p.dur;});TL.total=off;TL.blocks.length=0;TL.parts.forEach(function(p,i){p.sync.forEach(function(r,k){TL.blocks[p.from+k]={part:i,s:r[0],e:r[1],g:p.off+r[0]};});});var sk=$('#adv-seek');if(sk)sk.max=TL.total.toFixed(1);}
+        audio.playbackRate=S.g.speed;if(pendSeek!=null){audio.currentTime=pendSeek;pendSeek=null;}if(pendPlay){pendPlay=false;audio.play().catch(function(){});}paint();});
+    }
+    pi=0;activeIdx=-1;sec=-1;audio.pause();var P=TL.parts[0];if(P){var e=$('#adv-err');if(e)e.classList.remove('on');audio.src=BASE+P.file;audio.playbackRate=S.g.speed;}
+    var tk=$('#adv-ticks');if(tk&&TL.total){tk.innerHTML=(cur._toc||[]).filter(function(x){return !x.d&&TL.blocks[x.i];}).map(function(x){return '<i style="right:'+(TL.blocks[x.i].g/TL.total*100).toFixed(2)+'%"></i>';}).join('');}
+    refreshParts();paint();
+  }
+  var pendPlay=false;
+  function loadPart(i,t,play){
+    if(!TL.parts[i])return;pi=i;var P=TL.parts[i];var e=$('#adv-err');if(e)e.classList.remove('on');
+    var want=BASE+P.file;if(!audio.src||audio.src.indexOf(P.file)<0||audio.error){pendSeek=t||0;pendPlay=!!play;audio.src=want;}
+    else{audio.currentTime=t||0;if(play)audio.play().catch(function(){});}
+    refreshParts();
+  }
+  function gt(){var P=TL.parts[pi];return P?P.off+(audio?audio.currentTime:0):0;}
+  function seekG(g,play){
+    g=Math.max(0,Math.min(TL.total-.05,g));var i=0;for(var k=0;k<TL.parts.length;k++){if(g>=TL.parts[k].off)i=k;}
+    var t=g-TL.parts[i].off;if(i!==pi)loadPart(i,t,play);else{audio.currentTime=t;if(play&&audio.paused)audio.play().catch(function(){});}
+    paint();
+  }
+  function setPlay(on){var b=$('#adv-play');if(b){b.textContent=on?'⏸':'▶';b.setAttribute('aria-label',on?'توقف':'پخش');}}
+  function refreshParts(){$$('#adv-parts button').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-p')===pi);});}
+  function loop(){cancelAnimationFrame(rafId);if(!audio||audio.paused)return;paint();rafId=requestAnimationFrame(function(){setTimeout(loop,60);});}
+  var sec_t='';
+  function paint(){
+    if(!audio||!TL.parts.length)return;var P=TL.parts[pi],t=audio.currentTime||0,g=P.off+t,off=T(cur.id).off||0,tt=t+off;
+    var sk=$('#adv-seek');if(sk&&document.activeElement!==sk){sk.value=g;sk.style.setProperty('--sp',(g/Math.max(1,TL.total)*100).toFixed(2)+'%');}
+    var tm=$('#adv-tm');if(tm)tm.textContent=clk(g)+' / '+clk(TL.total);
+    var idx=-1,k0=P.ci||0,sy=P.sync;
+    if(sy.length){if(k0>=sy.length||tt<sy[k0][0])k0=0;idx=tt>=sy[sy.length-1][1]?P.to:P.from;for(var k=k0;k<sy.length;k++){if(tt>=sy[k][0]&&tt<sy[k][1]){P.ci=k;idx=P.from+k;break;}}}
+    if(idx!==activeIdx){var old=$('.adv-b.on');if(old){old.classList.remove('on');old.style.removeProperty('--p');}activeIdx=idx;var el=activeEl(idx);if(el)el.classList.add('on');
+      var s=sectionOf(idx);if(s!==sec){sec=s;var lab=$('#adv-sec');if(lab)lab.textContent=s>=0?B[s].t:'—';$$('#adv-toc button').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-i')===s);});}
+      if(el&&S.g.follow&&Date.now()-lastFollow>5000&&started&&!audio.paused)followTo(el);}
+    var ae=activeEl(activeIdx),bl=TL.blocks[activeIdx];if(ae&&bl&&bl.e>bl.s)ae.style.setProperty('--p',Math.max(0,Math.min(100,(tt-bl.s)/(bl.e-bl.s)*100)).toFixed(1)+'%');
+    if(sleep){var left=sleep.end-Date.now();if(sleep.end&&left<=0){fadeStop();}var sb=$('#adv-sleep');if(sb&&sleep.end)sb.textContent='😴 '+clk(Math.max(0,left)/1000);}
+    miniSync();
+  }
+  function activeEl(i){return i>=0?$('.adv-b[data-i="'+i+'"]'):null;}
+  function sectionOf(i){for(var k=i;k>=0;k--){if(B[k]&&(B[k].k==='h3'||B[k].k==='h1'))return k;}return -1;}
+  function followTo(el){var r=el.getBoundingClientRect(),vh=window.innerHeight;if(r.top<vh*.18||r.bottom>vh*.62)window.scrollTo({top:window.scrollY+r.top-vh*.34,behavior:'smooth'});}
+  function fadeStop(){if(!audio)return;sleep=null;var v=audio.volume,n=0,iv=setInterval(function(){n++;audio.volume=Math.max(0,v*(1-n/12));if(n>=12){clearInterval(iv);audio.pause();audio.volume=1;}},250);var sb=$('#adv-sleep');if(sb)sb.textContent='😴';}
+  function savePos(){if(!cur||!audio||!TL.parts.length)return;var st=T(cur.id);st.pos=gt();save();}
+  function restorePos(){if(!cur||!TL.parts.length)return;var st=T(cur.id);if(st.pos>2&&st.pos<TL.total-3){var g=st.pos,i=0;for(var k=0;k<TL.parts.length;k++)if(g>=TL.parts[k].off)i=k;pi=i;var P=TL.parts[i];audio.src=BASE+P.file;pendSeek=g-P.off;paint();}}
+  function mediaSession(){try{if(!('mediaSession' in navigator)||!cur)return;navigator.mediaSession.metadata=new MediaMetadata({title:cur.title,artist:'مشاوره · CATTS',album:'مشاوره'});navigator.mediaSession.setActionHandler('play',function(){audio.play();});navigator.mediaSession.setActionHandler('pause',function(){audio.pause();});navigator.mediaSession.setActionHandler('seekbackward',function(){seekG(gt()-10);});navigator.mediaSession.setActionHandler('seekforward',function(){seekG(gt()+10);});navigator.mediaSession.setActionHandler('previoustrack',function(){blockStep(-1);});navigator.mediaSession.setActionHandler('nexttrack',function(){blockStep(1);});}catch(e){}}
+  function blockStep(d){
+    var i=activeIdx,keys=[];for(var k=0;k<TL.blocks.length;k++)if(TL.blocks[k])keys.push(k);if(!keys.length)return;
+    var pos=keys.indexOf(i);if(pos<0)pos=0;var cb=TL.blocks[keys[pos]];
+    if(d<0&&gt()-cb.g>2.5){seekG(cb.g);return;}var np=Math.max(0,Math.min(keys.length-1,pos+d));seekG(TL.blocks[keys[np]].g);
+  }
+  /* ---------- مینی‌پلیر (وقتی در تب دیگری هستی) ---------- */
+  var mini=null;
+  function ensureMini(){if(mini)return;mini=document.createElement('div');mini.className='adv-mini';mini.innerHTML='<button type="button" data-advm="play" aria-label="پخش/توقف">⏸</button><span id="adv-mini-t">مشاوره</span><button type="button" class="x" data-advm="open" aria-label="بازکردن">↗</button><button type="button" class="x" data-advm="x" aria-label="بستن">✕</button>';document.body.appendChild(mini);
+    mini.addEventListener('click',function(e){var b=e.target.closest('[data-advm]');if(!b)return;var a=b.getAttribute('data-advm');if(a==='play'){if(audio.paused)audio.play();else audio.pause();}else if(a==='x'){miniOff=true;if(audio)audio.pause();miniSync();}else if(a==='open'){var bt=document.querySelector('.tab-btn[data-adm-tab="tab-advice"]');if(bt)bt.click();}});}
+  function tabActive(){var t=document.getElementById('tab-advice');return t&&t.classList.contains('active');}
+  function miniSync(){ensureMini();var show=started&&!miniOff&&audio&&cur&&!tabActive()&&(!audio.paused||T(cur.id).pos>0);mini.classList.toggle('on',!!show);if(show){mini.querySelector('[data-advm="play"]').textContent=audio.paused?'▶':'⏸';var s=sectionOf(activeIdx);$('#adv-mini-t').textContent=cur.title+' · '+clk(gt());}}
+  /* ---------- جست‌وجو ---------- */
+  function clearMarks(){$$('mark.adv-m').forEach(function(m){var p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize();});searchHits=[];searchCur=-1;}
+  function doSearch(q){
+    clearMarks();q=q.trim();var sc=$('#adv-sc');if(!q||q.length<2){if(sc)sc.textContent='';return;}
+    var art=$('#adv-art'),w=document.createTreeWalker(art,NodeFilter.SHOW_TEXT),nodes=[],n;while((n=w.nextNode())){if(n.parentNode.closest('textarea,.adv-star,.adv-ctas,.adv-note'))continue;if(n.nodeValue.indexOf(q)>-1)nodes.push(n);}
+    nodes.forEach(function(nd){var parts=nd.nodeValue.split(q),f=document.createDocumentFragment();parts.forEach(function(p,i){f.appendChild(document.createTextNode(p));if(i<parts.length-1){var m=document.createElement('mark');m.className='adv-m';m.textContent=q;f.appendChild(m);}});nd.parentNode.replaceChild(f,nd);});
+    searchHits=Array.prototype.slice.call($$('mark.adv-m'));if(sc)sc.textContent=searchHits.length?fa(searchHits.length)+' نتیجه':'نتیجه‌ای نبود';if(searchHits.length)goHit(0);
+  }
+  function goHit(i){if(!searchHits.length)return;searchCur=(i+searchHits.length)%searchHits.length;searchHits.forEach(function(m,k){m.classList.toggle('cur',k===searchCur);});var m=searchHits[searchCur];lastFollow=Date.now();m.scrollIntoView({behavior:'smooth',block:'center'});var sc=$('#adv-sc');if(sc)sc.textContent=fa(searchCur+1)+' از '+fa(searchHits.length);}
+  /* ---------- همگام‌سازی دستی ---------- */
+  function syncPanel(){
+    var el=$('#adv-sync');if(!el)return;var open=!el.classList.contains('on');el.classList.toggle('on',open);if(!open){stopSync();return;}
+    var off=T(cur.id).off||0;
+    el.innerHTML='<b>⚙ تنظیم همگام‌سازی متن و صدا</b><p style="margin:6px 0">زمان‌بندی اولیه خودکار و تخمینی است. اگر هایلایت زود/دیر است، با دکمه‌ها جبران کن یا همگام‌سازی دستی انجام بده.</p>'
+      +'<div class="row"><span>جبران زمانی: <b id="adv-off">'+(off>0?'+':'')+fa(off.toFixed(1))+'</b> ثانیه</span><button type="button" class="adv-ib" data-adv="off" data-d="-0.5">−۰٫۵</button><button type="button" class="adv-ib" data-adv="off" data-d="0.5">+۰٫۵</button><button type="button" class="adv-ib" data-adv="off" data-d="0">صفر</button></div>'
+      +'<div class="row"><button type="button" class="adv-ib on" data-adv="syncstart">▶ شروع همگام‌سازی دستی این قسمت</button><button type="button" class="adv-ib" data-adv="syncreset">بازگشت به زمان‌بندی خودکار</button><button type="button" class="adv-ib" data-adv="syncexport">کپی JSON برای advice.json</button></div><div id="adv-sync-live"></div>';
+  }
+  function stopSync(){syncMode=false;syncMarks={};$$('.adv-b.stgt').forEach(function(e){e.classList.remove('stgt');});var l=$('#adv-sync-live');if(l)l.innerHTML='';}
+  function syncTarget(){$$('.adv-b.stgt').forEach(function(e){e.classList.remove('stgt');});var P=TL.parts[syncPart],i=P.from+syncPtr,el=activeEl(i);if(el){el.classList.add('stgt');el.scrollIntoView({behavior:'smooth',block:'center'});}var l=$('#adv-sync-live');if(l)l.innerHTML='<p style="margin:8px 0 4px">بند علامت‌خورده را وقتی صدا <b>شروع به خواندنش کرد</b> ثبت کن ('+fa(syncPtr+1)+' از '+fa(P.to-P.from+1)+')</p><div class="row"><button type="button" class="adv-ib on" data-adv="syncmark">ثبت شروع این بند (Enter)</button><button type="button" class="adv-ib" data-adv="syncback">بند قبل</button><button type="button" class="adv-ib" data-adv="syncsave">پایان و ذخیره</button></div>';}
+  function syncSave(){
+    var P=TL.parts[syncPart],n=P.to-P.from+1,st=P.sync.map(function(r){return r[0];});
+    Object.keys(syncMarks).forEach(function(k){st[+k]=syncMarks[k];});
+    for(var k=1;k<n;k++)if(st[k]<st[k-1]+.05)st[k]=st[k-1]+.05;
+    var arr=st.map(function(s,k){return [+s.toFixed(2),+(k<n-1?st[k+1]:P.dur).toFixed(2)];});
+    var ov=ld('advice_sync_'+cur.id,{});ov[syncPart]=arr;sv('advice_sync_'+cur.id,ov);P.sync=arr;buildTLKeep();stopSync();var el=$('#adv-sync');if(el)el.classList.remove('on');toast('✅ همگام‌سازی ذخیره شد','برای ثبت دائمی در GitHub، «کپی JSON» را بزن.');paint();
+  }
+  function buildTLKeep(){var cp=pi,cu=audio?audio.currentTime:0;buildTL();pi=cp;}
+  function exportJSON(){var ov=ld('advice_sync_'+cur.id,{});var out=TL.parts.map(function(p,i){return {file:p.file,from:p.from,to:p.to,duration:+p.dur.toFixed(2),sync:p.sync};});var s=JSON.stringify(out);try{navigator.clipboard.writeText(s).then(function(){toast('📋 کپی شد','آرایهٔ audio را در advice.json جایگزین کن.');});}catch(e){toast('کپی نشد','');}}
+  /* ---------- اقدام‌ها ---------- */
+  function runAction(a){
+    if(a.kind==='go'&&window.StudyMethods){try{localStorage.setItem('timer_active_mode',a.mode||'study');}catch(e){}var bt=document.querySelector('.tab-btn[data-adm-tab="tab-timer"]');if(bt)bt.click();setTimeout(function(){try{if((a.mode||'study')==='study'){switchTimerMode('study');switchStudySub(a.sub||'free');}else{switchTimerMode('exam');}}catch(e){}},50);return;}
+    if(a.kind==='plan'&&window.StudyMethods&&StudyMethods.tFree){var SM=StudyMethods,day=new Date(),dk=day.getFullYear()+'-'+pad(day.getMonth()+1)+'-'+pad(day.getDate()),tot=a.blocks.reduce(function(s,b){return s+b[1];},0);var from=Math.ceil((SM.nowMin()+5)/15)*15,s=SM.tFree(dk,tot,from);if(s==null){toast('جای خالی کافی در برنامهٔ امروز نیست','ابتدا بلوک‌های دیگر را کم کن.');return;}var t0=s;a.blocks.forEach(function(b){SM.tAdd(dk,{s:t0,e:t0+b[1],type:b[0],subj:'',title:b[2]});t0+=b[1];});toast('🗓 برنامه به امروز اضافه شد',fa(tot)+' دقیقه، از ساعت '+pad(Math.floor(s/60))+':'+pad(s%60));var bt2=document.querySelector('.tab-btn[data-adm-tab="tab-timer"]');if(bt2)bt2.click();setTimeout(function(){try{switchTimerMode('study');switchStudySub('tb');}catch(e){}},50);}
+  }
+  var SPEEDS=[0.75,1,1.25,1.5,1.75,2];
+  function click(e){
+    var m=e.target.closest('[data-adv]');
+    if(!m){var b=e.target.closest('.adv-b.seek');if(b&&!window.getSelection().toString()&&!e.target.closest('input,label,button,a')){var i=+b.getAttribute('data-i');if(TL.blocks[i]){lastFollow=0;seekG(TL.blocks[i].g,true);}}return;}
+    var a=m.getAttribute('data-adv'),i2=m.getAttribute('data-i');
+    if(a==='open')open(m.getAttribute('data-id'));
+    else if(a==='back')close();
+    else if(a==='cat'){filterCat=m.getAttribute('data-c');renderList();}
+    else if(a==='font'){S.g.font=Math.max(.85,Math.min(1.5,+(S.g.font+(+m.getAttribute('data-d'))*.1).toFixed(2)));save();$('#adv-art').style.setProperty('--fs',S.g.font);}
+    else if(a==='follow'){S.g.follow=!S.g.follow;save();m.classList.toggle('on',S.g.follow);}
+    else if(a==='play'){if(audio.paused){lastFollow=0;audio.play().catch(function(){});}else audio.pause();}
+    else if(a==='skip')seekG(gt()+(+m.getAttribute('data-d')));
+    else if(a==='bprev')blockStep(-1);else if(a==='bnext')blockStep(1);
+    else if(a==='speed'){var k=SPEEDS.indexOf(S.g.speed);S.g.speed=SPEEDS[(k+1)%SPEEDS.length];audio.playbackRate=S.g.speed;save();m.textContent=fa(S.g.speed)+'×';}
+    else if(a==='sleep'){var opts=[0,15,30,45,60],ci=sleep&&sleep.min?opts.indexOf(sleep.min):0,nx=opts[(ci+1)%opts.length];sleep=nx?{min:nx,end:Date.now()+nx*60000}:null;m.textContent=nx?'😴 '+fa(nx)+'د':'😴';if(nx)toast('😴 خاموشی خودکار','بعد از '+fa(nx)+' دقیقه صدا آرام قطع می‌شود.');}
+    else if(a==='part'){lastFollow=0;seekG(TL.parts[+m.getAttribute('data-p')].off,true);}
+    else if(a==='toc'){var el=document.getElementById('adv-b'+i2)||activeEl(+i2);lastFollow=Date.now();if(el)el.scrollIntoView({behavior:'smooth',block:'center'});if(TL.blocks[+i2]&&audio&&e.altKey)seekG(TL.blocks[+i2].g,true);}
+    else if(a==='star'){var st=T(cur.id);st.stars[i2]=!st.stars[i2];save();m.classList.toggle('on',!!st.stars[i2]);m.textContent=st.stars[i2]?'★':'☆';renderAside();e.stopPropagation();}
+    else if(a==='act'){runAction(cur.actions[+m.getAttribute('data-a')]);}
+    else if(a==='snext')goHit(searchCur+1);else if(a==='sprev')goHit(searchCur-1);
+    else if(a==='syncpanel')syncPanel();
+    else if(a==='off'){var d=+m.getAttribute('data-d'),st2=T(cur.id);st2.off=d===0?0:+((st2.off||0)+d).toFixed(1);save();var o=$('#adv-off');if(o)o.textContent=(st2.off>0?'+':'')+fa(st2.off.toFixed(1));paint();}
+    else if(a==='syncstart'){syncMode=true;syncPart=pi;syncMarks={};syncPtr=0;seekG(TL.parts[pi].off,false);syncTarget();toast('همگام‌سازی دستی','صدا را پخش کن؛ هر بند که شروع شد «ثبت شروع این بند» را بزن.');}
+    else if(a==='syncmark'){syncMarks[syncPtr]=audio.currentTime;var P=TL.parts[syncPart];if(syncPtr<P.to-P.from){syncPtr++;syncTarget();}else{syncSave();}}
+    else if(a==='syncback'){if(syncPtr>0){delete syncMarks[syncPtr];syncPtr--;syncTarget();}}
+    else if(a==='syncsave')syncSave();
+    else if(a==='syncreset'){try{localStorage.removeItem('advice_sync_'+cur.id);}catch(e){}buildTLKeep();var P2=cur.audio;toast('بازگشت به زمان‌بندی خودکار','');syncPanel();paint();}
+    else if(a==='syncexport')exportJSON();
+  }
+  function init(){
+    if(!mount())return;
+    root.addEventListener('click',click);
+    root.addEventListener('input',function(e){var t=e.target;if(t.id==='adv-q'){filterQ=t.value;renderList();}else if(t.id==='adv-s'){clearTimeout(init._s);init._s=setTimeout(function(){doSearch(t.value);},180);}else if(t.id==='adv-note'){T(cur.id).note=t.value;clearTimeout(init._n);init._n=setTimeout(save,400);}else if(t.id==='adv-seek'){var v=+t.value;t.style.setProperty('--sp',(v/Math.max(1,TL.total)*100).toFixed(2)+'%');var tm=$('#adv-tm');if(tm)tm.textContent=clk(v)+' / '+clk(TL.total);}});
+    root.addEventListener('change',function(e){var t=e.target;if(t.getAttribute&&t.getAttribute('data-adv')==='ck'){var st=T(cur.id);st.checks[t.getAttribute('data-i')]=t.checked;save();renderAside();}else if(t.id==='adv-seek'){lastFollow=0;seekG(+t.value,!audio.paused);}});
+    root.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.id==='adv-s')goHit(searchCur+1);});
+    document.addEventListener('keydown',function(e){
+      if(!tabActive()||!cur||!$('#adv-reader').classList.contains('on'))return;var tg=e.target&&e.target.tagName;if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT')return;
+      if(syncMode&&(e.key==='Enter')){e.preventDefault();var b=$('[data-adv="syncmark"]');if(b)b.click();return;}
+      if((e.key===' '||e.code==='Space')&&audio&&TL.parts.length&&tg!=='BUTTON'){e.preventDefault();if(audio.paused)audio.play().catch(function(){});else audio.pause();}
+    });
+    window.addEventListener('scroll',function(){if(!cur||!tabActive())return;lastFollow=lastFollow;var art=$('#adv-art');if(!art)return;var r=art.getBoundingClientRect(),vh=window.innerHeight,p=Math.max(0,Math.min(1,(vh*.55-r.top)/Math.max(1,r.height)));var st=T(cur.id);if(p>(st.read||0)){st.read=+p.toFixed(3);clearTimeout(init._r);init._r=setTimeout(function(){save();var rp=$('#adv-rp');if(rp)rp.textContent=fa(Math.round(st.read*100))+'٪';},300);}},{passive:true});
+    window.addEventListener('wheel',function(){lastFollow=Date.now();},{passive:true});window.addEventListener('touchmove',function(){lastFollow=Date.now();},{passive:true});
+    window.addEventListener('pagehide',savePos);document.addEventListener('visibilitychange',function(){if(document.hidden)savePos();});
+    new MutationObserver(miniSync).observe(root,{attributes:true,attributeFilter:['class']});
+    setInterval(function(){if(audio&&!audio.paused){savePos();}},5000);
+    renderList();loadManifest();
+  }
+  window.Advice={topics:function(){return topics;},open:open,parse:parse,state:function(){return S;},tl:function(){return TL;},seek:seekG,audio:function(){return audio;},active:function(){return activeIdx;},onShow:function(){if($('#adv-list')&&!$('#adv-list').classList.contains('off'))renderList();miniSync();},cur:function(){return cur;}};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<style id="glow-frames-v4">
 /* ==========================================================================
    Glow Frames v2 — قاب‌های درخشان، نور چرخان روی لبه، اسپات‌لایت موس،
    آیکن‌های اوربی، آرورای همرنگ صفحه، و مودال‌های کاملاً مات و خوانا
@@ -21308,8 +21672,68 @@ html body .tabs .tab-btn.active .tab-icon svg{stroke-width:2.3!important}
 
 /* ---- باگ ۵: کادر دوتایی دور فیلد جستجوی نکات ---- */
 html body #tab-notes-ve .smart-notes-search input{background:transparent!important;border:0!important;box-shadow:none!important;margin:0!important}
+
+/* ===== دکمه و پنل صداهای آرامش + اصلاح اسلایدر پومودورو ===== */
+html body #calm-badge{--ic:#2dd4bf}
+#calm-badge .calm-eq{position:absolute;bottom:4px;right:4px;display:none;gap:2px;align-items:flex-end;height:10px}
+#calm-badge .calm-eq i{width:2.5px;background:#fff;border-radius:2px;animation:calmEq 1s ease-in-out infinite;height:4px}
+#calm-badge .calm-eq i:nth-child(2){animation-delay:.2s}#calm-badge .calm-eq i:nth-child(3){animation-delay:.4s}
+@keyframes calmEq{50%{height:10px}}
+#calm-badge.playing .calm-eq{display:flex}
+#calm-badge.playing{box-shadow:0 0 0 3px rgba(45,212,191,.35),0 0 26px 2px #2dd4bf!important}
+#calm-panel{position:fixed;z-index:100000;display:none;direction:rtl;box-sizing:border-box;padding:16px;border-radius:26px;color:#eef2ff;max-height:calc(100vh - 100px);overflow:auto;
+  background:radial-gradient(90% 40% at 100% 0%,rgba(45,212,191,.16),transparent 60%),linear-gradient(160deg,#18233a,#0b1220);
+  border:1px solid rgba(45,212,191,.5);box-shadow:0 30px 90px -10px rgba(0,0,0,.85),0 0 40px -6px rgba(45,212,191,.5),inset 0 1px 0 rgba(255,255,255,.14)}
+#calm-panel.show{display:block;animation:calmIn .32s cubic-bezier(.2,.9,.3,1.15) both}
+@keyframes calmIn{from{opacity:0;transform:translateY(-10px) scale(.97)}to{opacity:1;transform:none}}
+#calm-panel .cp-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+#calm-panel .cp-title b{display:block;font-size:1.05rem}#calm-panel .cp-title small{color:#94a3b8;font-size:.72rem}
+#calm-panel .cp-x{width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;flex:none;transition:transform .3s}
+#calm-panel .cp-x:hover{transform:rotate(90deg)}
+#calm-panel .cp-sec{margin:14px 0 8px;font-size:.75rem;color:#94a3b8;font-weight:700}#calm-panel .cp-sec em{font-style:normal;color:#2dd4bf}
+#calm-panel .cp-presets,#calm-panel .cp-sleep{display:flex;flex-wrap:wrap;gap:6px}
+#calm-panel .cp-chip{height:30px;padding:0 11px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#eef2ff;font:inherit;font-size:.72rem;font-weight:700;cursor:pointer;transition:.2s}
+#calm-panel .cp-chip:hover{border-color:#2dd4bf}
+#calm-panel .cp-chip.on{background:linear-gradient(135deg,#2dd4bf,#38bdf8);color:#04202a;border-color:transparent}
+#calm-panel .cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#calm-panel .cp-tile{border-radius:18px;padding:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);transition:.25s;text-align:center}
+#calm-panel .cp-tile.on{background:linear-gradient(160deg,color-mix(in srgb,var(--c) 28%,#0b1220),color-mix(in srgb,var(--c) 10%,#0b1220));border-color:var(--c);box-shadow:0 0 22px -6px var(--c)}
+#calm-panel .cp-t-btn{width:100%;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0}
+#calm-panel .cp-ic{font-size:1.6rem;transition:transform .3s}#calm-panel .cp-tile.on .cp-ic{transform:scale(1.18);filter:drop-shadow(0 0 8px var(--c))}
+#calm-panel .cp-nm{font-size:.7rem;font-weight:700}
+#calm-panel .cp-lv{display:none!important;margin-top:4px!important}#calm-panel .cp-tile.on .cp-lv{display:block!important}
+#calm-panel .cp-master{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.06)}
+#calm-panel .cp-mp{font-size:.72rem;min-width:36px;text-align:left}
+#calm-panel .cp-foot{display:flex;gap:8px;margin-top:14px}
+#calm-panel .cp-foot button{flex:1;height:36px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#fff;font:inherit;font-weight:700;font-size:.78rem;cursor:pointer}
+#calm-panel .cp-resume{background:linear-gradient(135deg,#2dd4bf,#38bdf8)!important;color:#04202a!important;border:0!important}
+#calm-panel input[type=range],.pm-amb input[type=range]{-webkit-appearance:none!important;appearance:none!important;height:6px!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;border-radius:6px!important;outline:none;cursor:pointer;
+  --rc:#2dd4bf;background:linear-gradient(to left,var(--rc) var(--v,60%),rgba(255,255,255,.16) var(--v,60%))!important}
+#calm-panel .cp-lv,#calm-panel .cp-mv{width:100%!important}
+#calm-panel .cp-tile .cp-lv{--rc:var(--c)}
+.pm-amb input[type=range]{width:120px!important;--rc:var(--pa,#fb923c)}
+#calm-panel input[type=range]::-webkit-slider-thumb,.pm-amb input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--rc);box-shadow:0 0 10px var(--rc)}
+#calm-panel input[type=range]::-moz-range-thumb,.pm-amb input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--rc)}
+.pm-amb{row-gap:8px!important}
+.pm-amb button.calm-open{border-style:dashed}
+@media (max-width:640px){#calm-panel .cp-grid{grid-template-columns:repeat(3,1fr)}}
+#calm-panel input[type=range],.pm-amb input[type=range]{min-height:0!important;max-height:6px!important;height:6px!important;box-sizing:border-box!important;display:block;flex:none;font-size:0!important;line-height:0!important}
+#calm-panel .cp-master input{flex:1}
+
+
+/* ===== بخش مشاوره: رنگ صفحه و درخشش هماهنگ ===== */
+body:has(#tab-advice.active){--pg:#f472b6}
+#tab-advice{--pg:#f472b6}
+html body #tab-advice .adv-card,html body #tab-advice .adv-hero{position:relative}
+html body #tab-advice .adv-card{border-color:color-mix(in srgb,var(--c,#f472b6) 45%,transparent)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--c,#f472b6) 25%,transparent),0 0 26px -8px color-mix(in srgb,var(--c,#f472b6) 55%,transparent),inset 0 0 30px -22px var(--c,#f472b6)!important;transition:transform .3s,box-shadow .3s}
+html body #tab-advice .adv-card:hover{transform:translateY(-4px);box-shadow:0 0 0 1px var(--c,#f472b6),0 0 38px -4px color-mix(in srgb,var(--c,#f472b6) 65%,transparent),inset 0 0 40px -18px var(--c,#f472b6)!important}
+html body #tab-advice .adv-hero .ic{box-shadow:0 14px 30px -12px #818cf8,0 0 30px -4px #f472b6}
+html body #tab-advice .adv-chip{transition:.2s}
+html body #tab-advice .adv-chip.on{box-shadow:0 8px 20px -8px #f472b6}
+html body .adv-mini{z-index:99990}
+@media (min-width:860px){html body .tabs{max-height:calc(100vh - 24px);overflow-y:auto;scrollbar-width:none}html body .tabs::-webkit-scrollbar{display:none}}
 </style>
-<script id="glow-frames-v3-js">
+<script id="glow-frames-v4-js">
 /* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
 (function(){
   if(window.__pgGlowInit) return; window.__pgGlowInit=true;
@@ -21338,6 +21762,321 @@ html body #tab-notes-ve .smart-notes-search input{background:transparent!importa
   document.addEventListener('pointerleave',function(){
     if(last){ last.style.removeProperty('--mx'); last.style.removeProperty('--my'); last.style.removeProperty('--rx'); last.style.removeProperty('--ry'); last=null; }
   },true);
+})();
+
+/* ==========================================================================
+   CalmSounds — موتور صداهای طبیعت (ساخته‌شده با WebAudio، بدون فایل خارجی)
+   • میکسر چندلایه + پنل نوار بالا + تایمر خاموشی + ترکیب‌های آماده
+   • پومودورو هم از همین موتور استفاده می‌کند (بدون صدای دوبل)
+   ========================================================================== */
+(function(){
+'use strict';
+if(window.CalmSounds) return;
+var LS='calm_sounds_v1', POMO='__pomo';
+var AC=null, master=null, analyser=null;
+var layers={}, bufs={}, listeners=[], sleepT=null, sleepFadeT=null, sleepEnd=0, sleepMin=0, pomoType=null, blipBuf=null;
+var st={master:.75,levels:{},last:[]};
+try{var sv=JSON.parse(localStorage.getItem(LS)||'null');
+  if(sv&&typeof sv==='object'){ if(typeof sv.master==='number')st.master=Math.min(1,Math.max(0,sv.master)); if(sv.levels&&typeof sv.levels==='object')st.levels=sv.levels; if(Array.isArray(sv.last))st.last=sv.last; }}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(st));}catch(e){}}
+function rnd(a,b){return a+Math.random()*(b-a);}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
+
+function ctx(){
+  if(!AC){
+    var C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+    try{AC=new C();}catch(e){return null;}
+    master=AC.createGain(); master.gain.value=st.master;
+    var comp=AC.createDynamicsCompressor(); comp.threshold.value=-20; comp.knee.value=24; comp.ratio.value=3.5; comp.attack.value=.02; comp.release.value=.3;
+    master.connect(comp); comp.connect(AC.destination);
+    analyser=AC.createAnalyser(); analyser.fftSize=1024; comp.connect(analyser);
+  }
+  if(AC.state==='suspended'){try{AC.resume();}catch(e){}}
+  return AC;
+}
+
+/* ---------- نویزهای بدون درز (سفید/صورتی/قهوه‌ای) ---------- */
+function mkBuf(type){
+  if(bufs[type]) return bufs[type];
+  var sr=AC.sampleRate, n=Math.floor(sr*8), b=AC.createBuffer(2,n,sr), f=Math.floor(sr*.6);
+  for(var c=0;c<2;c++){
+    var d=b.getChannelData(c), l=0,b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(var i=0;i<n;i++){
+      var w=Math.random()*2-1;
+      if(type==='white') d[i]=w*.5;
+      else if(type==='brown'){ l=(l+.02*w)/1.02; d[i]=l*3.5; }
+      else{ b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759; b2=.969*b2+w*.153852; b3=.8665*b3+w*.3104856; b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898;
+        d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11; b6=w*.115926; }
+    }
+    for(var k=0;k<f;k++){ var t=k/f; d[k]=d[k]*t+d[n-f+k]*(1-t); } /* کراس‌فید ابتدا و انتها → لوپ بدون تق */
+  }
+  return (bufs[type]={buf:b,end:(n-f)/sr});
+}
+function blipBuffer(){ if(!blipBuf){ var n=Math.floor(AC.sampleRate*.14); blipBuf=AC.createBuffer(1,n,AC.sampleRate); var d=blipBuf.getChannelData(0); for(var i=0;i<n;i++)d[i]=Math.random()*2-1; } return blipBuf; }
+function pan(v){ if(AC.createStereoPanner){var p=AC.createStereoPanner(); p.pan.value=Math.max(-1,Math.min(1,v)); return p;} return AC.createGain(); }
+function burst(out,o){
+  var t=AC.currentTime, s=AC.createBufferSource(); s.buffer=blipBuffer();
+  var f=AC.createBiquadFilter(); f.type=o.type||'bandpass'; f.frequency.value=o.f; f.Q.value=o.q||1;
+  var g=AC.createGain(), p=pan(o.pan||0), at=o.attack||.002, dur=Math.min(o.dur||.04,.1);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(o.vol,t+at); g.gain.exponentialRampToValueAtTime(.0001,t+at+dur);
+  s.connect(f); f.connect(g); g.connect(p); p.connect(out); s.start(t); s.stop(t+at+dur+.05);
+}
+function tone(out,o){
+  var t=AC.currentTime+(o.delay||0), os=AC.createOscillator(), g=AC.createGain(), p=pan(o.pan||0), at=o.attack||.01;
+  os.type=o.type||'sine'; os.frequency.setValueAtTime(o.f0,t); if(o.f1) os.frequency.exponentialRampToValueAtTime(o.f1,t+o.dur);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(o.vol,t+at); g.gain.exponentialRampToValueAtTime(.0001,t+o.dur);
+  os.connect(g); g.connect(p); p.connect(out); os.start(t); os.stop(t+o.dur+.05);
+}
+/* ---------- ابزارهای ساخت ---------- */
+function nsrc(k,type){ var o=mkBuf(type), s=AC.createBufferSource(); s.buffer=o.buf; s.loop=true; s.loopStart=0; s.loopEnd=o.end; s.start(0,Math.random()*o.end); k.srcs.push(s); return s; }
+function fl(type,f,q){ var x=AC.createBiquadFilter(); x.type=type; x.frequency.value=f; x.Q.value=(q==null?.7:q); return x; }
+function gn(v){ var g=AC.createGain(); g.gain.value=v; return g; }
+function chain(){ for(var i=0;i<arguments.length-1;i++) arguments[i].connect(arguments[i+1]); }
+function lfo(k,rate,depth,target,type){ var o=AC.createOscillator(), g=AC.createGain(); o.type=type||'sine'; o.frequency.value=rate; g.gain.value=depth; o.connect(g); g.connect(target); o.start(); k.srcs.push(o); return o; }
+function every(k,min,max,fn,first){ var id=0; function tick(){ if(k.dead) return; try{fn();}catch(e){} id=setTimeout(tick,rnd(min,max)*1000); } id=setTimeout(tick,(first==null?rnd(min,max):first)*1000); k.cancels.push(function(){clearTimeout(id);}); }
+
+/* ---------- صداها ---------- */
+var B={};
+B.rain={name:'باران',icon:'🌧',color:'#38bdf8',trim:.95,build:function(k,out){
+  var s=nsrc(k,'pink'),hp=fl('highpass',420,.5),lp=fl('lowpass',7200,.5),g=gn(1); chain(s,hp,lp,g,out); lfo(k,.11,.1,g.gain);
+  var s2=nsrc(k,'white'),bp=fl('bandpass',5200,.6),g2=gn(.08); chain(s2,bp,g2,out);
+  every(k,.03,.14,function(){ burst(out,{f:rnd(1600,6000),q:rnd(4,10),vol:rnd(.03,.15),dur:rnd(.012,.04),pan:rnd(-.9,.9)}); },.1);
+}};
+function thunder(k,out){
+  if(k.dead) return;
+  var s=nsrc(k,'brown'), lp=fl('lowpass',280,.8), g=gn(0), t=AC.currentTime, peak=rnd(1.1,1.9), dur=rnd(5,8.5);
+  lp.frequency.setValueAtTime(rnd(240,340),t); lp.frequency.exponentialRampToValueAtTime(70,t+dur);
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(peak,t+rnd(.25,.7)); g.gain.linearRampToValueAtTime(peak*.5,t+dur*.3);
+  g.gain.linearRampToValueAtTime(peak*.85,t+dur*.42); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  chain(s,lp,g,out); setTimeout(function(){try{s.stop();s.disconnect();}catch(e){}},(dur+.5)*1000);
+}
+B.storm={name:'طوفان و رعد',icon:'⛈',color:'#818cf8',trim:.9,build:function(k,out){
+  var s=nsrc(k,'pink'),hp=fl('highpass',250,.5),lp=fl('lowpass',5200,.5),g=gn(1.15); chain(s,hp,lp,g,out); lfo(k,.07,.18,g.gain); lfo(k,.05,900,lp.frequency);
+  var s2=nsrc(k,'white'),bp=fl('bandpass',3600,.5),g2=gn(.1); chain(s2,bp,g2,out);
+  every(k,.02,.09,function(){ burst(out,{f:rnd(1400,5500),q:rnd(3,8),vol:rnd(.05,.2),dur:rnd(.012,.04),pan:rnd(-.9,.9)}); },.1);
+  every(k,12,30,function(){thunder(k,out);},rnd(3,7));
+}};
+B.ocean={name:'دریا',icon:'🌊',color:'#22d3ee',trim:.95,build:function(k,out){
+  var s=nsrc(k,'pink'),lp=fl('lowpass',900,.7),g=gn(.5); chain(s,lp,g,out); lfo(k,.085,.42,g.gain); lfo(k,.085,650,lp.frequency);
+  var s2=nsrc(k,'pink'),lp2=fl('lowpass',800,.7),g2=gn(.38); chain(s2,lp2,g2,out); lfo(k,.063,.32,g2.gain); lfo(k,.063,520,lp2.frequency);
+  var s3=nsrc(k,'white'),bp=fl('bandpass',3200,.6),g3=gn(.05); chain(s3,bp,g3,out); lfo(k,.085,.04,g3.gain);
+}};
+B.wind={name:'باد',icon:'💨',color:'#94a3b8',trim:.95,build:function(k,out){
+  var s=nsrc(k,'pink'),bp=fl('bandpass',420,.9),g=gn(.6); chain(s,bp,g,out); lfo(k,.07,260,bp.frequency); lfo(k,.17,120,bp.frequency); lfo(k,.09,.28,g.gain);
+  var s2=nsrc(k,'brown'),lp=fl('lowpass',240,.7),g2=gn(.5); chain(s2,lp,g2,out); lfo(k,.05,.25,g2.gain);
+}};
+function chirp(out){
+  var base=rnd(2400,4600), n=Math.floor(rnd(2,6)), gap=rnd(.07,.13), pn=rnd(-.8,.8), vol=rnd(.03,.07), up=Math.random()<.5;
+  for(var i=0;i<n;i++) tone(out,{f0:base*(up?1:1.15)*(1+i*.01),f1:base*(up?1.2:.85),dur:rnd(.05,.11),vol:vol*(1-i*.08),pan:pn,delay:i*gap,attack:.008});
+}
+function trill(out){
+  var base=rnd(3000,4200), pn=rnd(-.8,.8), n=Math.floor(rnd(8,16));
+  for(var i=0;i<n;i++) tone(out,{f0:base+(i%2?200:-100),f1:base+(i%2?-150:150),dur:.045,vol:.025,pan:pn,delay:i*.055,attack:.006});
+}
+function coo(out){
+  var b=rnd(420,560), pn=rnd(-.6,.6);
+  [0,.45,.9].forEach(function(d,i){ tone(out,{f0:b*(i===1?1.12:1),f1:b*(i===1?1:.92),dur:.38,vol:.04,pan:pn,delay:d,attack:.06}); });
+}
+B.forest={name:'جنگل و پرندگان',icon:'🌲',color:'#4ade80',trim:1,build:function(k,out){
+  var s=nsrc(k,'pink'),bp=fl('bandpass',520,.8),g=gn(.22); chain(s,bp,g,out); lfo(k,.08,200,bp.frequency); lfo(k,.1,.1,g.gain);
+  every(k,1.2,4.5,function(){ (Math.random()<.72?chirp:trill)(out); },.6);
+  every(k,14,32,function(){coo(out);},rnd(6,12));
+}};
+B.stream={name:'جویبار',icon:'💧',color:'#2dd4bf',trim:.95,build:function(k,out){
+  [[900,3,.3,3.1],[1700,3.5,.28,4.7],[2900,4,.22,6.3]].forEach(function(c){
+    var s=nsrc(k,'white'),bp=fl('bandpass',c[0],c[1]),g=gn(c[2]); chain(s,bp,g,out); lfo(k,c[3],c[2]*.75,g.gain); lfo(k,c[3]*.7,c[0]*.25,bp.frequency);
+  });
+  var s2=nsrc(k,'pink'),lp=fl('lowpass',480,.6),g2=gn(.28); chain(s2,lp,g2,out);
+  every(k,.15,.9,function(){ var f=rnd(500,1000); tone(out,{f0:f,f1:f*rnd(1.6,2.4),dur:rnd(.06,.14),vol:rnd(.015,.04),pan:rnd(-.8,.8),attack:.01}); });
+}};
+B.fire={name:'آتش',icon:'🔥',color:'#fb923c',trim:.95,build:function(k,out){
+  var s=nsrc(k,'brown'),lp=fl('lowpass',520,.6),g=gn(.9); chain(s,lp,g,out); lfo(k,.23,.2,g.gain);
+  var s2=nsrc(k,'pink'),hp=fl('highpass',2600,.5),g2=gn(.05); chain(s2,hp,g2,out);
+  every(k,.04,.38,function(){
+    var n=Math.random()<.2?3:1;
+    for(var i=0;i<n;i++){ (function(d){ setTimeout(function(){ if(k.dead) return; burst(out,{type:'highpass',f:rnd(1200,5000),q:.7,vol:rnd(.15,.8),dur:rnd(.006,.03),pan:rnd(-.7,.7),attack:.001}); },d); })(i*rnd(25,70)); }
+  },.1);
+}};
+B.night={name:'شب و جیرجیرک',icon:'🦗',color:'#a78bfa',trim:1,build:function(k,out){
+  [[4300,2.1,29,-.6],[4550,2.6,33,.5],[4100,1.8,26,0]].forEach(function(c){
+    var o=AC.createOscillator(); o.type='sine'; o.frequency.value=c[0];
+    var a=gn(.5),b=gn(.5),lp=fl('lowpass',6000,.5),lv=gn(.05),p=pan(c[3]);
+    chain(o,a,b,lp,lv,p,out); lfo(k,c[2],.5,a.gain); lfo(k,c[1],.5,b.gain); o.start(); k.srcs.push(o);
+  });
+  var s=nsrc(k,'pink'),lp2=fl('lowpass',320,.6),g=gn(.1); chain(s,lp2,g,out);
+  every(k,15,35,function(){ var pn=rnd(-.5,.5); tone(out,{f0:400,f1:370,dur:.42,vol:.05,pan:pn,attack:.06}); tone(out,{f0:360,f1:310,dur:.6,vol:.045,pan:pn,delay:.55,attack:.07}); },rnd(8,14));
+}};
+B.bowl={name:'کاسه‌ی تبتی',icon:'🔔',color:'#fbbf24',trim:.9,build:function(k,out){
+  var bus=gn(1),dl=AC.createDelay(1.5),fb=gn(.38),dlp=fl('lowpass',2400,.5); dl.delayTime.value=.42;
+  bus.connect(out); bus.connect(dl); dl.connect(dlp); dlp.connect(fb); fb.connect(dl); dlp.connect(out);
+  every(k,8,16,function(){
+    var f=pick([196,220,246.94,261.63,293.66,329.63]), t=AC.currentTime;
+    [[1,.5,11],[2.76,.22,6],[5.4,.09,3.5]].forEach(function(p){ [0,1.3].forEach(function(det){
+      var o=AC.createOscillator(),g=AC.createGain(); o.type='sine'; o.frequency.value=f*p[0]+det;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(p[1]*.5,t+.012); g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);
+      o.connect(g); g.connect(bus); o.start(t); o.stop(t+p[2]+.1); }); });
+  },.3);
+}};
+B.white={name:'نویز سفید',icon:'⚪',color:'#e2e8f0',trim:.55,build:function(k,out){ var s=nsrc(k,'white'),lp=fl('lowpass',9500,.5); chain(s,lp,out); }};
+B.brown={name:'نویز قهوه‌ای',icon:'🟤',color:'#d97706',trim:.9,build:function(k,out){ var s=nsrc(k,'brown'),lp=fl('lowpass',800,.5); chain(s,lp,out); }};
+var ORDER=['rain','storm','ocean','forest','wind','stream','fire','night','bowl','white','brown'];
+var LIST=ORDER.map(function(id){return {id:id,name:B[id].name,icon:B[id].icon,color:B[id].color};});
+var PRESETS=[
+  {id:'rain',name:'باران آرام',icon:'🌧',mix:{rain:.7}},
+  {id:'focus',name:'تمرکز عمیق',icon:'🎯',mix:{brown:.5,rain:.35}},
+  {id:'beach',name:'ساحل',icon:'🏖',mix:{ocean:.75,wind:.18}},
+  {id:'forest',name:'جنگل صبحگاهی',icon:'🌄',mix:{forest:.7,stream:.45}},
+  {id:'fire',name:'کنار آتش',icon:'🏕',mix:{fire:.7,night:.35,wind:.12}},
+  {id:'storm',name:'طوفان شب',icon:'🌩',mix:{storm:.7,wind:.25}},
+  {id:'zen',name:'شب آرام',icon:'🌙',mix:{night:.65,bowl:.35}}
+];
+
+/* ---------- مدیریت لایه‌ها ---------- */
+function emit(){ listeners.forEach(function(f){try{f();}catch(e){}}); }
+function userIds(){ return Object.keys(layers).filter(function(k){return k!==POMO;}); }
+function remember(){ var ids=userIds(); if(ids.length){ st.last=ids.map(function(i){return [i,layers[i].level];}); save(); } }
+function start(key,level,type){
+  type=type||key; if(!B[type]||!ctx()) return false;
+  if(layers[key]){ setLevel(key,level); return true; }
+  if(key!==POMO&&layers[POMO]) stop(POMO);
+  var lay=AC.createGain(), now=AC.currentTime, k={srcs:[],cancels:[],dead:false};
+  lay.gain.setValueAtTime(0,now); lay.connect(master);
+  try{ B[type].build(k,lay); }catch(e){ k.dead=true; try{lay.disconnect();}catch(_){} return false; }
+  lay.gain.linearRampToValueAtTime(level*B[type].trim,now+1.3);
+  layers[key]={id:key,type:type,lay:lay,k:k,level:level};
+  if(key!==POMO){ st.levels[key]=Math.round(level*100); remember(); }
+  emit(); return true;
+}
+function stop(key){
+  var L=layers[key]; if(!L) return; delete layers[key];
+  L.k.dead=true; L.k.cancels.forEach(function(c){try{c();}catch(e){}});
+  try{ var p=L.lay.gain,n=AC.currentTime,cur=p.value; p.cancelScheduledValues(n); p.setValueAtTime(cur,n); p.linearRampToValueAtTime(0,n+.9); }catch(e){}
+  setTimeout(function(){ L.k.srcs.forEach(function(s){try{s.stop();}catch(e){} try{s.disconnect();}catch(e){}}); try{L.lay.disconnect();}catch(e){} },1200);
+  if(key!==POMO) remember();
+  emit();
+}
+function setLevel(key,v){
+  var L=layers[key]; v=Math.min(1,Math.max(0,v));
+  if(!L){ if(key!==POMO){ st.levels[key]=Math.round(v*100); save(); } return; }
+  L.level=v;
+  try{ var p=L.lay.gain,n=AC.currentTime,cur=p.value; p.cancelScheduledValues(n); p.setValueAtTime(cur,n); p.setTargetAtTime(v*B[L.type].trim,n,.12); }catch(e){}
+  if(key!==POMO){ st.levels[key]=Math.round(v*100); remember(); }
+}
+function toggle(id){ if(layers[id]) stop(id); else start(id,(st.levels[id]==null?60:st.levels[id])/100); }
+function stopAll(){ userIds().forEach(stop); }
+function setMaster(v){ st.master=Math.min(1,Math.max(0,v)); save(); if(master){ var n=AC.currentTime; master.gain.cancelScheduledValues(n); master.gain.setTargetAtTime(st.master,n,.08); } emit(); }
+function applyPreset(id){
+  var p=PRESETS.filter(function(x){return x.id===id;})[0]; if(!p) return;
+  userIds().forEach(function(k){ if(!(k in p.mix)) stop(k); });
+  Object.keys(p.mix).forEach(function(k){ if(layers[k]) setLevel(k,p.mix[k]); else start(k,p.mix[k]); });
+}
+function resume(){ if(!st.last.length) return; st.last.forEach(function(x){ if(B[x[0]]) start(x[0],x[1]); }); }
+/* پومودورو: فقط وقتی کاربر میکسر خودش را روشن نکرده صدا بده */
+function pomo(type,vol){
+  if(vol==null) vol=.5;
+  if(!type||type==='off'||!B[type]||userIds().length){ if(layers[POMO]) stop(POMO); pomoType=null; return; }
+  if(layers[POMO]&&pomoType===type){ setLevel(POMO,vol); return; }
+  if(layers[POMO]) stop(POMO);
+  pomoType=type; start(POMO,vol,type);
+}
+/* تایمر خاموشی */
+function clearSleep(){ clearTimeout(sleepT); clearTimeout(sleepFadeT); sleepT=sleepFadeT=null; sleepEnd=0; sleepMin=0; if(master&&AC){ var n=AC.currentTime; master.gain.cancelScheduledValues(n); master.gain.setValueAtTime(st.master,n); } }
+function sleep(min){
+  clearSleep(); if(!min){ emit(); return; }
+  sleepMin=min; sleepEnd=Date.now()+min*60000;
+  sleepT=setTimeout(function(){
+    if(AC&&master){ var n=AC.currentTime; master.gain.cancelScheduledValues(n); master.gain.setValueAtTime(master.gain.value,n); master.gain.linearRampToValueAtTime(0,n+10); }
+    sleepFadeT=setTimeout(function(){ stopAll(); sleepT=sleepFadeT=null; sleepEnd=0; sleepMin=0; setTimeout(function(){ if(master&&AC) master.gain.setValueAtTime(st.master,AC.currentTime); },1500); emit(); },10200);
+  },Math.max(0,sleepEnd-Date.now()-10000));
+  emit();
+}
+
+/* ---------- رابط کاربری ---------- */
+var btn=null, panel=null, built=false, tickT=null;
+function mkBtn(){
+  if(document.getElementById('calm-badge')) return;
+  var bar=document.querySelector('.app-bar-icons'); if(!bar) return;
+  btn=document.createElement('button'); btn.type='button'; btn.id='calm-badge';
+  btn.setAttribute('data-label','صداهای آرامش'); btn.setAttribute('aria-label','صداهای آرامش'); btn.title='صداهای آرامش';
+  btn.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" transform="translate(0 0)"/><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" transform="translate(0 6)"/><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" transform="translate(0 12)"/></svg><span class="calm-eq"><i></i><i></i><i></i></span>';
+  btn.addEventListener('click',function(e){e.stopPropagation();toggleUI();});
+  var dt=document.getElementById('date-tile');
+  if(dt&&dt.parentNode===bar) dt.insertAdjacentElement('afterend',btn); else bar.insertBefore(btn,bar.firstChild);
+}
+function buildPanel(){
+  if(built) return; built=true;
+  panel=document.createElement('div'); panel.id='calm-panel'; panel.setAttribute('role','dialog'); panel.setAttribute('aria-label','صداهای آرامش'); panel.setAttribute('dir','rtl');
+  panel.innerHTML=
+   '<div class="cp-head"><div class="cp-title"><b>🎧 صداهای آرامش</b><small>چند صدا را با هم ترکیب کن؛ با عوض کردن بخش‌ها هم ادامه دارند.</small></div><button type="button" class="cp-x" aria-label="بستن">✕</button></div>'+
+   '<div class="cp-sec">ترکیب‌های آماده</div><div class="cp-presets">'+PRESETS.map(function(p){return '<button type="button" class="cp-chip" data-preset="'+p.id+'">'+p.icon+' '+p.name+'</button>';}).join('')+'</div>'+
+   '<div class="cp-sec">صداهای طبیعت</div><div class="cp-grid">'+LIST.map(function(s){
+      return '<div class="cp-tile" data-id="'+s.id+'" style="--c:'+s.color+'"><button type="button" class="cp-t-btn" aria-pressed="false"><span class="cp-ic">'+s.icon+'</span><span class="cp-nm">'+s.name+'</span></button><input type="range" class="cp-lv" min="0" max="100" value="60" aria-label="بلندی '+s.name+'"></div>';}).join('')+'</div>'+
+   '<div class="cp-master"><span class="cp-mi">🔊</span><input type="range" class="cp-mv" min="0" max="100" aria-label="صدای کلی"><b class="cp-mp"></b></div>'+
+   '<div class="cp-sec">خاموشی خودکار <em class="cp-left"></em></div><div class="cp-sleep">'+[0,15,30,60,90].map(function(m){return '<button type="button" class="cp-chip" data-sleep="'+m+'">'+(m?fa(m)+' دقیقه':'بدون تایمر')+'</button>';}).join('')+'</div>'+
+   '<div class="cp-foot"><button type="button" class="cp-resume">▶ ادامه‌ی آخرین ترکیب</button><button type="button" class="cp-stop">⏹ خاموش کردن همه</button></div>';
+  document.body.appendChild(panel);
+  panel.addEventListener('click',function(e){
+    var t=e.target.closest?e.target:null; if(!t) return;
+    var b;
+    if((b=t.closest('.cp-t-btn'))){ toggle(b.parentNode.getAttribute('data-id')); return; }
+    if((b=t.closest('[data-preset]'))){ applyPreset(b.getAttribute('data-preset')); return; }
+    if((b=t.closest('[data-sleep]'))){ sleep(Number(b.getAttribute('data-sleep'))); return; }
+    if(t.closest('.cp-x')){ closeUI(); return; }
+    if(t.closest('.cp-resume')){ resume(); return; }
+    if(t.closest('.cp-stop')){ stopAll(); return; }
+  });
+  panel.addEventListener('input',function(e){
+    var t=e.target; if(!t||t.type!=='range') return;
+    t.style.setProperty('--v',t.value+'%');
+    if(t.classList.contains('cp-lv')){ var id=t.parentNode.getAttribute('data-id'); setLevel(id,Number(t.value)/100); }
+    else if(t.classList.contains('cp-mv')){ setMaster(Number(t.value)/100); }
+  });
+  panel.addEventListener('keydown',function(e){ if(e.key==='Escape') closeUI(); });
+}
+function setRange(el,v){ el.value=v; el.style.setProperty('--v',v+'%'); }
+function refresh(){
+  var on=userIds(); if(btn) btn.classList.toggle('playing',on.length>0);
+  if(!built) return;
+  [].forEach.call(panel.querySelectorAll('.cp-tile'),function(tl){
+    var id=tl.getAttribute('data-id'), L=layers[id], lv=tl.querySelector('.cp-lv');
+    tl.classList.toggle('on',!!L); tl.querySelector('.cp-t-btn').setAttribute('aria-pressed',L?'true':'false');
+    var v=L?Math.round(L.level*100):(st.levels[id]==null?60:st.levels[id]);
+    if(document.activeElement!==lv) setRange(lv,v);
+  });
+  var mv=panel.querySelector('.cp-mv'), mp=panel.querySelector('.cp-mp'); if(document.activeElement!==mv) setRange(mv,Math.round(st.master*100)); mp.textContent=fa(Math.round(st.master*100))+'٪';
+  [].forEach.call(panel.querySelectorAll('[data-sleep]'),function(b){ b.classList.toggle('on',Number(b.getAttribute('data-sleep'))===sleepMin); });
+  [].forEach.call(panel.querySelectorAll('[data-preset]'),function(b){
+    var p=PRESETS.filter(function(x){return x.id===b.getAttribute('data-preset');})[0], ks=Object.keys(p.mix);
+    b.classList.toggle('on',on.length===ks.length&&ks.every(function(k){return !!layers[k];}));
+  });
+  panel.querySelector('.cp-resume').style.display=(!on.length&&st.last.length)?'':'none';
+  panel.querySelector('.cp-stop').style.display=on.length?'':'none';
+  panel.classList.toggle('has-on',on.length>0);
+  tickLeft();
+}
+function tickLeft(){ if(!built) return; var el=panel.querySelector('.cp-left'); if(!sleepEnd){ el.textContent=''; return; } var s=Math.max(0,Math.round((sleepEnd-Date.now())/1000)); el.textContent='— '+fa(Math.floor(s/60))+':'+fa(('0'+(s%60)).slice(-2))+' مانده'; }
+function place(){
+  if(!panel||!btn) return;
+  if(window.innerWidth<640){ panel.style.left='10px'; panel.style.right='10px'; panel.style.width='auto'; panel.style.top=Math.max(10,btn.getBoundingClientRect().bottom+10)+'px'; return; }
+  var r=btn.getBoundingClientRect(), w=Math.min(470,window.innerWidth-20);
+  var left=Math.min(window.innerWidth-w-10,Math.max(10,r.left+r.width/2-w/2));
+  panel.style.width=w+'px'; panel.style.left=left+'px'; panel.style.right='auto'; panel.style.top=(r.bottom+14)+'px';
+  panel.style.setProperty('--arrow',Math.round(r.left+r.width/2-left)+'px');
+}
+function openUI(){ mkBtn(); buildPanel(); place(); refresh(); panel.classList.add('show'); if(btn) btn.classList.add('open'); clearInterval(tickT); tickT=setInterval(tickLeft,1000); }
+function closeUI(){ if(!panel) return; panel.classList.remove('show'); if(btn) btn.classList.remove('open'); clearInterval(tickT); }
+function toggleUI(){ if(panel&&panel.classList.contains('show')) closeUI(); else openUI(); }
+document.addEventListener('pointerdown',function(e){ if(!panel||!panel.classList.contains('show')) return; if(panel.contains(e.target)||(btn&&btn.contains(e.target))) return; closeUI(); },true);
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeUI(); });
+window.addEventListener('resize',function(){ if(panel&&panel.classList.contains('show')) place(); });
+listeners.push(refresh);
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mkBtn); else mkBtn();
+setTimeout(mkBtn,1500);
+
+window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(id,l==null?.6:l);},stop:stop,toggle:toggle,setLevel:setLevel,setMaster:setMaster,stopAll:stopAll,preset:applyPreset,resume:resume,pomo:pomo,sleep:sleep,
+  open:openUI,close:closeUI,toggleUI:toggleUI,playing:function(){return userIds();},
+  _rms:function(){ if(!analyser) return 0; var d=new Float32Array(analyser.fftSize); analyser.getFloatTimeDomainData(d); var s=0; for(var i=0;i<d.length;i++)s+=d[i]*d[i]; return Math.sqrt(s/d.length); }};
 })();
 </script>
 </body>
