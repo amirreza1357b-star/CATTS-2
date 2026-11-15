@@ -5057,8 +5057,8 @@ body.light-mode .ckg-stat{ background:#fff; }
         <button class="tab-btn" style="--tc:#fb923c" data-adm-tab="tab-settings" onclick="switchTab('tab-settings', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></span><span class="tab-label">اهداف</span></button>
         <button class="tab-btn" style="--tc:#34d399" data-adm-tab="tab-planner" onclick="switchTab('tab-planner', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18"></path><path d="M8 2v5M16 2v5"></path></svg></span><span class="tab-label">برنامه هفتگی</span></button>
         <button class="tab-btn" style="--tc:#22d3ee" data-adm-tab="tab-gallery" onclick="switchTab('tab-gallery', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="9" r="1.6" fill="currentColor" stroke="none"></circle><path d="M21 15l-5.2-5.2a2 2 0 0 0-2.8 0L4 19"></path></svg></span><span class="tab-label">گالری</span></button>
-        <button class="tab-btn" style="--tc:#f472b6" data-adm-tab="tab-advice" onclick="switchTab('tab-advice', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></span><span class="tab-label">مشاوره</span></button>
         <button class="tab-btn" style="--tc:#f43f5e" data-adm-tab="tab-trash" onclick="switchTab('tab-trash', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"></path></svg><span id="trash-total-badge" class="trash-badge"></span></span><span class="tab-label">سطل زباله</span></button>
+        <button class="tab-btn" style="--tc:#f472b6" data-adm-tab="tab-advice" onclick="switchTab('tab-advice', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></span><span class="tab-label">مشاوره</span></button>
     </div>
 
     <!-- تب اول: تایمر و ثبت -->
@@ -21182,8 +21182,14 @@ mark.adv-m{background:#fbbf24;color:#1f1300;border-radius:4px;padding:0 2px}mark
   function getText(t){
     return new Promise(function(res,rej){
       var done=false;function use(md){if(done)return;done=true;res(md);}
-      if(t.text&&location.protocol!=='file:'){fetch(BASE+t.text,{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.text();}).then(use).catch(function(){if(t._md)use(t._md);else if(!done){done=true;rej(new Error('text'));}});}
-      else if(t._md)use(t._md);else{rej(new Error('text'));}
+      function emb(){var e=t._md||null;(BI.topics||[]).forEach(function(x){if(x.id===t.id&&x._md)e=e||x._md;});return e;}
+      function bad(s){return !s||/^\s*(<!doctype|<html|<\?xml)/i.test(s)||s.trim().length<20;}
+      function fail(){var m=emb();if(m)use(m);else if(!done){done=true;rej(new Error('text'));}}
+      if(location.protocol==='file:'){fail();return;}
+      var c=[];if(t.text){c.push(BASE+t.text);if(/^advice\//.test(t.text))c.push(t.text);}c.push(BASE+t.id+'/text.md');
+      (function next(i){if(i>=c.length){fail();return;}
+        fetch(c[i],{cache:'no-cache'}).then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(s){s=s.replace(/^\uFEFF/,'');if(bad(s))throw 0;use(s);}).catch(function(){next(i+1);});
+      })(0);
     });
   }
   /* ---------- تجزیهٔ متن (بند به بند؛ هم‌ترازِ زمان‌بندی صوت) ---------- */
@@ -21732,6 +21738,47 @@ html body #tab-advice .adv-chip{transition:.2s}
 html body #tab-advice .adv-chip.on{box-shadow:0 8px 20px -8px #f472b6}
 html body .adv-mini{z-index:99990}
 @media (min-width:860px){html body .tabs{max-height:calc(100vh - 24px);overflow-y:auto;scrollbar-width:none}html body .tabs::-webkit-scrollbar{display:none}}
+/* ===== چت: بازطراحی با نور و دکمه‌های شیک + رفع نور باریک (blur تودرتو حذف شد) ===== */
+@keyframes chatGlow{0%,100%{box-shadow:0 0 0 1px rgba(0,0,0,.5),0 30px 90px -10px rgba(0,0,0,.85),0 0 40px -8px rgba(99,102,241,.5),0 0 110px -30px rgba(56,189,248,.4),inset 0 1px 0 rgba(255,255,255,.12)}50%{box-shadow:0 0 0 1px rgba(0,0,0,.5),0 30px 90px -10px rgba(0,0,0,.85),0 0 60px -6px rgba(129,140,248,.7),0 0 140px -24px rgba(56,189,248,.55),inset 0 1px 0 rgba(255,255,255,.18)}}
+html body .chat-overlay{background:radial-gradient(80% 55% at 50% -10%,rgba(99,102,241,.3),transparent 60%),radial-gradient(60% 50% at 95% 105%,rgba(56,189,248,.2),transparent 60%),#060a14!important}
+html body .chat-overlay-inner{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(165deg,#18223a 0%,#0e1527 55%,#0a1020 100%)!important;
+  border:1px solid rgba(129,140,248,.5);border-radius:28px;margin:12px auto!important;height:calc(100dvh - 24px)!important;overflow:hidden;isolation:isolate;contain:paint;animation:chatGlow 5s ease-in-out infinite}
+html body .chat-overlay-inner .chat-view{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:none!important;transform:none!important}
+html body .chat-top-bar{background:linear-gradient(180deg,rgba(129,140,248,.16),transparent)!important;border-bottom:1px solid rgba(129,140,248,.28)!important;padding:14px 16px}
+html body .chat-top-title{background:linear-gradient(100deg,#c7d2fe,#7dd3fc,#f0abfc);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.01em}
+html body .chat-icon-btn,html body .chat-attach-btn{width:40px!important;height:40px!important;border-radius:14px!important;color:#fff!important;
+  background:radial-gradient(circle at 30% 15%,rgba(255,255,255,.28),transparent 55%),linear-gradient(145deg,rgba(129,140,248,.45),rgba(56,189,248,.18))!important;
+  border:1px solid rgba(165,180,252,.4)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 18px -8px rgba(99,102,241,.8);transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s!important}
+html body .chat-icon-btn:hover,html body .chat-attach-btn:hover{transform:translateY(-2px) scale(1.07)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 12px 24px -8px #818cf8,0 0 22px -2px rgba(129,140,248,.8)}
+html body .chat-icon-btn:active{transform:scale(.93)!important}
+html body .chat-confirm-btn{border-radius:14px!important;box-shadow:0 10px 24px -8px #818cf8}
+html body .chat-search-input,html body .chat-text-input{border-radius:16px!important;background:rgba(255,255,255,.06)!important;border:1px solid rgba(165,180,252,.25)!important;box-shadow:inset 0 2px 8px rgba(0,0,0,.3)!important;transition:.25s}
+html body .chat-search-input:focus,html body .chat-text-input:focus{border-color:#818cf8!important;box-shadow:0 0 0 3px rgba(129,140,248,.25),0 0 24px -4px #818cf8!important}
+html body .chat-conv-item,html body .chat-contact-item{margin:5px 2px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.035);transition:transform .25s,background .25s,border-color .25s,box-shadow .25s!important}
+html body .chat-conv-item:hover,html body .chat-contact-item:hover{background:linear-gradient(135deg,rgba(129,140,248,.2),rgba(56,189,248,.07))!important;border-color:rgba(165,180,252,.4);box-shadow:0 12px 28px -14px #6366f1,0 0 22px -10px #818cf8;transform:translateX(-3px)}
+html body .chat-avatar{box-shadow:0 0 0 2px rgba(255,255,255,.14),0 0 18px -4px #818cf8}
+html body .chat-saved-item .chat-avatar{box-shadow:0 0 0 2px rgba(255,255,255,.14),0 0 20px -2px #38bdf8}
+html body .chat-online-dot.online{box-shadow:0 0 10px #22c55e}
+html body .chat-unread-badge{background:linear-gradient(135deg,#f472b6,#fb923c)!important;box-shadow:0 0 14px -2px #f472b6;animation:calmEq 0s}
+html body .chat-conv-group-badge{background:linear-gradient(135deg,rgba(129,140,248,.35),rgba(56,189,248,.2))!important;color:#e0e7ff!important;border:1px solid rgba(165,180,252,.3)}
+html body .chat-msg.out .chat-msg-bubble{background:linear-gradient(135deg,#6366f1,#8b5cf6 60%,#c026d3)!important;box-shadow:0 10px 24px -10px #6366f1,inset 0 1px 0 rgba(255,255,255,.25)}
+html body .chat-msg.in .chat-msg-bubble{background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.04))!important;border:1px solid rgba(165,180,252,.22)!important;box-shadow:0 8px 20px -12px rgba(0,0,0,.6)}
+html body .chat-input-bar{background:linear-gradient(0deg,rgba(129,140,248,.1),transparent)!important;border-top:1px solid rgba(129,140,248,.25)!important;padding:12px 14px}
+html body .chat-send-btn{width:44px!important;height:44px!important;border-radius:15px!important;background:radial-gradient(circle at 30% 15%,rgba(255,255,255,.4),transparent 55%),linear-gradient(135deg,#6366f1,#c026d3)!important;box-shadow:0 10px 24px -8px #8b5cf6,inset 0 1px 0 rgba(255,255,255,.4);transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+html body .chat-send-btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 14px 30px -8px #c026d3,0 0 26px -2px #8b5cf6}
+html body .chat-setup-box{border:1px solid rgba(165,180,252,.3);border-radius:22px;background:rgba(255,255,255,.04);box-shadow:0 0 40px -14px #6366f1}
+@keyframes fabPulse{0%,100%{box-shadow:0 14px 30px -10px #4776ff,0 0 0 0 rgba(99,102,241,.5)}50%{box-shadow:0 14px 30px -10px #4776ff,0 0 0 12px rgba(99,102,241,0)}}
+html body .chat-fab{animation:fabPulse 3s ease-in-out infinite}
+@media (max-width:700px){html body .chat-overlay-inner{margin:0 auto!important;height:100dvh!important;border-radius:0;border:0}}
+@media (prefers-reduced-motion:reduce){html body .chat-overlay-inner,html body .chat-fab{animation:none}}
+/* پنل چت همیشه تیره است؛ رنگ‌ها در حالت روشن هم خوانا بمانند */
+html body .chat-overlay,html body.light-mode .chat-overlay{--text-primary:#eef2ff;--text-secondary:#9aa8c7;--card-bg:#101829;--border:1px solid rgba(165,180,252,.18);color:#eef2ff}
+html body.light-mode .chat-search-input,html body.light-mode .chat-text-input,html body .chat-overlay input,html body.light-mode .chat-overlay input,html body.light-mode .chat-overlay textarea{background:rgba(255,255,255,.07)!important;color:#fff!important;border:1px solid rgba(165,180,252,.28)!important;color-scheme:dark}
+html body.light-mode .chat-conv-name,html body.light-mode .chat-contact-name,html body.light-mode .chat-top-title{color:#eef2ff}
+html body.light-mode .chat-conv-item,html body.light-mode .chat-contact-item{background:rgba(255,255,255,.04)!important}
+html body.light-mode .chat-msg.in .chat-msg-bubble{color:#eef2ff}
+html body #chat-list-search,html body #chat-contact-search,html body #chat-text-input,html body.light-mode #chat-list-search,html body.light-mode #chat-contact-search,html body.light-mode #chat-text-input{background:rgba(255,255,255,.07)!important;color:#fff!important;border:1px solid rgba(165,180,252,.28)!important;-webkit-text-fill-color:#fff}
+html body #chat-list-search::placeholder,html body #chat-contact-search::placeholder,html body #chat-text-input::placeholder{color:#8f9dbd!important;-webkit-text-fill-color:#8f9dbd}
 </style>
 <script id="glow-frames-v4-js">
 /* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
@@ -22077,6 +22124,18 @@ setTimeout(mkBtn,1500);
 window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(id,l==null?.6:l);},stop:stop,toggle:toggle,setLevel:setLevel,setMaster:setMaster,stopAll:stopAll,preset:applyPreset,resume:resume,pomo:pomo,sleep:sleep,
   open:openUI,close:closeUI,toggleUI:toggleUI,playing:function(){return userIds();},
   _rms:function(){ if(!analyser) return 0; var d=new Float32Array(analyser.fftSize); analyser.getFloatTimeDomainData(d); var s=0; for(var i=0;i<d.length;i++)s+=d[i]*d[i]; return Math.sqrt(s/d.length); }};
+})();
+
+/* ترتیب منو: داشبورد همیشه اولین آیکن است؛ مشاوره پایین، بعد از سطل زباله */
+(function(){
+  function fix(){
+    var tabs=document.querySelector('.tabs'); if(!tabs) return;
+    var d=tabs.querySelector('.tab-btn[data-adm-tab="tab-dashboard"]'), f=tabs.querySelector('.tab-btn');
+    if(d&&f&&f!==d) d.parentNode.insertBefore(d,f);
+    var a=tabs.querySelector('.tab-btn[data-adm-tab="tab-advice"]'), tr=tabs.querySelector('.tab-btn[data-adm-tab="tab-trash"]');
+    if(a&&tr&&tr.nextElementSibling!==a) tr.insertAdjacentElement('afterend',a);
+  }
+  fix(); document.addEventListener('DOMContentLoaded',fix); setTimeout(fix,600); setTimeout(fix,2500);
 })();
 </script>
 </body>
