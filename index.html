@@ -15924,8 +15924,8 @@ let admDragMode = false;
 let admDragState = null;
 let admPendingFloatPositions = {};
 
-const DEFAULT_TAB_ORDER = ['tab-dashboard','tab-timer','tab-as','tab-exams','tab-stats','tab-errors','tab-notes-ve','tab-br','tab-settings','tab-planner','tab-gallery','tab-trash'];
-const TAB_LABELS = { 'tab-dashboard':'داشبورد','tab-timer':'زمان‌سنج','tab-as':'آزمون آنلاین','tab-stats':'آمار دروس','tab-errors':'دفتر خطاها','tab-notes-ve':'نکات مهم','tab-br':'چک‌نویس','tab-settings':'اهداف','tab-planner':'برنامه هفتگی','tab-gallery':'گالری','tab-exams':'آزمون مارکت','tab-trash':'سطل زباله' };
+const DEFAULT_TAB_ORDER = ['tab-dashboard','tab-timer','tab-as','tab-exams','tab-stats','tab-errors','tab-notes-ve','tab-br','tab-settings','tab-planner','tab-gallery','tab-trash','tab-advice'];
+const TAB_LABELS = { 'tab-dashboard':'داشبورد','tab-timer':'زمان‌سنج','tab-as':'آزمون آنلاین','tab-stats':'آمار دروس','tab-errors':'دفتر خطاها','tab-notes-ve':'نکات مهم','tab-br':'چک‌نویس','tab-settings':'اهداف','tab-planner':'برنامه هفتگی','tab-gallery':'گالری','tab-exams':'آزمون مارکت','tab-advice':'مشاوره','tab-trash':'سطل زباله' };
 
 /* ---------------- دسترسی مخفی: ۵ کلیک روی عنوان برنامه یا روی متن دروازه‌ی ورود ----------------
    دو نقطه‌ی ورود مستقل به پنل مدیر داریم تا حتی وقتی «حالت تعمیر» روشن است و
@@ -21931,6 +21931,25 @@ html body #tab-stats #insights-list>div[style*="success"]{background:linear-grad
 html body #tab-stats #insights-list>div[style*="danger"] .ic-sym{--pg:#f43f5e}html body #tab-stats #insights-list>div[style*="success"] .ic-sym{--pg:#34d399}
 html body #tab-stats #insights-list>div .ic-sym{margin:0;width:34px;height:34px}
 html body #tab-stats #insights-list>p{padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.14)}
+/* ===== بهینه‌سازی سرعت: انیمیشن‌های دائمیِ سنگین حذف شد (ظاهرِ درخشان ثابت می‌ماند، با hover زنده می‌شود) ===== */
+html body .tab-content .glass-card,html body .tab-content .adm-card,html body .tab-content .em-hero,html body #tab-notes-ve.smart-notes-section{animation:none!important}
+html body .tab-content .glass-card,html body .tab-content .adm-card,html body .tab-content .em-hero{
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--pg) 50%,transparent),0 0 18px -3px color-mix(in srgb,var(--pg) 46%,transparent),0 0 42px -14px color-mix(in srgb,var(--pg) 56%,transparent),inset 0 0 30px -20px color-mix(in srgb,var(--pg) 60%,transparent),inset 0 1px 0 rgba(255,255,255,.15)!important}
+html body .tab-content .glass-card::before{animation:none!important;filter:none!important;opacity:.8}
+html body .tab-content .glass-card:hover::before{animation:pgSpin 3s linear infinite!important;opacity:1}
+html body #atxt-app-title{animation:none!important;filter:none!important}
+body::after{animation:none!important}
+body{transition:--pg .5s ease}
+html body .tabs .tab-btn.active .tab-icon{animation:none!important}
+#bd-cal .bdc-c.t{animation:none!important}
+html body .chat-overlay-inner{animation:none!important}
+html body .chat-fab{animation:none!important}
+html body .tab-content .stat-box,html body .tab-content .study-period-card,html body .tab-content .daily-ring-card,html body .tab-content .planner-day-card{will-change:auto!important}
+html body .tab-content .glass-card:not(:hover){transition:none}
+/* پس‌زمینه‌ی متحرک: بلور ۷۰ پیکسلی روی سه حباب بزرگ مصرف گرافیک را دو برابر می‌کرد؛
+   گرادیان شعاعی خودش نرم و محو است، پس بلور لازم نیست. */
+html body #ambient-bg .ambient-blob{filter:none!important;opacity:.2}
+html body.light-mode #ambient-bg .ambient-blob{opacity:.14}
 </style>
 <script id="glow-frames-v4-js">
 /* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
@@ -22398,6 +22417,11 @@ window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(i
       b.style.setProperty('--v',Math.max(0,Math.min(100,v))+'%'); b.style.setProperty('--sc',v>=70?'#34d399':v>=50?'#fbbf24':'#f43f5e');
     });
   }
+  /* نمودارِ ساخته‌شده در تبِ پنهان اندازه‌ی صفر می‌گرفت؛ با نمایش تب دوباره اندازه می‌گیرد */
+  function fit(){ try{ if(typeof myChart!=='undefined'&&myChart) myChart.resize(); }catch(e){} try{ if(typeof radarChart!=='undefined'&&radarChart) radarChart.resize(); }catch(e){} }
+  (function(){ var t=document.getElementById('tab-stats'); if(!t){setTimeout(arguments.callee,500);return;}
+    new MutationObserver(function(){ if(t.classList.contains('active')){ setTimeout(fit,30); setTimeout(fit,350); } }).observe(t,{attributes:true,attributeFilter:['class']}); })();
+  window.addEventListener('resize',function(){ setTimeout(fit,60); });
   var tries=0,iv=setInterval(function(){tries++; if(mod()||tries>40){clearInterval(iv);} },400);
   var _a=window.applyChartTheme; if(typeof _a==='function'){ window.applyChartTheme=function(){var r=_a.apply(this,arguments);try{mod();}catch(e){}return r;}; }
   function watch(){var g=document.getElementById('subject-stats-grid'); if(!g){setTimeout(watch,500);return;} deco(); new MutationObserver(deco).observe(g,{childList:true}); }
