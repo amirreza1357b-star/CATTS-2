@@ -22098,6 +22098,12 @@ html body #countdown-popup .cd-edit:active{transform:scale(.97)}
 /* جلوگیری از دیده‌شدن ظاهر قبلی هنگام بارگذاری */
 html:not(.pg-ready) body{opacity:0}
 html.pg-ready body{transition:opacity .35s ease}
+html body .app-bar-icons #countdown-popup button.cd-edit{display:block!important;width:100%!important;height:42px!important;min-width:0!important;padding:0 14px!important;margin-top:16px!important;border:0!important;border-radius:15px!important;
+  background:radial-gradient(circle at 22% 6%,rgba(255,255,255,.5),transparent 55%),linear-gradient(135deg,#fbbf24,#f97316)!important;background-origin:padding-box!important;background-clip:border-box!important;
+  color:#2a1500!important;font-size:.85rem!important;font-weight:900!important;box-shadow:0 14px 26px -12px #f97316,inset 0 1px 0 rgba(255,255,255,.6)!important;animation:none!important;position:static!important}
+html body .app-bar-icons #countdown-popup button.cd-edit::after{display:none!important}
+html body #countdown-popup{width:340px!important;max-width:calc(100vw - 20px);background:radial-gradient(70% 50% at 100% 0%,rgba(251,191,36,.12),transparent 70%),linear-gradient(160deg,#1a2338,#0b1220)!important}
+html body #countdown-popup .cd-card{justify-content:flex-start}
 </style>
 <script id="glow-frames-v4-js">
 /* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
@@ -22629,7 +22635,8 @@ window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(i
   function faN(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d];});}
   function build(){
     var pop=document.getElementById('countdown-popup'); if(!pop||pop.querySelector('.cd-card')) return;
-    var old=document.getElementById('countdown-popup-text');
+    /* پنجره از داخل نوار شیشه‌ای (backdrop-filter) بیرون آورده می‌شود تا موقعیتش دقیق و نورش تمیز باشد */
+    document.body.appendChild(pop); var ap=document.getElementById('announcement-popup'); if(ap&&ap.parentElement!==document.body) document.body.appendChild(ap);
     pop.innerHTML='<div id="countdown-popup-text" hidden></div><div class="cd-card"><div class="cd-ring"><div><b></b><span></span></div></div><div class="cd-info"><strong></strong><small></small></div></div><button type="button" class="cd-edit"></button>';
     pop.querySelector('.cd-edit').addEventListener('click',function(){ if(window.setCountdownDate) window.setCountdownDate(); });
     var txt=document.getElementById('countdown-popup-text');
