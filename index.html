@@ -22940,6 +22940,33 @@ window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(i
     },2500);
   }
 })();</script>
+<script id="study-tracker">
+/* ثبت خودکار ساعت مطالعه از تایمر «تست» و «آزمون آنلاین» (حتی بدون تایمر)
+   - استوپ‌واچ مطالعه، پومودورو و روش‌های مطالعه قبلاً خودشان ثبت می‌کردند و دست نخورده‌اند.
+   - اگر استوپ‌واچ روشن باشد این ماژول چیزی اضافه نمی‌کند (تا دوبار حساب نشود). */
+(function(){
+  var last=Date.now(), carry=0, onlineSince=0, lastSync=0;
+  function stopwatchOn(){try{return typeof studyState!=='undefined'&&studyState==='running';}catch(e){return false;}}
+  function examTimerOn(){try{return typeof timerState!=='undefined'&&timerState==='running';}catch(e){return false;}}
+  function onlineOn(){var v=document.getElementById('as-view-sheet');return !!(v&&v.classList.contains('active'));}
+  function tick(){
+    var now=Date.now(),dt=now-last;last=now;
+    var online=onlineOn();
+    if(online){if(!onlineSince)onlineSince=now;}else onlineSince=0;
+    var onlineOk=online&&(now-onlineSince)<4*3600*1000;      /* سقف ۴ ساعت برای یک جلسه‌ی آزمون */
+    if(!(examTimerOn()||onlineOk)){carry=0;return;}
+    if(stopwatchOn()){carry=0;return;}
+    var ms=Math.min(dt,90000)+carry, sec=Math.floor(ms/1000);   /* سقف ۹۰ ثانیه: اگر لپ‌تاپ خوابید، زمان خواب حساب نشود */
+    carry=ms-sec*1000; if(sec<=0) return;
+    try{distributeStudySeconds(now-sec*1000,now);}catch(e){return;}
+    try{if(typeof renderStudyStopwatch==='function')renderStudyStopwatch();else if(typeof updateDailyVitals==='function')updateDailyVitals();}catch(e){}
+    if(now-lastSync>30000){lastSync=now;try{if(typeof scheduleCloudSync==='function')scheduleCloudSync();}catch(e){}}
+  }
+  setInterval(tick,5000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)tick();});
+  window.__studyTrackerTick=tick;
+})();
+</script>
 <script id="pg-ready">(function(){function go(){requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.add("pg-ready");});});}if(document.readyState==="complete")go();else window.addEventListener("load",go);})();</script>
 </body>
 </html>
