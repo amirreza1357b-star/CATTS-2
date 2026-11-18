@@ -3,7 +3,7 @@
    حالا: «اول شبکه، بعد حافظه». فایل‌های ?v=... یک‌بار ذخیره می‌شوند (نه هر بار یک نسخه‌ی جدید)،
    و PDF/صوت/ویدیو ذخیره نمی‌شوند تا حافظه‌ی مرورگر پر نشود.
    بعد از هر آپدیت بزرگ فقط عدد VERSION را عوض کن. */
-const VERSION = "2026-11-16-b";
+const VERSION = "2026-11-17-a";
 const CACHE_VERSION = "catts-" + VERSION;
 const APP_SHELL = ["./", "./index.html", "./manifest.json"];
 const NO_CACHE = /\.(pdf|mp3|m4a|ogg|wav|mp4|webm|zip)(\?|$)/i;
