@@ -23766,48 +23766,130 @@ body:not(.light-mode) .tr-root{--bg:#1b1d2e;--fg:#f1f5f9;--mu:#a3acc2;--bd:rgba(
 if(window.__catTour)return;
 var $=function(s){return document.querySelector(s)};
 function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d]})}
-function card(s){return function(){var e=$(s);return e&&(e.closest('.glass-card')||e)}}
-function par(s){return function(){var e=$(s);return e&&e.parentElement}}
-var GEN=[['#abx-tg','ابزارهای سریع','دفترچه لغت/فرمول، ماشین‌حساب، یادآور و بقیهٔ ابزارها اینجا جمع شدن. بزن تا باز بشن.'],['.tabs','منوی بخش‌ها','از اینجا بین زمان‌سنج، آزمون آنلاین، آمار دروس، دفتر خطاها و بقیهٔ بخش‌ها جابه‌جا می‌شی.']];
+function vis(e){if(!e||!e.isConnected)return false;var r=e.getBoundingClientRect();return r.width>2&&r.height>2&&getComputedStyle(e).visibility!=='hidden'}
+function C(s){return function(){var e=$(s);return e&&(e.closest('.glass-card')||e)}}
+function F(s){return function(){var e=$(s);return vis(e)?e:(e&&(e.closest('.glass-card')||e.parentElement))}}
+function P(s,n){return function(){var e=$(s);for(var i=0;e&&i<(n||1);i++)e=e.parentElement;return e}}
+function BT(rx,up){return function(){var b=[].slice.call(document.querySelectorAll('button,label')).filter(function(x){return rx.test(x.textContent)&&vis(x)})[0];return b&&(up?b.closest(up)||b:b)}}
+function tm(m){return function(){try{window.switchTimerMode(m)}catch(e){}}}
+var GEN=[['#abx-tg','ابزارهای سریع','دفترچه لغت/فرمول، ماشین‌حساب، یادآور و بقیهٔ ابزارها اینجا جمع شدن. بزن تا باز بشن؛ بعد از انتخاب هر ابزار خودش دوباره جمع می‌شه.'],['.tabs','منوی بخش‌ها','از اینجا بین بخش‌های برنامه جابه‌جا می‌شی: داشبورد، زمان‌سنج، آزمون آنلاین، آزمون مارکت، آمار دروس، دفتر خطاها، نکات مهم، اهداف، برنامه هفتگی، گالری، سطل زباله و مشاوره.']];
 var T={
-'tab-dashboard':GEN.concat([['.stats-container','آمار کلی','تعداد آزمون‌ها، میانگین، بهترین عملکرد و استریک روزانه‌ات اینجاست.'],['.daily-vitals-card','داشبورد امروز','سه حلقه، پیشرفت مطالعه، تعداد تست و ساعت مطالعهٔ امروزت رو نشون می‌دن.'],['#dashboard-todo-card','کارهای امروز','کارهای امروزت رو اینجا اضافه کن و با انجام‌شدنشون تیک بزن.'],['#dashboard-goals-card','اهداف','پیشرفت اهدافت رو همین‌جا دنبال کن.']]),
-'tab-timer':[[par('#mode-btn-exam'),'حالت تایمر','بین حالت «تست» (تایمر آزمون) و «مطالعه» (زمان‌سنج مطالعه) جابه‌جا شو.'],['#timer','تایمر آزمون','درس و تعداد تست رو وارد کن تا زمان استاندارد خودکار تنظیم بشه؛ بعد دکمهٔ شروع رو بزن.'],['#study-timer','تایمر مطالعه','در حالت مطالعه، زمان خالص مطالعه‌ات اینجا شمرده و ثبت می‌شه.'],['#study-today-total','مجموع امروز','کل مطالعهٔ خالص امروزت اینجا جمع می‌شه.']],
-'tab-as':[[par('#as-qmode-btn-normal'),'شماره‌گذاری سؤال‌ها','سؤال‌ها رو عادی شماره‌گذاری کن یا بازهٔ شمارهٔ کتاب رو مشخص کن.'],[par('#as-mode-btn-none'),'حالت تایمر','بدون تایمر، تایمر دستی یا تایمر هوشمند؛ هرکدوم رو دوست داری انتخاب کن.'],['#as-history-list','تاریخچهٔ آزمون‌ها','آزمون‌هایی که با پاسخ‌برگ دیجیتال ثبت کردی اینجا می‌مونن.']],
-'tab-exams':[['#em-root','آزمون مارکت','آزمون‌های آماده رو اینجا مرور و انتخاب کن.']],
-'tab-stats':[['#chart-subject-filter','فیلتر درس','نمودارها رو فقط برای یه درس مشخص ببین.'],[card('#progressChart'),'نمودار پیشرفت','روند درصدهات رو در طول زمان دنبال کن.'],[card('#radarChart'),'نمودار رادار','نقاط قوت و ضعفت رو در درس‌های مختلف مقایسه کن.'],['#insights-card','تحلیل هوشمند','پیشنهادهای شخصی بر اساس نتایج آزمون‌هات.'],['#subject-stats-grid','آمار هر درس','عملکرد هر درس رو جداگانه ببین.']],
-'tab-errors':[[card('#error-submit-btn'),'ثبت اشتباه','سؤالی که غلط زدی رو با دلیلش ثبت کن تا بعداً مرورش کنی.'],['#error-tag-stats-card','آمار برچسب‌ها','ببین بیشتر چه نوع اشتباهی داری.'],['#error-deep-analysis-card','تحلیل عمیق','الگوی اشتباهات تکراریت رو پیدا کن.'],['#error-list','غلط‌نامهٔ تو','همهٔ اشتباهات ثبت‌شده برای مرور اینجا جمع می‌شن.']],
-'tab-notes-ve':[['#smartNotesSearch','جستجوی نکات','نکته‌هات رو سریع پیدا کن.'],['#smartNotesList','فهرست نکات','نکات مهم هر درس اینجا نگه‌داری می‌شه.']],
-'tab-settings':[['#goal-cards-grid','کارت‌های اهداف','پیشرفت هر هدف رو یک‌جا ببین.'],[card('#goal-manager-list'),'مدیریت اهداف','هدف‌هات رو اضافه، ویرایش یا حذف کن.'],[card('#goal-archive-list'),'بایگانی','اهداف تمام‌شده اینجا نگه‌داری می‌شن.']],
-'tab-planner':[[card('#bdc-grid'),'تقویم','روزی که می‌خوای برنامه‌ش رو ببینی انتخاب کن.'],['#planner-grid','برنامهٔ روز','برنامهٔ مطالعه‌ات رو اینجا ببین و ویرایش کن.']],
-'tab-gallery':[['#global-gallery-grid','گالری','تصویرها و برگه‌های ثبت‌شده‌ات اینجا جمع می‌شن.']],
-'tab-trash':[['#trash-section-tabs','بخش‌های سطل زباله','موارد حذف‌شدهٔ هر بخش جداگانه نگه‌داری می‌شه.'],['#trash-list','بازیابی','هر مورد رو برگردون یا برای همیشه پاک کن.']]
+'tab-dashboard':GEN.concat([
+['.stats-container','آمار کلی','تعداد کل آزمون‌ها، میانگین همهٔ دروس، بهترین عملکردت و «استریک روزانه» (چند روز پشت‌سرهم مطالعه یا تست ثبت کردی) اینجا خلاصه می‌شه.'],
+['.daily-vitals-card','داشبورد امروز','سه حلقه وضعیت امروزت رو نشون می‌دن: «مطالعه» = پارت‌های برنامهٔ امروز که انجام دادی، «عملکرد» = تست‌هایی که امروز ثبت کردی، و «ساعت» = مطالعهٔ خالص امروز.'],
+['#dashboard-todo-card','برنامهٔ امروز من','هر کاری که امروز می‌خوای انجام بدی رو بنویس و «افزودن» بزن؛ بعد از انجامش تیکش بزن تا درصد پیشرفت بالا بره. این بخش جدا از «برنامهٔ هفتگی» و «اهداف»ه.'],
+['#dashboard-goals-card','اهداف درسی من','خلاصهٔ پیشرفت هدف‌های هر درس اینجا دیده می‌شه. برای ساختن یا تغییر هدف‌ها به بخش «اهداف» برو.'],
+['#daily-quote-card','جملهٔ انگیزشی روز','هر روز یه جملهٔ انگیزشی؛ اگه خواستی با «یک جملهٔ دیگر» عوضش کن.']]),
+'tab-timer':[
+['#timerFullscreenBtn','حالت تمام‌صفحه','تایمر رو تمام‌صفحه کن تا موقع آزمون یا مطالعه فقط همون جلوی چشمت باشه و حواست پرت نشه.'],
+[P('#mode-btn-exam'),'انتخاب حالت','بین «تست» (تایمر آزمون با شمارش معکوس) و «مطالعه» (کرنومتر و روش‌های مطالعه) جابه‌جا شو. هر حالت ابزارهای مخصوص خودش رو داره.'],
+['#exam-sub-switch','تایمر آزمون و ۳ روش برتر','دو زبانه داری: «تایمر آزمون» برای تست‌زدن با زمان استاندارد، و «۳ روش برتر» که سه روش پیشنهادی برای تست‌زدن بهتر رو توضیح می‌ده.',tm('exam')],
+['#track-select','رشته','رشتهٔ تجربی یا ریاضی رو انتخاب کن تا فهرست درس‌ها و زمان استاندارد هر تست با رشته‌ات جور باشه.',tm('exam')],
+['#subject','درس','درس رو انتخاب کن. اگه «بدون انتخاب درس — تایمر آزاد» رو بزنی، زمان رو خودت تعیین می‌کنی.',tm('exam')],
+['#question-count','تعداد تست','تعداد تست‌ها رو بنویس تا زمان استاندارد خودکار حساب و روی تایمر تنظیم بشه؛ نتیجه (زمان هر تست و زمان کل) زیر همین کادر هم نوشته می‌شه.',tm('exam')],
+[P('#minutes',1),'تایمر آزاد','اگه درس انتخاب نکردی، زمان دلخواهت رو خودت به دقیقه و ثانیه وارد کن.',tm('exam')],
+['#timer','شمارش معکوس','زمان باقی‌ماندهٔ آزمون اینجا نشون داده می‌شه و با شروع تایمر کم می‌شه.',tm('exam')],
+[P('#startPauseBtn'),'شروع و بازنشانی','«شروع» شمارش رو راه می‌اندازه و همون دکمه برای توقف موقت هم هست؛ «بازنشانی» تایمر رو به زمان اولیه برمی‌گردونه.',tm('exam')],
+['#study-sub-switch','روش‌های مطالعه','پنج روش داری: کرنومتر آزاد، پومودورو (کار و استراحت متناوب)، بازیابی فعال، مرور فاصله‌دار و زمان‌بندی بلوکی. هر زبانه ابزار مخصوص خودش رو نشون می‌ده.',tm('study')],
+['#study-timer','کرنومتر مطالعه','با «شروع» زمان مطالعه شمرده می‌شه. هر بار «توقف» بزنی زمان ذخیره می‌شه و با «شروع» دوباره از همون‌جا ادامه پیدا می‌کنه.',tm('study')],
+[P('#startStudyBtn'),'شروع و بازنشانی امروز','«شروع» کرنومتر رو راه می‌اندازه و «بازنشانی امروز» مجموع مطالعهٔ امروز رو صفر می‌کنه.',tm('study')],
+['#study-today-total','مجموع مطالعهٔ امروز','جمع خالص مطالعهٔ امروزت اینجا نشون داده می‌شه؛ این عدد توی داشبورد و حلقهٔ «ساعت» هم استفاده می‌شه.',tm('study')],
+[function(){var e=$('#study-range-start');return e&&e.closest('.tpx-card')},'ثبت دستی بازهٔ مطالعه','اگه موقع درس‌خوندن نتونستی تایمر رو روشن نگه داری (مثلاً گوشی قفل بود)، اینجا روز (امروز یا دیروز)، ساعت شروع و پایان و دقیقه‌های استراحت رو بزن و «افزودن» رو بزن تا به مطالعهٔ خالص اضافه بشه.',tm('study')],
+[C('#exam-name'),'ثبت نتیجهٔ آزمون','بعد از هر آزمون، نام آزمون، مبحث، تعداد صحیح، غلط و کل تست‌ها رو بنویس. علت غلط‌ها، علت نزده‌ها و نتیجه‌گیری‌ات رو هم بنویس و «ثبت در تاریخچه» رو بزن؛ نتیجه به آمار و نمودارها هم اضافه می‌شه.'],
+[C('#history-list'),'تاریخچهٔ اخیر سوابق','آزمون‌های ثبت‌شده اینجا می‌مونن. با فیلتر بالا فقط یه درس رو ببین، و اگه خواستی «حذف کل تاریخچه» رو بزن (موارد حذف‌شده به سطل زباله می‌رن).']],
+'tab-as':[
+['#as-exam-name','نام آزمون','یه اسم برای آزمون بنویس تا بعداً توی تاریخچه راحت پیداش کنی.'],
+[P('#as-qmode-btn-normal'),'روش شماره‌گذاری','«شماره‌گذاری عادی» سؤال‌ها رو از ۱ شروع می‌کنه. «بازهٔ شمارهٔ کتاب» برای وقتیه که می‌خوای از یه شماره تا شمارهٔ دیگهٔ کتاب با ضریب مشخص (مثلاً ۳ یعنی هر سؤالِ سوم) آزمون بدی.'],
+['#as-question-count','تعداد سؤال‌ها','در حالت عادی، تعداد سؤال‌ها رو بنویس تا پاسخ‌برگ همون‌قدر ردیف داشته باشه.'],
+[P('#as-mode-btn-none'),'تایمر آزمون','«بدون تایمر»، «تایمر دستی» (دقیقه و ثانیه رو خودت می‌دی) یا «تایمر هوشمند» که با رشته، درس و تعداد سؤال، زمان استاندارد رو خودش پیشنهاد می‌ده.'],
+[BT(/شروع آزمون و باز کردن پاسخ/),'شروع آزمون','با این دکمه پاسخ‌برگ دیجیتال باز می‌شه: برای هر سؤال گزینه رو بزن (می‌شه عوضش کرد)، تایمر بالای صفحه می‌شمره و آخرش «ثبت پاسخ‌ها» رو بزن. بعد کلید صحیح هر سؤال رو وارد می‌کنی و کارنامه ساخته می‌شه: تعداد صحیح، غلط، بدون پاسخ، درصد خام و یادداشت‌های تکمیلی.'],
+[C('#as-history-list'),'تاریخچهٔ پاسخ‌برگ‌ها','آزمون‌هایی که با پاسخ‌برگ دیجیتال ثبت کردی اینجا می‌مونن و می‌تونی کارنامه‌شون رو دوباره ببینی.']],
+'tab-exams':[
+['.em-hero','آزمون مارکت','کتابخانهٔ آزمون‌های آماده؛ آزمون‌ها رو ببین، فایل‌هاشون رو باز کن یا دانلود کن.'],
+['.em-search','جستجو','اسم آموزشگاه یا آزمون رو بنویس تا سریع پیداش کنی.'],
+['.em-grid','آموزشگاه‌ها و مجموعه‌ها','هر کارت یه مجموعه‌ست با تعداد آزمون‌ها و سال‌هاش. روی کارت بزن تا وارد بشی.'],
+['.em-crumb','مسیر','بالای صفحه می‌بینی کجایی (آموزشگاه ← سال ← آزمون) و می‌تونی برگردی عقب.'],
+['.em-list','فهرست آزمون‌ها','هر آزمون فایل‌هاش رو داره؛ «مشاهده» یا «دانلود» رو بزن. برچسب «جدید» یعنی تازه اضافه شده.'],
+['#em-root','آزمون مارکت','آزمون‌های آماده اینجا نمایش داده می‌شن. اگه پیام خطا دیدی، پوشهٔ exams باید کنار index.html باشه و سایت از آدرس اصلی باز شده باشه.',null,1]],
+'tab-stats':[
+[P('#stats-today-tests'),'تعداد تست‌ها','تعداد تست‌های امروز، این هفته، این ماه و کل تست‌هایی که ثبت کردی.'],
+[C('#daily-bars'),'گزارش ۷ روز اخیر','ستون‌ها نشون می‌دن هر روز چند تست زدی؛ روزهای کم‌کار رو راحت می‌بینی. زیرش جدول مباحثی که ثبت کردی با درس، درصد و تاریخ هست.'],
+['#chart-subject-filter','فیلتر درس','نمودار روند پیشرفت رو فقط برای یه درس خاص ببین یا «همه دروس» رو نگه دار.'],
+[C('#progressChart'),'نمودار روند پیشرفت','درصدهای آزمون‌هات به ترتیب زمان رسم می‌شن تا ببینی بهتر شدی یا نه.'],
+[C('#radarChart'),'مقایسهٔ دروس','نمودار رادار قوت و ضعف دروس رو کنار هم نشون می‌ده؛ هرجا فرورفتگی داره یعنی ضعیف‌تری.'],
+['#insights-card','تحلیل هوشمند نقاط ضعف','برنامه از روی نتایجت درس‌ها و مباحث ضعیف رو پیدا می‌کنه و پیشنهاد می‌ده.'],
+[F('#subject-stats-grid'),'میانگین هر درس','میانگین عملکرد هر درس جداگانه، با رنگ و درصد.']],
+'tab-errors':[
+[C('#error-subject'),'ثبت تست غلط یا شک‌دار','هر تستی که غلط زدی یا بهش شک داشتی رو اینجا ثبت کن تا بعداً مرورش کنی: درس، شمارهٔ تست یا مبحث، دلیل خطا، سختی، زمان مصرف‌شده و تعداد دفعات مرور.'],
+['#error-tag','دلیل خطا','بی‌دقتی (محاسباتی یا مفهومی)، کمبود وقت، تلهٔ طراح، مفهومی یا «بلد نبودم»؛ این برچسب‌ها بعداً الگوی اشتباهاتت رو نشون می‌دن.'],
+['#error-review-target','تعداد مرور لازم','مشخص کن این تست رو چند بار باید مرور کنی (۱ تا ۵ بار).'],
+['#error-submit-btn','افزودن به غلط‌نامه','همه چیز رو که پر کردی، با این دکمه به غلط‌نامه اضافه می‌شه.'],
+['#error-tag-stats-card','آمار الگوی خطا','ببین بیشتر چه نوع اشتباهی داری: بی‌دقتی، مفهومی، کمبود وقت و ...'],
+['#error-deep-analysis-card','تحلیل عمیق به تفکیک درس','برای هر درس جدا نشون می‌ده اشتباهاتت از چه نوعیه و کجا بیشتر خطا می‌کنی.'],
+[C('#error-list'),'لیست تست‌های نیازمند مرور','همهٔ تست‌های ثبت‌شده اینجا برای مرور جمع می‌شن.']],
+'tab-notes-ve':[
+['.smart-note-add-btn','افزودن نکته','یه نکتهٔ جدید بساز: درس، عنوان، توضیحات و در صورت نیاز عکس.'],
+['#smartNotesSearch','جستجو','عنوان یا توضیحات نکته‌هات رو جستجو کن.'],
+[P('.smart-subject-btn'),'انتخاب درس','نکته‌های هر درس جدا نگه‌داری می‌شن: هندسه، آمار، گسسته، حسابان، ریاضی، زیست، زمین‌شناسی، فیزیک و شیمی.'],
+[P('#smartNotesCurrentSubject'),'درس انتخاب‌شده','درس فعلی و تعداد نکته‌هاش اینجا نوشته می‌شه.'],
+[F('#smartNotesList'),'فهرست نکته‌ها','نکته‌های ذخیره‌شده اینجا نمایش داده می‌شن؛ بزن تا ببینی یا ویرایش کنی.']],
+'tab-settings':[
+['.home-goal-card','هدف‌گذاری تفکیکی درس‌ها','برای هر درس هدف جدا بذار، تعداد تست هر روز رو ثبت کن و پیشرفت هفتگی و ماهانه‌ات رو ببین.'],
+['.daily-goal-entry','ثبت تست امروز','تاریخ، درس و تعداد تست رو بنویس و «ثبت تست روز» رو بزن. تاریخ خودکار از دستگاه گرفته می‌شه ولی می‌تونی تاریخ دیگه‌ای هم انتخاب کنی.'],
+['#goal-cards-grid','کارت‌های اهداف','برای هر درس یه کارت با پیشرفت هفتگی و ماهانه‌ات ساخته می‌شه.'],
+['.goal-manager-panel','تعیین هدف','درس رو انتخاب کن، هدف هفتگی و ماهانه‌اش (تعداد تست) رو بنویس و «ذخیره هدف این درس» رو بزن.'],
+[F('#goal-manager-list'),'مدیریت اهداف','اهداف فعالت اینجا فهرست می‌شن تا ویرایش یا حذفشون کنی.'],
+[C('#goal-archive-list'),'آرشیو اهداف','اهدافی که کامل بشن یا یه ماه از تنظیمشون بگذره خودکار اینجا آرشیو می‌شن.'],
+[C('#reminder-status-text'),'یادآور هوشمند مطالعه','اگه یه روز وارد برنامه نشی یا تستی ثبت نکنی، یادآوری می‌شی تا زنجیرهٔ مطالعه‌ات قطع نشه. نوتیفیکیشن مرورگر فقط با اجازهٔ خودت فعال می‌شه.'],
+[BT(/دانلود فایل پشتیبان/,'.glass-card'),'پشتیبان‌گیری و بازیابی','از همهٔ سوابق و غلط‌نامه فایل پشتیبان بگیر یا قبلی رو بازیابی کن. اطلاعات داخل همین مرورگر ذخیره می‌شن، پس قبل از پاک‌کردن مرورگر پشتیبان بگیر. «چاپ گزارش عملکرد» هم همین‌جاست.']],
+'tab-planner':[
+['#bd-cal','تقویم و بودجه‌بندی','آزمون‌های بودجه‌بندی روی تقویم نشون داده می‌شن. با فلش‌ها ماه رو عوض کن و با «امروز» به روز جاری برگرد.'],
+[P('#bdc-up'),'آزمون‌های پیش‌رو','نزدیک‌ترین آزمون‌ها اینجا فهرست می‌شن و می‌تونی «بودجه‌بندی کامل» رو ببینی.'],
+['#planner-grid','برنامهٔ هفتگی','روی هر روز بزن تا پنجرهٔ برنامهٔ همون روز باز بشه. اونجا پارت‌ها رو خودت اضافه می‌کنی (درس، مبحث و بازهٔ زمانی)، تیک انجام‌شده می‌زنی، بازهٔ مطالعهٔ روز رو می‌نویسی و یادداشت روز رو ذخیره می‌کنی. درصد پیشرفت روز هم خودکار حساب می‌شه.'],
+[C('#planner-archives'),'هفته‌های ذخیره‌شده','هر هفته که تموم بشه برنامه‌اش خودکار اینجا بایگانی می‌شه؛ «ذخیره همین هفته» رو هم می‌تونی دستی بزنی.']],
+'tab-gallery':[
+[function(){var e=$('#galleryImageInput');return e&&e.closest('.glass-card')},'آپلود و حاشیه‌نویسی','هر عکسی رو آپلود کن یا یه فایل PDF رو باز کن و روش حاشیه‌نویسی کن؛ نتیجه همین‌جا ذخیره می‌شه، جدا از نکات.'],
+[function(){var g=$('#global-gallery-grid');return vis(g)?g:$('#global-gallery-empty')},'تصاویر گالری','عکس‌های ذخیره‌شده اینجا نمایش داده می‌شن؛ بزن تا بزرگ ببینی.']],
+'tab-trash':[
+['#trash-section-tabs','بخش‌های سطل زباله','هر چیزی که از هر بخش پاک کنی اول اینجا میاد؛ بخش‌ها جدا از هم نگه‌داری می‌شن.'],
+['#trash-empty-section-btn','خالی‌کردن همیشگی','موارد این بخش رو برای همیشه پاک می‌کنه؛ بعدش دیگه قابل برگشت نیست.'],
+[F('#trash-list'),'بازیابی موارد','هر مورد رو برگردون به جای اولش یا برای همیشه حذف کن.']],
+'tab-advice':[
+['#adv-q','جستجو','مقاله‌های مشاوره رو جستجو کن.'],
+[P('.adv-chip'),'دسته‌بندی','با این گزینه‌ها مقاله‌ها رو بر اساس موضوع (مثلاً امتحان) فیلتر کن.'],
+['#adv-list','مقاله‌های مشاوره','هر مقاله زمان مطالعه داره و بعضی‌ها صوت هم دارن؛ بزن تا باز بشه.']]
 };
+var ENTER={'tab-timer':function(){var m=$('#mode-btn-study'),o=m&&m.classList.contains('active')?'study':'exam';return function(){try{window.switchTimerMode(o)}catch(e){}}}};
 var seen={};try{seen=JSON.parse(localStorage.getItem('catts_tour_seen')||'{}')}catch(e){}
 function curTab(){var a=$('.tab-content.active');return a?a.id:'tab-dashboard'}
-function vis(e){if(!e||!e.isConnected)return false;var r=e.getBoundingClientRect();return r.width>2&&r.height>2&&getComputedStyle(e).visibility!=='hidden'}
 function res(s){var e;try{e=typeof s==='function'?s():$(s)}catch(x){}return vis(e)?e:null}
 var btn=document.createElement('button');btn.type='button';btn.className='tour-help';btn.title='راهنمای این بخش';btn.setAttribute('aria-label','راهنمای این بخش');
 btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.3-2.8 4"/><circle cx="12" cy="17.6" r=".6" fill="currentColor"/></svg><span class="dot"></span>';
 document.body.appendChild(btn);
 function refresh(){var g=document.getElementById('app-auth-gate'),h=!!(g&&g.getClientRects().length&&getComputedStyle(g).display!=='none');btn.classList.toggle('hide',h);btn.classList.toggle('new',!seen[curTab()])}
 setInterval(refresh,900);refresh();
-var root,steps,idx,tabId,raf,snapT;
+var root,steps,idx,tabId,raf,snapT,undo;
 function build(){root=document.createElement('div');root.className='tr-root first';
  root.innerHTML='<div class="tr-shield"></div><div class="tr-spot"></div><div class="tr-card" role="dialog" aria-modal="true" aria-labelledby="tr-t"><span class="tr-arrow"></span><div class="tr-head"><h3 id="tr-t"></h3><button type="button" class="tr-x" aria-label="بستن"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg></button></div><div class="tr-body"></div><div class="tr-foot"><span class="tr-count"></span><span class="tr-btns"><button type="button" class="tr-prev">قبلی</button><button type="button" class="tr-next"></button></span></div></div>';
  document.body.appendChild(root);
  root.querySelector('.tr-x').onclick=function(){end(false)};
  root.querySelector('.tr-prev').onclick=function(){go(idx-1)};
  root.querySelector('.tr-next').onclick=function(){idx>=steps.length-1?end(true):go(idx+1)}}
-function go(i){idx=Math.max(0,Math.min(steps.length-1,i));var s=steps[idx],c=root.querySelector('.tr-card'),n=steps.length;
+function reveal(s){var e=s.el;
+ if(e&&e.isConnected&&!e.closest('.tabs,.top-left-stack,.tour-help')&&e.id!=='abx-tg'){var r=e.getBoundingClientRect(),vh=innerHeight;
+  try{if(r.height>vh*.7){window.scrollTo({top:scrollY+r.top-90,behavior:'instant'})}else if(r.top<70||r.bottom>vh-70){e.scrollIntoView({block:'center',behavior:'instant'})}}catch(x){e.scrollIntoView({block:'center'})}}
+ place()}
+function go(i){idx=Math.max(0,Math.min(steps.length-1,i));var s=steps[idx],n=steps.length;
  root.querySelector('#tr-t').textContent=s.t;root.querySelector('.tr-body').textContent=s.x;
  root.querySelector('.tr-count').textContent=fa(idx+1)+' از '+fa(n);
  root.querySelector('.tr-prev').style.display=idx?'':'none';
  var nx=root.querySelector('.tr-next');nx.textContent=idx>=n-1?'فهمیدم':'بعدی';
- var e=s.el;if(e&&e.isConnected&&!e.closest('.tabs,.top-left-stack,.tour-help')&&!(e.id==='abx-tg')){var r=e.getBoundingClientRect(),vh=innerHeight;
-  try{if(r.height>vh*.7){window.scrollTo({top:scrollY+r.top-90,behavior:'instant'})}else if(r.top<70||r.bottom>vh-70){e.scrollIntoView({block:'center',behavior:'instant'})}}catch(x){e.scrollIntoView({block:'center'})}}
- place();nx.focus({preventScroll:true})}
+ if(s.pre){try{s.pre()}catch(x){}}
+ s.el=res(s.s);reveal(s);
+ if(s.pre)setTimeout(function(){if(root&&steps[idx]===s){s.el=res(s.s);reveal(s)}},430);
+ nx.focus({preventScroll:true})}
 function place(){var s=steps[idx],e=s.el,vw=innerWidth,vh=innerHeight,c=root.querySelector('.tr-card'),sp=root.querySelector('.tr-spot'),ar=root.querySelector('.tr-arrow'),m=12,gap=16;
- var cw=Math.min(380,vw-2*m);c.style.width=cw+'px';var ch=c.offsetHeight;ar.className='tr-arrow';
+ var cw=Math.min(400,vw-2*m);c.style.width=cw+'px';var ch=c.offsetHeight;ar.className='tr-arrow';
  if(!e||!e.isConnected||!vis(e)){sp.style.cssText='left:'+vw/2+'px;top:'+vh/2+'px;width:0;height:0';c.style.left=(vw-cw)/2+'px';c.style.top=Math.max(m,(vh-ch)/2)+'px';return}
  var r=e.getBoundingClientRect(),p=8,x=Math.max(4,r.left-p),y=Math.max(4,r.top-p),w=Math.min(vw-4,r.right+p)-x,h=Math.min(vh-4,r.bottom+p)-y;
  sp.style.left=x+'px';sp.style.top=y+'px';sp.style.width=w+'px';sp.style.height=h+'px';
@@ -23824,13 +23906,15 @@ function place(){var s=steps[idx],e=s.el,vw=innerWidth,vh=innerHeight,c=root.que
 function re(){root.classList.add('snap');cancelAnimationFrame(raf);raf=requestAnimationFrame(place);clearTimeout(snapT);snapT=setTimeout(function(){root&&root.classList.remove('snap')},160)}
 function key(e){if(!root)return;if(e.key==='Escape'){end(false)}else if(e.key==='ArrowLeft'||e.key==='Enter'&&document.activeElement.tagName!=='BUTTON'){e.preventDefault();idx>=steps.length-1?end(true):go(idx+1)}else if(e.key==='ArrowRight'){e.preventDefault();go(idx-1)}}
 function start(){if(root)return;var t=$('#abx-tg');if(t&&t.classList.contains('on'))t.click();
- tabId=curTab();var defs=T[tabId]||GEN;steps=[];
- defs.forEach(function(d){var e=res(d[0]);if(e)steps.push({el:e,t:d[1],x:d[2]})});
- if(!steps.length)steps=[{el:null,t:'راهنما',x:'برای این بخش هنوز راهنمای مرحله‌ای نداریم؛ از منوی کناری یکی از بخش‌ها رو انتخاب کن و دوباره دکمهٔ راهنما رو بزن.'}];
+ tabId=curTab();undo=ENTER[tabId]?ENTER[tabId]():null;var defs=T[tabId]||GEN;steps=[];var fb=null;
+ defs.forEach(function(d){var o={s:d[0],t:d[1],x:d[2],pre:d[3]||null};if(d[4]){fb=o;return}if(o.pre||res(o.s))steps.push(o)});
+ if(!steps.length&&fb&&res(fb.s))steps.push(fb);
+ if(!steps.length)steps=[{s:null,el:null,t:'راهنما',x:'برای این بخش هنوز راهنمای مرحله‌ای نداریم؛ از منوی کناری یکی از بخش‌ها رو انتخاب کن و دوباره دکمهٔ راهنما رو بزن.'}];
  build();document.addEventListener('keydown',key,true);addEventListener('resize',re);addEventListener('scroll',re,true);
  go(0);requestAnimationFrame(function(){root.classList.add('on');setTimeout(function(){root.classList.remove('first')},60)})}
 function end(done){seen[tabId]=1;try{localStorage.setItem('catts_tour_seen',JSON.stringify(seen))}catch(e){}
  document.removeEventListener('keydown',key,true);removeEventListener('resize',re);removeEventListener('scroll',re,true);
+ if(undo){try{undo()}catch(e){}undo=null}
  var r=root;root=null;r.classList.remove('on');setTimeout(function(){r.remove()},260);refresh();btn.focus({preventScroll:true})}
 btn.addEventListener('click',start);
 window.__catTour={start:start};
