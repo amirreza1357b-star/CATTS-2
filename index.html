@@ -23717,5 +23717,124 @@ cp.addEventListener('click',function(){var s=ta.selectionStart!==ta.selectionEnd
  copy(t).then(function(){note(s?'✅ بخش انتخاب‌شده کپی شد':'✅ کل متن کپی شد')},function(){note('کپی نشد؛ متن را انتخاب و دستی کپی کن')})});
 })();
 </script>
+<style id="tour-css">
+/* ===== تور راهنمای مرحله‌ای ===== */
+.tour-help{position:fixed;left:26px;bottom:90px;z-index:900;width:46px;height:46px;border-radius:50%;border:1px solid rgba(99,102,241,.28);background:rgba(99,102,241,.14);color:#4f46e5;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 18px -8px rgba(79,70,229,.5);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.tour-help:hover{transform:translateY(-2px);background:rgba(99,102,241,.24)}
+.tour-help:active{transform:scale(.94)}
+.tour-help:focus-visible{outline:2px solid #6366f1;outline-offset:3px}
+.tour-help svg{width:24px;height:24px}
+.tour-help.hide{display:none}
+.tour-help .dot{position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:#ef4444;border:2px solid #fff;display:none}
+.tour-help.new .dot{display:block;animation:trPulse 2s infinite}
+body:not(.light-mode) .tour-help{color:#a5b4fc;background:rgba(99,102,241,.2);border-color:rgba(165,180,252,.3)}
+body:not(.light-mode) .tour-help .dot{border-color:#1b1d2e}
+html body.focus-mode-active .tour-help{display:none!important}
+@keyframes trPulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.55)}70%,100%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+@media (max-width:859px){.tour-help{left:26px;bottom:calc(180px + env(safe-area-inset-bottom,0px))}}
+.tr-root{--bg:#fff;--fg:#0f172a;--mu:#64748b;--bd:rgba(15,23,42,.09);--sf:#f1f5f9;position:fixed;inset:0;z-index:2147483000;direction:rtl;font-family:inherit;opacity:0;transition:opacity .25s}
+body:not(.light-mode) .tr-root{--bg:#1b1d2e;--fg:#f1f5f9;--mu:#a3acc2;--bd:rgba(255,255,255,.1);--sf:rgba(255,255,255,.07)}
+.tr-root.on{opacity:1}
+.tr-shield{position:absolute;inset:0}
+.tr-spot{position:absolute;border-radius:14px;pointer-events:none;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 0 100vmax rgba(8,12,28,.6);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1),width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.tr-card{position:absolute;box-sizing:border-box;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:16px;box-shadow:0 28px 60px -14px rgba(0,0,0,.5);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1)}
+.tr-root.snap .tr-spot,.tr-root.snap .tr-card,.tr-root.first .tr-spot,.tr-root.first .tr-card{transition:none}
+.tr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bd)}
+.tr-head h3{margin:0;font-size:1.05rem;font-weight:800;color:var(--fg)}
+.tr-x{flex:none;width:38px;height:38px;border:0;border-radius:10px;background:var(--sf);color:var(--fg);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.tr-x:hover{transform:rotate(90deg)}.tr-x svg{width:16px;height:16px}
+.tr-body{padding:16px 18px;font-size:.9rem;line-height:1.95;color:var(--mu)}
+.tr-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 18px 16px}
+.tr-count{font-size:.8rem;color:var(--mu);font-weight:700}
+.tr-btns{display:flex;gap:8px}
+.tr-btns button{font:inherit;font-weight:800;font-size:.86rem;border-radius:10px;padding:10px 20px;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
+.tr-btns button:active{transform:scale(.95)}
+.tr-next{border:0;background:#2563eb;color:#fff;box-shadow:0 8px 18px -8px rgba(37,99,235,.8)}
+.tr-next:hover{background:#1d4ed8}
+.tr-prev{border:1px solid var(--bd);background:transparent;color:var(--fg)}
+.tr-prev:hover{background:var(--sf)}
+.tr-arrow{position:absolute;width:14px;height:14px;background:var(--bg);transform:rotate(45deg);display:none}
+.tr-arrow.t{display:block;top:-8px;border-left:1px solid var(--bd);border-top:1px solid var(--bd)}
+.tr-arrow.b{display:block;bottom:-8px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.tr-arrow.l{display:block;left:-8px;border-left:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.tr-arrow.r{display:block;right:-8px;border-right:1px solid var(--bd);border-top:1px solid var(--bd)}
+@media (prefers-reduced-motion:reduce){.tr-spot,.tr-card,.tr-root{transition:none}}
+</style>
+<script id="tour-js">
+/* ===== تور راهنمای مرحله‌ای ===== */
+(function(){
+if(window.__catTour)return;
+var $=function(s){return document.querySelector(s)};
+function fa(n){return String(n).replace(/\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d]})}
+function card(s){return function(){var e=$(s);return e&&(e.closest('.glass-card')||e)}}
+function par(s){return function(){var e=$(s);return e&&e.parentElement}}
+var GEN=[['#abx-tg','ابزارهای سریع','دفترچه لغت/فرمول، ماشین‌حساب، یادآور و بقیهٔ ابزارها اینجا جمع شدن. بزن تا باز بشن.'],['.tabs','منوی بخش‌ها','از اینجا بین زمان‌سنج، آزمون آنلاین، آمار دروس، دفتر خطاها و بقیهٔ بخش‌ها جابه‌جا می‌شی.']];
+var T={
+'tab-dashboard':GEN.concat([['.stats-container','آمار کلی','تعداد آزمون‌ها، میانگین، بهترین عملکرد و استریک روزانه‌ات اینجاست.'],['.daily-vitals-card','داشبورد امروز','سه حلقه، پیشرفت مطالعه، تعداد تست و ساعت مطالعهٔ امروزت رو نشون می‌دن.'],['#dashboard-todo-card','کارهای امروز','کارهای امروزت رو اینجا اضافه کن و با انجام‌شدنشون تیک بزن.'],['#dashboard-goals-card','اهداف','پیشرفت اهدافت رو همین‌جا دنبال کن.']]),
+'tab-timer':[[par('#mode-btn-exam'),'حالت تایمر','بین حالت «تست» (تایمر آزمون) و «مطالعه» (زمان‌سنج مطالعه) جابه‌جا شو.'],['#timer','تایمر آزمون','درس و تعداد تست رو وارد کن تا زمان استاندارد خودکار تنظیم بشه؛ بعد دکمهٔ شروع رو بزن.'],['#study-timer','تایمر مطالعه','در حالت مطالعه، زمان خالص مطالعه‌ات اینجا شمرده و ثبت می‌شه.'],['#study-today-total','مجموع امروز','کل مطالعهٔ خالص امروزت اینجا جمع می‌شه.']],
+'tab-as':[[par('#as-qmode-btn-normal'),'شماره‌گذاری سؤال‌ها','سؤال‌ها رو عادی شماره‌گذاری کن یا بازهٔ شمارهٔ کتاب رو مشخص کن.'],[par('#as-mode-btn-none'),'حالت تایمر','بدون تایمر، تایمر دستی یا تایمر هوشمند؛ هرکدوم رو دوست داری انتخاب کن.'],['#as-history-list','تاریخچهٔ آزمون‌ها','آزمون‌هایی که با پاسخ‌برگ دیجیتال ثبت کردی اینجا می‌مونن.']],
+'tab-exams':[['#em-root','آزمون مارکت','آزمون‌های آماده رو اینجا مرور و انتخاب کن.']],
+'tab-stats':[['#chart-subject-filter','فیلتر درس','نمودارها رو فقط برای یه درس مشخص ببین.'],[card('#progressChart'),'نمودار پیشرفت','روند درصدهات رو در طول زمان دنبال کن.'],[card('#radarChart'),'نمودار رادار','نقاط قوت و ضعفت رو در درس‌های مختلف مقایسه کن.'],['#insights-card','تحلیل هوشمند','پیشنهادهای شخصی بر اساس نتایج آزمون‌هات.'],['#subject-stats-grid','آمار هر درس','عملکرد هر درس رو جداگانه ببین.']],
+'tab-errors':[[card('#error-submit-btn'),'ثبت اشتباه','سؤالی که غلط زدی رو با دلیلش ثبت کن تا بعداً مرورش کنی.'],['#error-tag-stats-card','آمار برچسب‌ها','ببین بیشتر چه نوع اشتباهی داری.'],['#error-deep-analysis-card','تحلیل عمیق','الگوی اشتباهات تکراریت رو پیدا کن.'],['#error-list','غلط‌نامهٔ تو','همهٔ اشتباهات ثبت‌شده برای مرور اینجا جمع می‌شن.']],
+'tab-notes-ve':[['#smartNotesSearch','جستجوی نکات','نکته‌هات رو سریع پیدا کن.'],['#smartNotesList','فهرست نکات','نکات مهم هر درس اینجا نگه‌داری می‌شه.']],
+'tab-settings':[['#goal-cards-grid','کارت‌های اهداف','پیشرفت هر هدف رو یک‌جا ببین.'],[card('#goal-manager-list'),'مدیریت اهداف','هدف‌هات رو اضافه، ویرایش یا حذف کن.'],[card('#goal-archive-list'),'بایگانی','اهداف تمام‌شده اینجا نگه‌داری می‌شن.']],
+'tab-planner':[[card('#bdc-grid'),'تقویم','روزی که می‌خوای برنامه‌ش رو ببینی انتخاب کن.'],['#planner-grid','برنامهٔ روز','برنامهٔ مطالعه‌ات رو اینجا ببین و ویرایش کن.']],
+'tab-gallery':[['#global-gallery-grid','گالری','تصویرها و برگه‌های ثبت‌شده‌ات اینجا جمع می‌شن.']],
+'tab-trash':[['#trash-section-tabs','بخش‌های سطل زباله','موارد حذف‌شدهٔ هر بخش جداگانه نگه‌داری می‌شه.'],['#trash-list','بازیابی','هر مورد رو برگردون یا برای همیشه پاک کن.']]
+};
+var seen={};try{seen=JSON.parse(localStorage.getItem('catts_tour_seen')||'{}')}catch(e){}
+function curTab(){var a=$('.tab-content.active');return a?a.id:'tab-dashboard'}
+function vis(e){if(!e||!e.isConnected)return false;var r=e.getBoundingClientRect();return r.width>2&&r.height>2&&getComputedStyle(e).visibility!=='hidden'}
+function res(s){var e;try{e=typeof s==='function'?s():$(s)}catch(x){}return vis(e)?e:null}
+var btn=document.createElement('button');btn.type='button';btn.className='tour-help';btn.title='راهنمای این بخش';btn.setAttribute('aria-label','راهنمای این بخش');
+btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.3-2.8 4"/><circle cx="12" cy="17.6" r=".6" fill="currentColor"/></svg><span class="dot"></span>';
+document.body.appendChild(btn);
+function refresh(){var g=document.getElementById('app-auth-gate'),h=!!(g&&g.getClientRects().length&&getComputedStyle(g).display!=='none');btn.classList.toggle('hide',h);btn.classList.toggle('new',!seen[curTab()])}
+setInterval(refresh,900);refresh();
+var root,steps,idx,tabId,raf,snapT;
+function build(){root=document.createElement('div');root.className='tr-root first';
+ root.innerHTML='<div class="tr-shield"></div><div class="tr-spot"></div><div class="tr-card" role="dialog" aria-modal="true" aria-labelledby="tr-t"><span class="tr-arrow"></span><div class="tr-head"><h3 id="tr-t"></h3><button type="button" class="tr-x" aria-label="بستن"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg></button></div><div class="tr-body"></div><div class="tr-foot"><span class="tr-count"></span><span class="tr-btns"><button type="button" class="tr-prev">قبلی</button><button type="button" class="tr-next"></button></span></div></div>';
+ document.body.appendChild(root);
+ root.querySelector('.tr-x').onclick=function(){end(false)};
+ root.querySelector('.tr-prev').onclick=function(){go(idx-1)};
+ root.querySelector('.tr-next').onclick=function(){idx>=steps.length-1?end(true):go(idx+1)}}
+function go(i){idx=Math.max(0,Math.min(steps.length-1,i));var s=steps[idx],c=root.querySelector('.tr-card'),n=steps.length;
+ root.querySelector('#tr-t').textContent=s.t;root.querySelector('.tr-body').textContent=s.x;
+ root.querySelector('.tr-count').textContent=fa(idx+1)+' از '+fa(n);
+ root.querySelector('.tr-prev').style.display=idx?'':'none';
+ var nx=root.querySelector('.tr-next');nx.textContent=idx>=n-1?'فهمیدم':'بعدی';
+ var e=s.el;if(e&&e.isConnected&&!e.closest('.tabs,.top-left-stack,.tour-help')&&!(e.id==='abx-tg')){var r=e.getBoundingClientRect(),vh=innerHeight;
+  try{if(r.height>vh*.7){window.scrollTo({top:scrollY+r.top-90,behavior:'instant'})}else if(r.top<70||r.bottom>vh-70){e.scrollIntoView({block:'center',behavior:'instant'})}}catch(x){e.scrollIntoView({block:'center'})}}
+ place();nx.focus({preventScroll:true})}
+function place(){var s=steps[idx],e=s.el,vw=innerWidth,vh=innerHeight,c=root.querySelector('.tr-card'),sp=root.querySelector('.tr-spot'),ar=root.querySelector('.tr-arrow'),m=12,gap=16;
+ var cw=Math.min(380,vw-2*m);c.style.width=cw+'px';var ch=c.offsetHeight;ar.className='tr-arrow';
+ if(!e||!e.isConnected||!vis(e)){sp.style.cssText='left:'+vw/2+'px;top:'+vh/2+'px;width:0;height:0';c.style.left=(vw-cw)/2+'px';c.style.top=Math.max(m,(vh-ch)/2)+'px';return}
+ var r=e.getBoundingClientRect(),p=8,x=Math.max(4,r.left-p),y=Math.max(4,r.top-p),w=Math.min(vw-4,r.right+p)-x,h=Math.min(vh-4,r.bottom+p)-y;
+ sp.style.left=x+'px';sp.style.top=y+'px';sp.style.width=w+'px';sp.style.height=h+'px';
+ var cl=function(v,a,b){return Math.max(a,Math.min(b,v))};
+ var P={bottom:function(){var t=y+h+gap;return t+ch<=vh-m?{l:cl(x+w/2-cw/2,m,vw-cw-m),t:t,a:'t'}:null},
+  top:function(){var t=y-gap-ch;return t>=m?{l:cl(x+w/2-cw/2,m,vw-cw-m),t:t,a:'b'}:null},
+  right:function(){var l=x+w+gap;return l+cw<=vw-m?{l:l,t:cl(y+h/2-ch/2,m,vh-ch-m),a:'l'}:null},
+  left:function(){var l=x-gap-cw;return l>=m?{l:l,t:cl(y+h/2-ch/2,m,vh-ch-m),a:'r'}:null}};
+ var ord=(h>vh*.5||w<cw*.5&&h>w*2)?['left','right','bottom','top']:['bottom','top','left','right'],pos=null;
+ for(var i=0;i<4&&!pos;i++)pos=P[ord[i]]();
+ if(!pos)pos={l:(vw-cw)/2,t:vh-ch-m-8,a:''};
+ c.style.left=pos.l+'px';c.style.top=pos.t+'px';
+ if(pos.a){ar.classList.add(pos.a);if(pos.a==='t'||pos.a==='b'){ar.style.left=cl(x+w/2-pos.l-7,18,cw-32)+'px';ar.style.top=''}else{ar.style.top=cl(y+h/2-pos.t-7,16,ch-32)+'px';ar.style.left=''}}}
+function re(){root.classList.add('snap');cancelAnimationFrame(raf);raf=requestAnimationFrame(place);clearTimeout(snapT);snapT=setTimeout(function(){root&&root.classList.remove('snap')},160)}
+function key(e){if(!root)return;if(e.key==='Escape'){end(false)}else if(e.key==='ArrowLeft'||e.key==='Enter'&&document.activeElement.tagName!=='BUTTON'){e.preventDefault();idx>=steps.length-1?end(true):go(idx+1)}else if(e.key==='ArrowRight'){e.preventDefault();go(idx-1)}}
+function start(){if(root)return;var t=$('#abx-tg');if(t&&t.classList.contains('on'))t.click();
+ tabId=curTab();var defs=T[tabId]||GEN;steps=[];
+ defs.forEach(function(d){var e=res(d[0]);if(e)steps.push({el:e,t:d[1],x:d[2]})});
+ if(!steps.length)steps=[{el:null,t:'راهنما',x:'برای این بخش هنوز راهنمای مرحله‌ای نداریم؛ از منوی کناری یکی از بخش‌ها رو انتخاب کن و دوباره دکمهٔ راهنما رو بزن.'}];
+ build();document.addEventListener('keydown',key,true);addEventListener('resize',re);addEventListener('scroll',re,true);
+ go(0);requestAnimationFrame(function(){root.classList.add('on');setTimeout(function(){root.classList.remove('first')},60)})}
+function end(done){seen[tabId]=1;try{localStorage.setItem('catts_tour_seen',JSON.stringify(seen))}catch(e){}
+ document.removeEventListener('keydown',key,true);removeEventListener('resize',re);removeEventListener('scroll',re,true);
+ var r=root;root=null;r.classList.remove('on');setTimeout(function(){r.remove()},260);refresh();btn.focus({preventScroll:true})}
+btn.addEventListener('click',start);
+window.__catTour={start:start};
+})();
+</script>
 </body>
 </html>
