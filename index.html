@@ -4772,22 +4772,14 @@ body.light-mode .ckg-stat{ background:#fff; }
 
 <!-- ==================== دفترچه لغت/فرمول سریع ==================== -->
 <div id="quick-notebook-overlay" class="qt-modal-overlay" onclick="if(event.target===this)closeQuickNotebook()">
-  <div class="qt-modal nb-modal">
-    <button class="qt-modal-close" onclick="closeQuickNotebook()" aria-label="بستن">✕</button>
+  <div class="qt-modal">
+    <button class="qt-modal-close" onclick="closeQuickNotebook()">✕</button>
     <div class="qt-modal-title">📖 دفترچه لغت/فرمول سریع</div>
-    <div class="qt-modal-sub">لغت و فرمولت رو بنویس؛ نماد و قالب‌ها با یک لمس وارد می‌شن و خودکار ذخیره می‌شه.</div>
-    <div id="nb-bar"><div class="nb-tabs" id="nb-tabs"></div><div class="nb-pal" id="nb-pal"></div></div>
-    <textarea id="quick-notebook-text" spellcheck="false" placeholder="مثلاً: v = d ÷ t&#10;x^2 + 3x - 4 = 0   (بعد از ۲ یک فاصله بزن تا بشه x²)" oninput="handleQuickNotebookInput()"></textarea>
-    <details class="nb-help"><summary>میانبرهای تایپ سریع</summary><div class="nb-hl">
-      <span><code>x^2 </code>→ x²</span><span><code>x^(n+1)</code>→ xⁿ⁺¹</span><span><code>a_1 </code>→ a₁</span><span><code>sqrt(</code>→ √(</span>
-      <span><code>&lt;=</code>→ ≤</span><span><code>&gt;=</code>→ ≥</span><span><code>!=</code>→ ≠</span><span><code>-&gt;</code>→ →</span><span><code>+-</code>→ ±</span>
-      <span><code>\pi </code>→ π</span><span><code>\alpha </code>→ α</span><span><code>\inf </code>→ ∞</span><span><code>\sum </code>→ ∑</span><span><code>\int </code>→ ∫</span>
-    </div></details>
+    <div class="qt-modal-sub">هر نکته یا فرمولی که لحظه‌ای لازم داری همین‌جا بنویس؛ بدون رفتن به تب «نکات مهم» ذخیره می‌شود.</div>
+    <textarea id="quick-notebook-text" placeholder="مثلاً: فرمول سرعت متوسط = مسافت ÷ زمان..." oninput="handleQuickNotebookInput()"></textarea>
     <div class="qt-save-state" id="quick-notebook-save-state"></div>
     <div class="qt-modal-actions">
       <button class="btn btn-danger" onclick="clearQuickNotebook()">🗑️ پاک کردن</button>
-      <label class="nb-sw"><input type="checkbox" id="nb-auto" checked><span>تبدیل خودکار</span></label>
-      <button class="btn btn-primary" id="nb-copy" type="button">📋 کپی همه</button>
       <button class="btn btn-purple" onclick="closeQuickNotebook()">بستن</button>
     </div>
   </div>
@@ -22457,6 +22449,19 @@ html[data-palette] body :is(#countdown-popup button,
 .smart-note-item-number,
 header .eyebrow){color:var(--text-primary,#e8ecf8)!important}
 
+/* دروازه‌ی ورود همیشه تیره و خوانا */
+html body #app-auth-gate{background:radial-gradient(80% 60% at 50% 0%,rgba(99,102,241,.28),transparent 60%),#070b16!important;color:#eef2ff!important}
+html body #app-auth-gate #gate-auth-box,html body #app-auth-gate>div{color:#eef2ff}
+html body #app-auth-gate input{background:#0e1527!important;color:#fff!important;border:1px solid rgba(165,180,252,.32)!important;border-radius:14px!important;-webkit-text-fill-color:#fff!important}
+html body #app-auth-gate input::placeholder{color:#8f9dbd!important;-webkit-text-fill-color:#8f9dbd}
+html body #app-auth-gate input:focus{border-color:#818cf8!important;box-shadow:0 0 0 3px rgba(129,140,248,.25)!important}
+html body #app-auth-gate #gate-signin-btn,html body #app-auth-gate #gate-signup-btn{background:linear-gradient(135deg,#6366f1,#38bdf8)!important;color:#fff!important;border:0!important;border-radius:14px!important;min-height:46px;font-weight:900}
+html body #app-auth-gate .neo-muted,html body #app-auth-gate p{color:#a9b4cc!important}
+html body #app-auth-gate a{color:#7dd3fc!important}
+html body #app-auth-gate div:has(>#gate-auth-box),html body #app-auth-gate #gate-auth-box{background-color:#0e1527!important;background-image:none!important;border-color:rgba(165,180,252,.35)!important;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)!important}
+html body #app-auth-gate :not(button):not(input):not(a):not(svg):not(path){color:#d7dff3!important}
+html body #app-auth-gate .gate-tabs button{color:#cfd8ee!important}html body #app-auth-gate .gate-tabs button.on{color:#fff!important}
+html body.app-locked .reminder-toast,html body.app-locked .study-focus-check,html body.app-locked .chat-fab,html body.app-locked #calm-panel,html body.app-locked #palette-panel{display:none!important}
 </style>
 <script id="glow-frames-v4-js">
 /* Glow Frames v2 — اسپات‌لایتِ دنبال‌کننده‌ی موس + تیلت سه‌بعدی (سبک و بدون وابستگی) */
@@ -23571,138 +23576,5 @@ window.__plus={g2j:g2j,j2g:j2g,jLen:jLen,fmtJ:fmtJ,EX:function(){return EX;},app
 })();
 </script>
 <script id="pg-ready">(function(){function go(){requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.add("pg-ready");});});}if(document.readyState==="complete")go();else window.addEventListener("load",go);})();</script>
-
-<style id="abx-nb-css">
-/* ===== نوار ابزار جمع‌شونده (مدرن) ===== */
-html body .app-bar-icons.abx-closed{display:none!important}
-html body.focus-mode-active .app-bar-icons.abx-closed{display:flex!important}
-html body.focus-mode-active .abx-tg{display:none!important}
-.abx-tg{position:relative;display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px 0 14px;border:1px solid rgba(255,255,255,.16);border-radius:999px;cursor:pointer;font:inherit;font-weight:700;font-size:.84rem;color:var(--text-primary,#fff);background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.05));-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);box-shadow:0 6px 24px -8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.18);-webkit-tap-highlight-color:transparent;transition:transform .35s cubic-bezier(.2,.9,.3,1.3),box-shadow .3s}
-.abx-tg::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(120deg,#6366f1,#ec4899,#22d3ee,#6366f1);background-size:300% 100%;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:.5;animation:abxSheen 7s linear infinite;pointer-events:none;transition:opacity .3s}
-.abx-tg:hover::before,.abx-tg.on::before{opacity:1}
-.abx-tg:hover{transform:translateY(-1px);box-shadow:0 12px 30px -10px rgba(99,102,241,.6),inset 0 1px 0 rgba(255,255,255,.25)}
-.abx-tg:active{transform:scale(.96)}
-.abx-tg:focus-visible{outline:2px solid #818cf8;outline-offset:3px}
-.abx-ic{width:18px;height:18px;flex:none;transition:transform .55s cubic-bezier(.2,.9,.3,1.2)}
-.abx-ic rect{fill:currentColor;transform-box:fill-box;transform-origin:center;transition:transform .45s cubic-bezier(.2,.9,.3,1.2),rx .45s}
-.abx-ic rect:first-child{fill:#ec4899}
-.abx-tg.on .abx-ic{transform:rotate(90deg)}.abx-tg.on .abx-ic rect{transform:scale(.82);rx:3.3px}
-body.light-mode .abx-tg{background:rgba(255,255,255,.78);border-color:rgba(15,23,42,.1);box-shadow:0 6px 20px -8px rgba(15,23,42,.28)}
-@keyframes abxSheen{to{background-position:300% 0}}
-@media (prefers-reduced-motion:reduce){.abx-tg::before{animation:none}}
-html body .app-bar-top>.app-bar-icons.abx-bar{overflow:visible!important}
-@media (max-width:859px){
-.app-bar-top{padding-top:54px}
-.abx-tg{position:fixed;top:10px;left:0;right:0;margin:0 auto;width:fit-content;z-index:1310}
-html body .app-bar-top>.app-bar-icons.abx-bar{position:fixed;top:64px;left:0;right:0;margin:0 auto!important;width:fit-content!important;max-width:calc(100vw - 20px)!important;flex-wrap:wrap;justify-content:center;gap:10px!important;padding:14px!important;z-index:1300;transform-origin:50% 0;background:rgba(22,22,38,.74)!important;-webkit-backdrop-filter:blur(24px) saturate(1.5)!important;backdrop-filter:blur(24px) saturate(1.5)!important;box-shadow:0 24px 50px -14px rgba(0,0,0,.6)!important}
-html body.light-mode .app-bar-top>.app-bar-icons.abx-bar{background:rgba(255,255,255,.86)!important;box-shadow:0 20px 44px -16px rgba(15,23,42,.3)!important}
-}
-/* ===== دفترچه بزرگ و پیشرفته ===== */
-#quick-notebook-overlay{padding:14px}
-#quick-notebook-overlay .qt-modal{width:100%;max-width:min(940px,100%)!important;height:min(90vh,800px);max-height:none!important;display:flex;flex-direction:column;overflow:hidden!important;padding:22px 22px 16px!important}
-#quick-notebook-overlay .qt-modal-sub{margin-bottom:10px}
-.nb-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.nb-tabs::-webkit-scrollbar{display:none}
-.nb-tabs button{flex:none;border:0;cursor:pointer;font:inherit;font-size:.78rem;font-weight:700;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.07);color:var(--text-secondary);transition:transform .25s cubic-bezier(.34,1.6,.64,1),background .2s}
-.nb-tabs button:active{transform:scale(.92)}
-.nb-tabs button.on{background:linear-gradient(135deg,#6366f1,#ec4899);color:#fff}
-.nb-pal{display:flex;flex-wrap:wrap;gap:6px;padding:8px;margin-bottom:10px;min-height:54px;max-height:116px;overflow:auto;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-.nb-pal button{min-width:38px;height:38px;padding:0 9px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:var(--text-primary);font-size:1.12rem;cursor:pointer;font-family:'Cambria Math','STIX Two Math','Segoe UI Symbol',system-ui,sans-serif;transition:transform .2s cubic-bezier(.34,1.6,.64,1),background .15s}
-.nb-pal button:hover{background:rgba(129,140,248,.28);transform:translateY(-2px)}.nb-pal button:active{transform:scale(.9)}
-.nb-pal button.tp{display:inline-flex;align-items:center;gap:7px;font:700 .78rem inherit;font-family:inherit}
-.nb-pal button.tp b{font-size:1.2rem;font-weight:600;font-family:'Cambria Math','Segoe UI Symbol',system-ui,sans-serif}
-#quick-notebook-text{flex:1;min-height:180px!important;resize:none!important;font-size:1.08rem!important;line-height:2!important;unicode-bidi:plaintext;font-family:var(--font-main,inherit),'Cambria Math','Segoe UI Symbol',system-ui,sans-serif!important}
-.nb-help{margin-top:8px;font-size:.74rem;color:var(--text-secondary)}.nb-help summary{cursor:pointer;font-weight:700}
-.nb-hl{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;direction:ltr;justify-content:flex-start}
-.nb-hl code{padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.1);margin-right:5px;font-size:.78rem}
-.nb-sw{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:.74rem;font-weight:700;cursor:pointer;color:var(--text-secondary);white-space:nowrap}
-.nb-sw input{width:16px;height:16px;accent-color:#ec4899;margin:0}
-body.light-mode .nb-tabs button,body.light-mode .nb-pal,body.light-mode .nb-pal button,body.light-mode .nb-hl code{background:rgba(15,23,42,.06);border-color:rgba(15,23,42,.1)}
-body.light-mode .nb-tabs button.on{background:linear-gradient(135deg,#6366f1,#ec4899)}
-@media (max-width:600px){#quick-notebook-overlay{padding:8px}#quick-notebook-overlay .qt-modal{height:94vh;padding:18px 14px 12px!important}.qt-modal-actions{flex-wrap:wrap}.qt-modal-actions .btn{min-width:30%}}
-</style>
-
-<script id="abx-nb-js">
-/* ===== نوار آیکون‌های جمع‌شونده (مدرن) ===== */
-(function(){
-var bar=document.querySelector('.app-bar-icons'),top=document.querySelector('.app-bar-top');
-if(!bar||!top||document.getElementById('abx-tg'))return;
-var RM=false;try{RM=matchMedia('(prefers-reduced-motion:reduce)').matches}catch(e){}
-var tg=document.createElement('button');tg.type='button';tg.id='abx-tg';tg.className='abx-tg';tg.setAttribute('aria-expanded','false');
-tg.innerHTML='<svg class="abx-ic" viewBox="0 0 18 18" aria-hidden="true"><rect x="1.5" y="1.5" width="6.5" height="6.5" rx="2"/><rect x="10" y="1.5" width="6.5" height="6.5" rx="2"/><rect x="1.5" y="10" width="6.5" height="6.5" rx="2"/><rect x="10" y="10" width="6.5" height="6.5" rx="2"/></svg><span class="t">ابزارها</span>';
-top.insertBefore(tg,bar);bar.classList.add('abx-closed','abx-bar');
-var busy=false,isOpen=false,T=tg.querySelector('.t');
-function kids(){return[].slice.call(bar.children).filter(function(c){return c.offsetWidth>0})}
-function openBar(){
- if(busy||isOpen)return;isOpen=true;tg.classList.add('on');tg.setAttribute('aria-expanded','true');T.textContent='بستن';
- bar.classList.remove('abx-closed');if(RM)return;busy=true;
- var cs=getComputedStyle(bar),h=bar.offsetHeight,pt=cs.paddingTop,pb=cs.paddingBottom,k=kids(),n=k.length;
- var a=bar.animate([{height:'0px',paddingTop:'0px',paddingBottom:'0px',opacity:0,transform:'translateY(-10px) scale(.96)',filter:'blur(8px)'},{height:h+'px',paddingTop:pt,paddingBottom:pb,opacity:1,transform:'none',filter:'blur(0)'}],{duration:480,easing:'cubic-bezier(.2,.9,.3,1.08)'});
- k.forEach(function(c,i){c.animate([{transform:'translateY(14px) scale(.55)',opacity:0,filter:'blur(6px)'},{transform:'none',opacity:1,filter:'blur(0)'}],{duration:520,delay:90+Math.min(i,24)*16,easing:'cubic-bezier(.34,1.45,.64,1)',fill:'backwards'})});
- a.onfinish=a.oncancel=function(){busy=false}}
-function closeBar(){
- if(busy||!isOpen)return;isOpen=false;tg.classList.remove('on');tg.setAttribute('aria-expanded','false');T.textContent='ابزارها';
- if(RM){bar.classList.add('abx-closed');return}busy=true;
- var cs=getComputedStyle(bar),h=bar.offsetHeight,pt=cs.paddingTop,pb=cs.paddingBottom,k=kids(),A=[];
- k.forEach(function(c,i){A.push(c.animate([{transform:'none',opacity:1},{transform:'translateY(-8px) scale(.7)',opacity:0}],{duration:200,delay:i*6,easing:'ease-in',fill:'forwards'}))});
- var a=bar.animate([{height:h+'px',paddingTop:pt,paddingBottom:pb,opacity:1,transform:'none',filter:'blur(0)'},{height:'0px',paddingTop:'0px',paddingBottom:'0px',opacity:0,transform:'translateY(-8px) scale(.97)',filter:'blur(6px)'}],{duration:300,delay:120,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
- a.onfinish=function(){bar.classList.add('abx-closed');A.forEach(function(x){x.cancel()});a.cancel();busy=false}}
-tg.addEventListener('click',function(){isOpen?closeBar():openBar()});
-var AUTO=' books-notes-badge finals-badge budget-badge qt-notebook-btn qt-reminder-btn guide-badge maz-badge settings-badge calculator-badge calculus-badge subject-library-badge lab-badge eitaa-badge chatgpt-badge translate-badge chatgpt-external-badge sample-questions-badge ';
-bar.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('button');if(b&&b.id&&AUTO.indexOf(' '+b.id+' ')>-1)setTimeout(closeBar,420)});
-document.addEventListener('click',function(e){if(isOpen&&!bar.contains(e.target)&&!tg.contains(e.target))closeBar()});
-})();
-
-/* ===== دفترچه لغت/فرمول پیشرفته ===== */
-(function(){
-var ta=document.getElementById('quick-notebook-text'),pal=document.getElementById('nb-pal'),tabs=document.getElementById('nb-tabs'),cp=document.getElementById('nb-copy'),au=document.getElementById('nb-auto'),st=document.getElementById('quick-notebook-save-state');
-if(!ta||!pal||!tabs)return;
-function mk(a,b){var o={},A=Array.from(a),B=Array.from(b);A.forEach(function(k,i){o[k]=B[i]});return o}
-var SUP=mk('0123456789+-=()abcdefghijklmnoprstuvwxyz','⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ'),SUB=mk('0123456789+-=()aehijklmnoprstuvx','₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ');
-function mapS(s,M){var r='';for(var ch of s){if(!M[ch])return null;r+=M[ch]}return r}
-var LX={},lp=('pi π alpha α beta β gamma γ delta δ Delta Δ epsilon ε theta θ lambda λ mu μ rho ρ sigma σ Sigma Σ tau τ phi φ Phi Φ omega ω Omega Ω psi ψ sum ∑ prod ∏ int ∫ inf ∞ sqrt √ cbrt ∛ times × div ÷ cdot · pm ± le ≤ ge ≥ ne ≠ approx ≈ to → imp ⇒ iff ⇔ in ∈ notin ∉ cup ∪ cap ∩ subset ⊂ empty ∅ forall ∀ exists ∃ therefore ∴ deg ° angle ∠ perp ⊥ par ∥ tri △ partial ∂ nabla ∇ R ℝ N ℕ Z ℤ Q ℚ').split(' ');
-for(var i=0;i<lp.length;i+=2)LX[lp[i]]=lp[i+1];
-var auto=localStorage.getItem('quick_notebook_auto')!=='0',busy=false;au.checked=auto;
-au.addEventListener('change',function(){auto=au.checked;try{localStorage.setItem('quick_notebook_auto',auto?'1':'0')}catch(e){}});
-function note(t){if(!st)return;st.textContent=t;setTimeout(function(){if(st.textContent===t)st.textContent=''},2200)}
-function ins(t){var i=t.indexOf('§'),s=ta.selectionStart;t=t.replace('§','');ta.focus();busy=true;
- try{if(!document.execCommand('insertText',false,t)){ta.setRangeText(t,ta.selectionStart,ta.selectionEnd,'end');ta.dispatchEvent(new Event('input',{bubbles:true}))}}finally{busy=false}
- if(i>=0)ta.setSelectionRange(s+i,s+i)}
-function sel(){return ta.value.slice(ta.selectionStart,ta.selectionEnd)}
-var TP=[['a/b','کسر',function(s){return s?'('+s+')/(§)':'(§)/()'}],['√','ریشه',function(s){return '√('+(s||'§')+')'}],['xⁿ','توان',function(s){return s?(mapS(s,SUP)||'^('+s+')'):'^'}],['x₁','اندیس',function(s){return s?(mapS(s,SUB)||'_('+s+')'):'_'}],['∫','انتگرال',function(){return '∫(§a→b) f(x) dx'}],['∑','مجموع',function(){return '∑(§i=1→n) '}],['lim','حد',function(){return 'lim(§x→a) '}],['log','لگاریتم',function(){return 'log₂(§)'}],['|x|','قدرمطلق',function(s){return '|'+(s||'§')+'|'}]];
-var TB=[['قالب‌ها',null],['پایه','± × ÷ · = ≠ ≈ ≤ ≥ < > ° % ∞ π √ ∛ ² ³ ⁿ ½ ⅓ ¼ ¾ → ⇒ ⇔'],['یونانی','α β γ δ ε θ λ μ π ρ σ τ φ ψ ω Δ Σ Π Φ Ψ Ω'],['مجموعه','∈ ∉ ⊂ ⊆ ∪ ∩ ∅ ℝ ℕ ℤ ℚ ℂ ∀ ∃ ∴ ∵ ¬ ∧ ∨ ∖'],['آنالیز','∫ ∬ ∮ ∑ ∏ ∂ ∇ ′ ″ ↦ ⌊ ⌋ ⌈ ⌉ ‖ ∝ ≡ ∘'],['هندسه','∠ ⊥ ∥ △ ≅ ∼ ° Å Ω ℏ ⊕ ⊗ ↔ ↑ ↓']];
-function show(n){tabs.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i===n)});
- pal.innerHTML=n===0?TP.map(function(t,i){return '<button type="button" class="tp" data-t="'+i+'"><b>'+t[0]+'</b>'+t[1]+'</button>'}).join(''):TB[n][1].split(' ').map(function(s){return '<button type="button" data-s="'+s+'">'+s+'</button>'}).join('')}
-tabs.innerHTML=TB.map(function(t,i){return '<button type="button" data-n="'+i+'">'+t[0]+'</button>'}).join('');
-tabs.addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(+b.dataset.n)});
-pal.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.s)ins(b.dataset.s);else if(b.dataset.t){var s=sel();ins(TP[+b.dataset.t][2](s))}});
-document.getElementById('nb-bar').addEventListener('mousedown',function(e){e.preventDefault()});
-show(0);
-/* تبدیل خودکار هنگام تایپ */
-var DG={'<=':'≤','>=':'≥','!=':'≠','->':'→','=>':'⇒','~=':'≈','+-':'±'};
-ta.addEventListener('input',function(e){
- if(!auto||busy||e.isComposing||!/^insert/.test(e.inputType||''))return;
- var p=ta.selectionStart;if(p!==ta.selectionEnd||p<2&&!/[^0-9A-Za-z]/.test(ta.value.charAt(p-1)))return;
- var v=ta.value,c=v.charAt(p-1),b=v.slice(Math.max(0,p-60),p-1),m,rep=null,from=0,to=p,keep=0,r;
- if(DG[v.slice(p-2,p)]){rep=DG[v.slice(p-2,p)];from=p-2}
- else if(c==='('&&(m=/(sqrt|cbrt)$/.exec(b))){rep=(m[1]==='sqrt'?'√':'∛')+'(';from=p-1-m[1].length}
- else if(c===')'&&(m=/([\^_])\(([^()]{1,24})\)$/.exec(v.slice(Math.max(0,p-30),p)))){r=mapS(m[2],m[1]==='^'?SUP:SUB);if(r){rep=r;from=p-m[0].length}}
- else if(/[^0-9A-Za-z]/.test(c)){to=p-1;keep=1;
-  if((m=/\\([A-Za-z]+)$/.exec(b))&&LX[m[1]]){rep=LX[m[1]];from=to-m[0].length}
-  else if((m=/\^([+\-]?\d+|[a-z])$/.exec(b))&&(r=mapS(m[1],SUP))){rep=r;from=to-m[0].length+1}
-  else if((m=/_(\d+|[aehijklmnoprstuvx])$/.exec(b))&&(r=mapS(m[1],SUB))){rep=r;from=to-m[0].length}}
- if(rep===null)return;
- if(m&&/^\^/.test(m[0])&&keep)from=to-m[0].length;
- busy=true;try{ta.setSelectionRange(from,to);
-  if(!document.execCommand('insertText',false,rep)){ta.setRangeText(rep,from,to,'end');ta.dispatchEvent(new Event('input',{bubbles:true}))}
-  var nc=from+rep.length+keep;ta.setSelectionRange(nc,nc)}finally{busy=false}});
-/* کپی */
-function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).catch(fb);return fb();
- function fb(){return new Promise(function(res,rej){var x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(x);x.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}x.remove();ok?res():rej()})}}
-function lab(){cp.textContent=ta.selectionStart!==ta.selectionEnd?'📋 کپی انتخاب‌شده':'📋 کپی همه'}
-document.addEventListener('selectionchange',function(){if(document.activeElement===ta)lab()});
-cp.addEventListener('click',function(){var s=ta.selectionStart!==ta.selectionEnd,t=s?sel():ta.value;if(!t.trim()){note('چیزی برای کپی نیست');return}
- copy(t).then(function(){note(s?'✅ بخش انتخاب‌شده کپی شد':'✅ کل متن کپی شد')},function(){note('کپی نشد؛ متن را انتخاب و دستی کپی کن')})});
-})();
-</script>
 </body>
 </html>
