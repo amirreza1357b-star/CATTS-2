@@ -1,15 +1,14 @@
 {
-  "name": "Comprehensive Test Analysis System",
-  "short_name": "CTAS",
-  "description": "ابزار حرفه‌ای رصد پیشرفت تحصیلی ویژه رشته ریاضی و تجربی",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#100c24",
-  "theme_color": "#100c24",
+  "name": "CATS",
+  "short_name": "CATS",
+  "description": "Comprehensive Analysis Test System — سامانه جامع تحلیل و تست‌زنی",
   "lang": "fa",
   "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0920",
+  "theme_color": "#140d23",
   "icons": [
     {
       "src": "icon-192.png",
