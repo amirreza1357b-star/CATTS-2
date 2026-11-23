@@ -23804,6 +23804,7 @@ ov.addEventListener('input',function(e){if(!mathOn||busy||e.isComposing||!/^inse
  else if(t.classList&&t.classList.contains('nb2-body')){var s=getSelection();if(!s.rangeCount||!s.isCollapsed)return;var nd=s.anchorNode,o=s.anchorOffset;if(!nd||nd.nodeType!==3)return;tail=nd.data.slice(Math.max(0,o-64),o);r=conv(tail);if(!r)return;base=o-tail.length;
   var rg=document.createRange();rg.setStart(nd,base+r.from);rg.setEnd(nd,base+r.to);s.removeAllRanges();s.addRange(rg);busy=true;
   try{document.execCommand('insertText',false,r.rep);if(r.keep){var s2=getSelection(),n2=s2.anchorNode;if(n2&&n2.nodeType===3&&s2.anchorOffset+r.keep<=n2.data.length)s2.collapse(n2,s2.anchorOffset+r.keep)}}finally{busy=false}}});
+window.__nbAdd=function(t){load();notes.unshift({id:uid(),h:esc(t).replace(/\n/g,'<br>'),p:0,t:Date.now()});persist();if(ov.classList.contains('open'))render()};
 window.openQuickNotebook=function(){load();srch.value='';render();applyMath();ov.classList.add('open');setTimeout(function(){nw.focus()},80)};
 window.closeQuickNotebook=function(){clearTimeout(saveT);ov.classList.remove('open');hideHl()};
 window.clearQuickNotebook=function(){$('#nb2-clear').click()};
@@ -23980,38 +23981,163 @@ html body #app-auth-gate .btn{display:flex;align-items:center;justify-content:ce
 html body #app-auth-gate .neo-cloud-status{margin-top:10px!important;line-height:1.8}
 /* فقط بنفش: دکمه و پنل‌های تغییر رنگ حذف شدن */
 html body #palette-badge,html body #palette-panel,html body #pal-card,html body .theme-picker,html body .settings-row:has(.theme-picker){display:none!important}
+
+/* فرمول‌های ریاضی در دستیار */
+math{font-family:'Cambria Math','STIX Two Math','Latin Modern Math','Noto Sans Math',serif}
+.ai-msg math{font-size:1.12em}
+.ai-math-d{direction:ltr;text-align:center;overflow-x:auto;overflow-y:hidden;margin:.8em 0;padding:.65em .8em;border-radius:14px;background:rgba(139,92,246,.1);border:1px solid rgba(196,181,253,.16);cursor:copy;transition:outline-color .2s}
+.ai-math-d math{font-size:1.3em}
+.ai-math-d.copied{outline:2px solid #8b5cf6}
+body.light-mode .ai-math-d{background:rgba(124,58,237,.07)}
+.ai-math-i{direction:ltr;unicode-bidi:isolate;display:inline-block;margin:0 .12em}
+.ai-tex{direction:ltr;unicode-bidi:isolate}
+.ai-acts{display:flex;gap:6px;margin-top:10px;padding-top:8px;border-top:1px dashed rgba(196,181,253,.18)}
+.ai-acts button{font:inherit;font-size:.72rem;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid rgba(196,181,253,.22);background:transparent;color:var(--text-secondary);cursor:pointer;transition:background .2s,color .2s}
+.ai-acts button:hover{background:rgba(139,92,246,.2);color:var(--text-primary)}
+
+math{direction:ltr!important;unicode-bidi:isolate}
+mtd{padding:.18em .55em}
+mtable{border-collapse:separate}
+math mo,math mn,math mi{unicode-bidi:bidi-override;direction:ltr}
 </style>
 <script id="brand-js">
-/* ===== دستیار هوشمند: Markdown زیبا، پیشنهادهای سریع، پاسخ مرتب ===== */
+/* ===== دستیار هوشمند: Markdown + فرمول‌های LaTeX + دکمه‌های اتصال به برنامه ===== */
 (function(){
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+/* ---- LaTeX -> MathML (بدون نیاز به اینترنت) ---- */
+var G={alpha:'α',beta:'β',gamma:'γ',delta:'δ',epsilon:'ε',varepsilon:'ε',zeta:'ζ',eta:'η',theta:'θ',vartheta:'ϑ',iota:'ι',kappa:'κ',lambda:'λ',mu:'μ',nu:'ν',xi:'ξ',pi:'π',varpi:'ϖ',rho:'ρ',varrho:'ϱ',sigma:'σ',varsigma:'ς',tau:'τ',upsilon:'υ',phi:'φ',varphi:'φ',chi:'χ',psi:'ψ',omega:'ω',Gamma:'Γ',Delta:'Δ',Theta:'Θ',Lambda:'Λ',Xi:'Ξ',Pi:'Π',Sigma:'Σ',Upsilon:'Υ',Phi:'Φ',Psi:'Ψ',Omega:'Ω',aleph:'ℵ',hbar:'ℏ',ell:'ℓ'};
+var O={pm:'±',mp:'∓',times:'×',div:'÷',cdot:'⋅',ast:'∗',star:'⋆',circ:'∘',bullet:'•',le:'≤',leq:'≤',ge:'≥',geq:'≥',ne:'≠',neq:'≠',approx:'≈',equiv:'≡',sim:'∼',simeq:'≃',cong:'≅',propto:'∝',ll:'≪',gg:'≫',to:'→',rightarrow:'→',leftarrow:'←',leftrightarrow:'↔',Rightarrow:'⇒',Leftarrow:'⇐',Leftrightarrow:'⇔',implies:'⟹',iff:'⟺',mapsto:'↦',uparrow:'↑',downarrow:'↓',in:'∈',notin:'∉',ni:'∋',subset:'⊂',subseteq:'⊆',supset:'⊃',supseteq:'⊇',cup:'∪',cap:'∩',setminus:'∖',emptyset:'∅',varnothing:'∅',forall:'∀',exists:'∃',nexists:'∄',neg:'¬',lnot:'¬',land:'∧',wedge:'∧',lor:'∨',vee:'∨',oplus:'⊕',otimes:'⊗',perp:'⊥',parallel:'∥',mid:'∣',angle:'∠',triangle:'△',therefore:'∴',because:'∵',partial:'∂',nabla:'∇',infty:'∞',ldots:'…',dots:'…',cdots:'⋯',vdots:'⋮',ddots:'⋱',prime:'′',degree:'°',langle:'⟨',rangle:'⟩',lfloor:'⌊',rfloor:'⌋',lceil:'⌈',rceil:'⌉',Vert:'‖',lbrace:'{',rbrace:'}',colon:':',sum:'∑',prod:'∏',int:'∫',iint:'∬',oint:'∮'};
+var FN=' sin cos tan cot sec csc arcsin arccos arctan sinh cosh tanh coth log ln lg exp det gcd deg dim ker arg Pr mod ',LM=' lim max min sup inf limsup liminf ';
+function E(x){return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function tok(s){var t=[],i=0,m,r=/^\\([a-zA-Z]+)\*?/;
+ while(i<s.length){var c=s[i];
+  if(c==='\\'){m=r.exec(s.slice(i));if(m){t.push({k:'c',n:m[1],s:m[0]});i+=m[0].length}else{var ch=s[i+1]||'';t.push({k:'c',n:ch,s:'\\'+ch});i+=2}}
+  else if(/\s/.test(c)){var j=i;while(j<s.length&&/\s/.test(s[j]))j++;t.push({k:'w',s:s.slice(i,j)});i=j}
+  else{t.push({k:'s',ch:c,s:c});i++}}
+ return t}
+function parse(src){var T=tok(src),p=0,LIM=false,guard=0;
+ function sw(){while(T[p]&&T[p].k==='w')p++}
+ function isS(t,c){return t&&t.k==='s'&&t.ch===c}
+ function isC(t,n){return t&&t.k==='c'&&t.n===n}
+ function mo(x,a){return '<mo'+(a||'')+'>'+E(x)+'</mo>'}
+ function seq(stop){var o=[];for(;;){sw();var t=T[p];if(!t||(stop&&stop(t))||++guard>8000)break;o.push(item())}return o.join('')}
+ function rawGroup(){sw();var t=T[p];if(!isS(t,'{')){p++;return t?t.s:''}p++;var d=0,o='';while(T[p]){var u=T[p];if(isS(u,'{'))d++;else if(isS(u,'}')){if(!d){p++;break}d--}o+=u.s;p++}return o}
+ function grp(){p++;var r=seq(function(t){return isS(t,'}')});if(isS(T[p],'}'))p++;return '<mrow>'+r+'</mrow>'}
+ function arg(){sw();var t=T[p];if(!t)return '<mrow></mrow>';if(isS(t,'{'))return grp();return atom()||'<mrow></mrow>'}
+ function delim(){sw();var t=T[p];p++;if(!t)return '';if(t.k==='s')return t.ch==='.'?'':t.ch;if(t.k==='c')return({lbrace:'{',rbrace:'}','{':'{','}':'}','|':'‖',Vert:'‖',langle:'⟨',rangle:'⟩',lfloor:'⌊',rfloor:'⌋',lceil:'⌈',rceil:'⌉',lbrack:'[',rbrack:']'})[t.n]||'';return ''}
+ function sarg(){sw();var t=T[p];if(isS(t,'{'))return grp();return atom()||'<mrow></mrow>'}
+ function item(){var b=atom(),lim=LIM,sub=null,sup=null,pr='';
+  for(;;){sw();var t=T[p];
+   if(isS(t,'^')){p++;var a=sarg();if(sup===null)sup=a}
+   else if(isS(t,'_')){p++;sub=sarg()}
+   else if(isS(t,"'")){p++;pr+='′'}
+   else break}
+  if(pr)sup=sup===null?mo(pr):'<mrow>'+mo(pr)+sup+'</mrow>';
+  if(sub===null&&sup===null)return b;
+  if(lim)return sub!==null&&sup!==null?'<munderover>'+b+sub+sup+'</munderover>':sub!==null?'<munder>'+b+sub+'</munder>':'<mover>'+b+sup+'</mover>';
+  return sub!==null&&sup!==null?'<msubsup>'+b+sub+sup+'</msubsup>':sub!==null?'<msub>'+b+sub+'</msub>':'<msup>'+b+sup+'</msup>'}
+ function env(){var name=rawGroup().replace('*','');if(name==='array')rawGroup();
+  var rows=[],row=[],cell='';
+  for(;;){sw();var t=T[p];if(!t||++guard>8000)break;if(isC(t,'end')){p++;rawGroup();break}
+   cell+=seq(function(u){return isS(u,'&')||isC(u,'\\')||isC(u,'end')});t=T[p];
+   if(isS(t,'&')){p++;row.push(cell);cell=''}else if(isC(t,'\\')){p++;row.push(cell);cell='';rows.push(row);row=[]}}
+  row.push(cell);if(row.some(function(c){return c!==''}))rows.push(row);
+  var al=/align|split|gather/.test(name)?' columnalign="right left"':(name==='cases'?' columnalign="left left"':'');
+  var tb='<mtable'+al+' rowspacing=".5em" columnspacing="1em">'+rows.map(function(r){return '<mtr>'+r.map(function(c){return '<mtd>'+c+'</mtd>'}).join('')+'</mtr>'}).join('')+'</mtable>';
+  var L={cases:['{',''],pmatrix:['(',')'],bmatrix:['[',']'],Bmatrix:['{','}'],vmatrix:['|','|'],Vmatrix:['‖','‖']}[name];
+  if(!L)return tb;return '<mrow>'+(L[0]?mo(L[0],' stretchy="true" fence="true"'):'')+tb+(L[1]?mo(L[1],' stretchy="true" fence="true"'):'')+'</mrow>'}
+ function atom(){LIM=false;sw();var t=T[p];if(!t)return '';p++;
+  if(t.k==='s'){var c=t.ch;
+   if(c==='{'){p--;return grp()}
+   if(c==='}'||c==='&')return '';
+   if(/[0-9]/.test(c)||(c==='.'&&T[p]&&T[p].k==='s'&&/[0-9]/.test(T[p].ch))){var n=c;while(T[p]&&T[p].k==='s'){var d=T[p].ch;if(/[0-9]/.test(d)){n+=d;p++}else if(d==='.'&&T[p+1]&&T[p+1].k==='s'&&/[0-9]/.test(T[p+1].ch)){n+='.';p++}else break}return '<mn>'+n+'</mn>'}
+   if(/[A-Za-z]/.test(c))return '<mi>'+c+'</mi>';
+   if(/[\u0600-\u06FF]/.test(c)){var w=c;while(T[p]&&T[p].k==='s'&&/[\u0600-\u06FF\u200c]/.test(T[p].ch)){w+=T[p].ch;p++}return '<mtext>'+w+'</mtext>'}
+   if(c==='-')return mo('−');if(c==='*')return mo('∗');if(c==='~')return '<mspace width=".28em"/>';
+   if('()[]|'.indexOf(c)>=0)return mo(c,' stretchy="false"');
+   return mo(c)}
+  var n=t.n,a,b;
+  switch(n){
+   case 'frac':case 'dfrac':case 'tfrac':a=arg();b=arg();return '<mfrac>'+a+b+'</mfrac>';
+   case 'binom':case 'dbinom':a=arg();b=arg();return mo('(',' stretchy="true"')+'<mfrac linethickness="0">'+a+b+'</mfrac>'+mo(')',' stretchy="true"');
+   case 'sqrt':{sw();var idx=null;if(isS(T[p],'[')){p++;var o='';while(T[p]&&!isS(T[p],']')){o+=T[p].s;p++}p++;idx=parse(o)}var body=arg();return idx!==null?'<mroot>'+body+'<mrow>'+idx+'</mrow></mroot>':'<msqrt>'+body+'</msqrt>'}
+   case 'left':{var d=delim(),inner=seq(function(u){return isC(u,'right')}),e='';if(isC(T[p],'right')){p++;e=delim()}return '<mrow>'+(d?mo(d,' stretchy="true" fence="true"'):'')+inner+(e?mo(e,' stretchy="true" fence="true"'):'')+'</mrow>'}
+   case 'right':return '';
+   case 'big':case 'Big':case 'bigg':case 'Bigg':case 'bigl':case 'bigr':case 'Bigl':case 'Bigr':{var q=delim();return q?mo(q,' stretchy="true"'):''}
+   case 'text':case 'mbox':case 'textbf':case 'textit':case 'textrm':return '<mtext>'+E(rawGroup()).replace(/^ | $/g,'\u00a0')+'</mtext>';
+   case 'mathrm':case 'operatorname':return '<mi mathvariant="normal">'+E(rawGroup())+'</mi>';
+   case 'mathbb':{var r=rawGroup(),mm={R:'ℝ',N:'ℕ',Z:'ℤ',Q:'ℚ',C:'ℂ',P:'ℙ',H:'ℍ'};return '<mi>'+(mm[r]||E(r))+'</mi>'}
+   case 'mathbf':case 'boldsymbol':case 'bm':return '<mstyle mathvariant="bold">'+arg()+'</mstyle>';
+   case 'mathcal':case 'mathscr':return '<mstyle mathvariant="script">'+arg()+'</mstyle>';
+   case 'overline':case 'bar':return '<mover accent="true">'+arg()+mo('¯')+'</mover>';
+   case 'vec':case 'overrightarrow':return '<mover accent="true">'+arg()+mo('→')+'</mover>';
+   case 'hat':case 'widehat':return '<mover accent="true">'+arg()+mo('^')+'</mover>';
+   case 'tilde':case 'widetilde':return '<mover accent="true">'+arg()+mo('˜')+'</mover>';
+   case 'dot':return '<mover accent="true">'+arg()+mo('˙')+'</mover>';
+   case 'underline':return '<munder>'+arg()+mo('_')+'</munder>';
+   case 'pmod':return mo('(')+'<mi mathvariant="normal">mod</mi><mspace width=".28em"/>'+arg()+mo(')');
+   case 'quad':return '<mspace width="1em"/>';case 'qquad':return '<mspace width="2em"/>';
+   case ',':return '<mspace width=".17em"/>';case ';':case ' ':return '<mspace width=".28em"/>';case ':':return '<mspace width=".22em"/>';case '!':return '<mspace width="-.17em"/>';
+   case '\\':case 'displaystyle':case 'textstyle':case 'scriptstyle':case 'limits':case 'nolimits':case 'rm':case 'it':case 'bf':case 'end':return '';
+   case 'color':rawGroup();return '';
+   case 'begin':return env();
+   case '{':case '}':case '%':case '#':case '$':case '_':return mo(n);
+   case '&':return mo('&');
+   case '|':return mo('‖');
+  }
+  if(G[n])return '<mi>'+G[n]+'</mi>';
+  if(FN.indexOf(' '+n+' ')>=0)return '<mi mathvariant="normal">'+n+'</mi>';
+  if(LM.indexOf(' '+n+' ')>=0){LIM=true;return '<mo movablelimits="true">'+n+'</mo>'}
+  if(n==='sum'||n==='prod'){LIM=true;return mo(O[n])}
+  if(O[n])return mo(O[n]);
+  return '<mtext>\\'+E(n)+'</mtext>'}
+ return seq()}
+function tex(src,disp){var m=null;try{m=parse(src)}catch(e){}
+ if(!m)return '<code class="ai-tex">'+E(src)+'</code>';
+ var t=src.replace(/\s+/g,' ').trim().replace(/"/g,'&quot;');
+ return disp?'<div class="ai-math-d" dir="ltr" data-tex="'+E(t)+'" title="کلیک = کپی فرمول"><math dir="ltr" display="block">'+m+'</math></div>':'<span class="ai-math-i" dir="ltr"><math dir="ltr">'+m+'</math></span>'}
+window.__aiTex=tex;
+/* ---- Markdown + فرمول ---- */
 function inl(s){return s.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,،؛:!؟]|$)/g,'$1<em>$2</em>')}
-function md(src){var t=esc(src).replace(/\r/g,''),out=[],code=[];
- t=t.replace(/```[a-z]*\n?([\s\S]*?)```/g,function(m,c){code.push(c.replace(/\n$/,''));return '\n@@C'+(code.length-1)+'@@\n'});
- var lines=t.split('\n'),list=null,para=[];
+function md(src){var M=[],code=[];src=String(src).replace(/\r/g,'');
+ src=src.replace(/```[a-z]*\n?([\s\S]*?)```/g,function(m,c){code.push(esc(c.replace(/\n$/,'')));return '\n@@C'+(code.length-1)+'@@\n'});
+ src=src.replace(/\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$/g,function(m,a,b){M.push([a!=null?a:b,1]);return '\n@@M'+(M.length-1)+'@@\n'});
+ src=src.replace(/\\\(([\s\S]+?)\\\)/g,function(m,a){M.push([a,0]);return '@@M'+(M.length-1)+'@@'});
+ src=src.replace(/\$(?=\S)([^$\n]*?[^\s$])\$/g,function(m,a){if(!/[\\^_{}=]|[A-Za-z]/.test(a))return m;M.push([a,0]);return '@@M'+(M.length-1)+'@@'});
+ var lines=esc(src).split('\n'),out=[],list=null,para=[];
  function flushP(){if(para.length){out.push('<p>'+inl(para.join('<br>'))+'</p>');para=[]}}
  function flushL(){if(list){out.push('</'+list+'>');list=null}}
  lines.forEach(function(l){var m;
-  if(m=l.match(/^@@C(\d+)@@$/)){flushP();flushL();out.push('<pre><code>'+code[+m[1]]+'</code></pre>');return}
+  if(m=l.match(/^\s*@@C(\d+)@@\s*$/)){flushP();flushL();out.push('<pre><code>'+code[+m[1]]+'</code></pre>');return}
+  if((m=l.match(/^\s*@@M(\d+)@@\s*$/))&&M[+m[1]][1]){flushP();flushL();out.push(tex(M[+m[1]][0],1));return}
   if(m=l.match(/^\s{0,3}(#{1,6})\s+(.+)$/)){flushP();flushL();var lv=Math.min(5,Math.max(3,m[1].length+2));out.push('<h'+lv+'>'+inl(m[2])+'</h'+lv+'>');return}
   if(m=l.match(/^\s*[-*•]\s+(.+)$/)){flushP();if(list!=='ul'){flushL();out.push('<ul>');list='ul'}out.push('<li>'+inl(m[1])+'</li>');return}
   if(m=l.match(/^\s*(\d+)[.)]\s+(.+)$/)){flushP();if(list!=='ol'){flushL();out.push('<ol>');list='ol'}out.push('<li>'+inl(m[2])+'</li>');return}
   if(!l.trim()){flushP();flushL();return}
   flushL();para.push(l)});
- flushP();flushL();return out.join('')}
+ flushP();flushL();
+ return out.join('').replace(/@@M(\d+)@@/g,function(x,i){return tex(M[+i][0],M[+i][1])})}
 window.__aiMd=md;
-var SUGG=['📊 آمار و روند من رو تحلیل کن','🗓 یه برنامهٔ مطالعهٔ هفتگی پیشنهاد بده','⏱ تایمر آزمون چطور کار می‌کنه؟','🧠 برای کم‌کردن غلط‌هام چیکار کنم؟'];
-function emptyHtml(){return '<div class="ai-empty-state" id="ai-empty-state"><div class="ai-avatar"></div><b style="font-size:1.05rem;color:var(--text-primary)">سلام! من دستیار هوشمند توام 👋</b>هر سؤالی دربارهٔ درس‌ها، برنامه یا کار با سامانه داری بپرس.<div class="ai-sugg">'+SUGG.map(function(s){return '<button type="button">'+s+'</button>'}).join('')+'</div></div>'}
+var SUGG=['📊 آمار و روند من رو تحلیل کن','🗓 یه برنامهٔ مطالعهٔ هفتگی پیشنهاد بده','∑ معادلهٔ مثلثاتی ساده رو قدم‌به‌قدم حل کن','🧠 برای کم‌کردن غلط‌هام چیکار کنم؟'];
+function emptyHtml(){return '<div class="ai-empty-state" id="ai-empty-state"><div class="ai-avatar"></div><b style="font-size:1.05rem;color:var(--text-primary)">سلام! من دستیار هوشمند توام 👋</b>هر سؤالی دربارهٔ درس‌ها، فرمول‌ها، برنامه یا کار با سامانه داری بپرس.<div class="ai-sugg">'+SUGG.map(function(s){return '<button type="button">'+s+'</button>'}).join('')+'</div></div>'}
 window.renderAIMessages=function(){var box=document.getElementById('ai-messages');if(!box)return;
  var sessions=getAISessions(),session=sessions.find(function(s){return s.id===aiCurrentSessionId});
  if(!session||!session.messages.length){box.innerHTML=emptyHtml();return}
- box.innerHTML=session.messages.map(function(m){return '<div class="ai-msg '+m.role+'">'+(m.role==='assistant'?md(m.content):esc(m.content))+'</div>'}).join('');
+ box.innerHTML=session.messages.map(function(m,i){return '<div class="ai-msg '+m.role+'" data-i="'+i+'">'+(m.role==='assistant'?md(m.content)+'<div class="ai-acts"><button type="button" data-act="copy">📋 کپی</button><button type="button" data-act="note">📝 ذخیره در دفترچه</button></div>':esc(m.content))+'</div>'}).join('');
  box.scrollTop=box.scrollHeight};
-document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.ai-sugg button');if(!b)return;var i=document.getElementById('ai-input-text');if(!i)return;i.value=b.textContent.replace(/^[^\u0600-\u06FF]+/,'').trim();window.sendAIMessage&&window.sendAIMessage()});
+function msgText(el){var box=el.closest('.ai-msg');if(!box)return '';var sessions=getAISessions(),s=sessions.find(function(x){return x.id===aiCurrentSessionId}),m=s&&s.messages[+box.dataset.i];return m?m.content:''}
+function clip(t){return navigator.clipboard&&window.isSecureContext?navigator.clipboard.writeText(t):new Promise(function(res,rej){var x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}x.remove();ok?res():rej()})}
+document.addEventListener('click',function(e){var t=e.target;if(!t.closest)return;
+ var b=t.closest('.ai-sugg button');if(b){var i=document.getElementById('ai-input-text');if(i){i.value=b.textContent.replace(/^[^\u0600-\u06FF]+/,'').trim();window.sendAIMessage&&window.sendAIMessage()}return}
+ var a=t.closest('.ai-acts button');if(a){var txt=msgText(a);if(!txt)return;
+  if(a.dataset.act==='copy')clip(txt).then(function(){a.textContent='✅ کپی شد'});
+  else if(window.__nbAdd){window.__nbAdd(txt);a.textContent='✅ ذخیره شد'}
+  setTimeout(function(){a.textContent=a.dataset.act==='copy'?'📋 کپی':'📝 ذخیره در دفترچه'},1800);return}
+ var f=t.closest('.ai-math-d');if(f){clip(f.dataset.tex||'').then(function(){f.classList.add('copied');setTimeout(function(){f.classList.remove('copied')},900)})}});
 try{var em=document.getElementById('ai-messages');if(em&&em.querySelector('.ai-empty-state'))em.innerHTML=emptyHtml()}catch(e){}
-/* راهنمای سبک پاسخ: فارسی، کوتاه و مرتب */
-var HINT='[سبک پاسخ: فارسی، ساده و دقیق؛ کوتاه و مرحله‌به‌مرحله؛ با تیتر و فهرست‌های کوتاه؛ اگر دربارهٔ خود برنامه است بگو کدام بخش.]\n';
-var of=window.fetch;window.fetch=function(u,o){try{if(typeof AI_WORKER_URL!=='undefined'&&AI_WORKER_URL&&String(u)===AI_WORKER_URL&&o&&typeof o.body==='string'){var b=JSON.parse(o.body);if(b&&typeof b.message==='string'&&b.message.indexOf(HINT)!==0){b.message=HINT+b.message;o=Object.assign({},o,{body:JSON.stringify(b)})}}}catch(e){}return of.call(this,u,o)};
+/* قواعد پاسخ: همراه هر پیام به هوش مصنوعی فرستاده می‌شه */
+var HINT='[قواعد پاسخ: فارسی روان و ساده، کوتاه و مرحله‌به‌مرحله با تیتر و فهرست. همهٔ فرمول‌ها فقط با LaTeX: درون‌متن \\( ... \\) و فرمول مهم/جدا در خط خودش \\[ ... \\]. فرمول را هرگز با نماد یونیکد یا متن ساده ننویس و داخل فرمول متن فارسی نگذار (برای متن از \\text{}). اگر دربارهٔ خود برنامه است، بخش یا ابزار مربوط را نام ببر: داشبورد، زمان‌سنج، آزمون آنلاین، آزمون مارکت، آمار دروس، دفتر خطاها، نکات مهم، اهداف، برنامه هفتگی، گالری، دفترچه، ماشین‌حساب، حد و مشتق، آزمایشگاه، مشاوره.]\n';
+var of=window.fetch;window.fetch=function(u,o){try{if(typeof AI_WORKER_URL!=='undefined'&&AI_WORKER_URL&&String(u)===AI_WORKER_URL&&o&&typeof o.body==='string'){var b=JSON.parse(o.body);if(b&&typeof b.message==='string'&&b.message.indexOf('[قواعد پاسخ')!==0){b.message=HINT+b.message;o=Object.assign({},o,{body:JSON.stringify(b)})}}}catch(e){}return of.call(this,u,o)};
 })();
 
 /* عنوان صفحهٔ ثبت‌نام بدون ایموجی قفل */
