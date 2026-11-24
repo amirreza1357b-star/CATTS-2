@@ -7916,7 +7916,7 @@ function updateTimerSubjects(){
     if(subjects.includes(current)) select.value = current;
     calculateSubjectTime();
 }
-function calculateSubjectTime(){
+function calculateSubjectTime(){window.__manualTime=false;
     const track = document.getElementById('track-select')?.value || 'تجربی';
     const subject = document.getElementById('subject')?.value || '';
     const q = Number(document.getElementById('question-count')?.value) || 0;
@@ -7963,7 +7963,7 @@ function startTimer(){
     let total;
     const subject = document.getElementById('subject')?.value || '';
     const q = Number(document.getElementById('question-count')?.value) || 0;
-    if(subject && q > 0){
+    if(subject && q > 0 && !window.__manualTime){
         const track = document.getElementById('track-select').value;
         total = q * SUBJECT_RATES[track][subject];
         minutesInput.value = Math.floor(total/60); secondsInput.value = total % 60;
@@ -8592,7 +8592,7 @@ function renderStudyStopwatch(){
         const progress = Math.min(100, (totalToday % 3600) / 3600 * 100); // یک دور کامل حلقه = هر ۶۰ دقیقه مطالعه
         studyTimerDisplayEl.style.setProperty('--timer-progress', progress + '%');
     }
-    updateDailyVitals();
+    if(!window.__dvT||Date.now()-window.__dvT>15000||(document.getElementById('tab-dashboard')&&document.getElementById('tab-dashboard').classList.contains('active'))){window.__dvT=Date.now();updateDailyVitals();}
 }
 /* هر ۵ ثانیه اجرا می‌شود: زمان سپری‌شده از آخرین checkpoint را واقعاً در
    localStorage ذخیره می‌کند و start را به «الان» ریست می‌کند تا اگر تب بسته
@@ -23595,8 +23595,8 @@ html body .app-bar-icons.abx-closed{display:none!important}
 html body.focus-mode-active .app-bar-icons.abx-closed{display:flex!important}
 html body.focus-mode-active .abx-tg{display:none!important}
 .app-bar-top{padding-top:10px}
-.abx-tg{--bg:rgba(255,255,255,.92);--bd:rgba(24,16,41,.1);--fg:#181029;--e:cubic-bezier(.16,1,.3,1);position:fixed;top:14px;right:98px;z-index:1310;display:inline-flex;align-items:center;height:46px;min-width:46px;padding:0 14px;border:1px solid var(--bd);border-radius:23px;cursor:pointer;font:inherit;font-weight:800;font-size:.82rem;color:var(--fg);background:var(--bg);-webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);box-shadow:0 1px 2px rgba(24,16,41,.06),0 8px 22px -8px rgba(24,16,41,.25);-webkit-tap-highlight-color:transparent;transition:box-shadow .25s,border-color .25s,transform .25s var(--e)}
-body:not(.light-mode) .abx-tg{--bg:rgba(36,31,47,.84);--bd:rgba(255,255,255,.14);--fg:#f3f1f9;box-shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px -8px rgba(0,0,0,.6)}
+.abx-tg{--bg:#f4f0ff;--bd:rgba(24,16,41,.1);--fg:#181029;--e:cubic-bezier(.16,1,.3,1);position:fixed;top:14px;right:98px;z-index:1310;display:inline-flex;align-items:center;height:46px;min-width:46px;padding:0 14px;border:1px solid var(--bd);border-radius:23px;cursor:pointer;font:inherit;font-weight:800;font-size:.82rem;color:var(--fg);background:var(--bg);box-shadow:0 1px 2px rgba(24,16,41,.06),0 8px 22px -8px rgba(24,16,41,.25);-webkit-tap-highlight-color:transparent;transition:box-shadow .25s,border-color .25s,transform .25s var(--e)}
+body:not(.light-mode) .abx-tg{--bg:#291c43;--bd:rgba(255,255,255,.14);--fg:#f3f1f9;box-shadow:0 1px 2px rgba(0,0,0,.3),0 10px 26px -8px rgba(0,0,0,.6)}
 .abx-tg:hover,.abx-tg.on{border-color:rgba(124,58,237,.6);box-shadow:0 1px 2px rgba(24,16,41,.06),0 12px 28px -8px rgba(124,58,237,.45)}
 .abx-tg:active{transform:scale(.95)}
 .abx-tg.pin{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.25),0 12px 28px -8px rgba(124,58,237,.45)}
@@ -24155,27 +24155,59 @@ function purge(){var d=document.documentElement;if(d.hasAttribute('data-palette'
 purge();new MutationObserver(purge).observe(document.documentElement,{attributes:true,attributeFilter:['data-palette']});
 [800,2000,4000,7000,10000].forEach(function(ms){setTimeout(purge,ms)});
 })();
+
+/* ===== تایمر: آیکون طراحی‌شده به‌جای استیکر + تنظیم دستی زمان آزمون ===== */
+(function(){
+var EM=/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}\u{2300}-\u{23FF}\u{FE0F}\u{200D}]/gu;
+function S(p){return '<svg class="tm-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>'}
+var IC={
+ clip:S('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 14l2 2 4-4"/>'),
+ book:S('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5zM4 19a2 2 0 0 1 2-2h13"/>'),
+ glass:S('<path d="M7 3h10M7 21h10M8 3v3.5a4 4 0 0 0 1.5 3L12 12l2.5-2.5a4 4 0 0 0 1.5-3V3M8 21v-3.5a4 4 0 0 1 1.5-3L12 12l2.5 2.5a4 4 0 0 1 1.5 3V21"/>'),
+ cup:S('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>'),
+ watch:S('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9.5 2h5"/>'),
+ pomo:S('<circle cx="12" cy="13" r="8"/><path d="M12 13V8M12 5V3M10 3h4"/>'),
+ bulb:S('<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
+ loop:S('<path d="M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4"/>'),
+ grid:S('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>')};
+var MAP={'mode-btn-exam':'clip','mode-btn-study':'book','esub-btn-main':'glass','esub-btn-top3':'cup','sub-btn-free':'watch','sub-btn-pomo':'pomo','sub-btn-ar':'bulb','sub-btn-sr':'loop','sub-btn-tb':'grid'};
+var busy=false;
+function strip(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement;if(!p||p.closest('#history-list,textarea,input,script,style'))return NodeFilter.FILTER_REJECT;return EM.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}}),a=[],n;
+ while(n=w.nextNode())a.push(n);a.forEach(function(t){t.nodeValue=t.nodeValue.replace(EM,'').replace(/^\s+/,'')});EM.lastIndex=0}
+function deco(){if(busy)return;busy=true;try{
+ var tab=document.getElementById('tab-timer');if(!tab)return;strip(tab);
+ Object.keys(MAP).forEach(function(id){var b=document.getElementById(id);if(b&&!b.querySelector('.tm-ic'))b.insertAdjacentHTML('afterbegin',IC[MAP[id]])});
+ [].forEach.call(tab.querySelectorAll('.tpx-ic'),function(e){if(!e.querySelector('svg')){var s=e.closest('#study-timer-panel')?IC.book:IC.clip;e.innerHTML=s}});
+ }finally{busy=false}}
+var css=document.createElement('style');css.textContent='.tm-ic{width:17px;height:17px;flex:none;vertical-align:-3px;margin-inline-end:7px}.tpx-ic .tm-ic{width:26px;height:26px;margin:0;color:#fff;vertical-align:middle}.tpx-sub-switch button,.timer-mode-btn{display:inline-flex;align-items:center;justify-content:center}';document.head.appendChild(css);
+deco();var t=0;try{new MutationObserver(function(){clearTimeout(t);t=setTimeout(deco,120)}).observe(document.getElementById('tab-timer'),{childList:true,subtree:true,characterData:true})}catch(e){}
+/* تایمر آزمون: دقیقه و ثانیه رو می‌شه دستی تغییر داد (حتی وقتی درس و تعداد تست انتخاب شده) */
+['minutes','seconds'].forEach(function(id){var el=document.getElementById(id);if(!el)return;
+ el.addEventListener('input',function(){window.__manualTime=true;try{if(timerState==='idle'){var s=getInputSeconds();timerTotal=s;renderTimerDisplay(s);
+  var b=document.getElementById('auto-time-result');if(b)b.textContent='زمان دستی: '+faNum(Math.floor(s/60))+':'+String(s%60).padStart(2,'0');
+  var h=document.getElementById('rate-hint');if(h)h.textContent='زمان رو خودت تنظیم کردی. برای برگشت به زمان استاندارد، دوباره درس یا تعداد تست رو عوض کن.'}}catch(e){}})});
+})();
 </script>
 <style id="tour-css">
 /* ===== تور راهنمای مرحله‌ای ===== */
-.tour-help{position:fixed;left:26px;bottom:90px;z-index:900;width:46px;height:46px;border-radius:50%;border:1px solid rgba(124,58,237,.28);background:rgba(124,58,237,.14);color:#6d28d9;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 18px -8px rgba(109,40,217,.5);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
-.tour-help:hover{transform:translateY(-2px);background:rgba(124,58,237,.24)}
+.tour-help{position:fixed;left:26px;bottom:90px;z-index:900;width:46px;height:46px;border-radius:50%;border:1px solid rgba(99,102,241,.28);background:#e7e1fb;color:#6d28d9;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;box-shadow:0 6px 18px -8px rgba(79,70,229,.5);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.tour-help:hover{transform:translateY(-2px);background:rgba(99,102,241,.24)}
 .tour-help:active{transform:scale(.94)}
-.tour-help:focus-visible{outline:2px solid #7c3aed;outline-offset:3px}
+.tour-help:focus-visible{outline:2px solid #6366f1;outline-offset:3px}
 .tour-help svg{width:24px;height:24px}
 .tour-help.hide{display:none}
+
 .tour-help .dot{position:absolute;top:2px;right:2px;width:11px;height:11px;border-radius:50%;background:#ef4444;border:2px solid #fff;display:none}
-.tour-help.new .dot{display:block;animation:trPulse 2s infinite}
-body:not(.light-mode) .tour-help{color:#ceb8fa;background:rgba(124,58,237,.2);border-color:rgba(206,184,250,.3)}
-body:not(.light-mode) .tour-help .dot{border-color:#211c2d}
+.tour-help.new .dot{display:block;}
+body:not(.light-mode) .tour-help{color:#c4b5fd;background:#2a1f55;border-color:rgba(165,180,252,.3)}
+body:not(.light-mode) .tour-help .dot{border-color:#2a1f55}
 html body.focus-mode-active .tour-help{display:none!important}
-@keyframes trPulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.55)}70%,100%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 @media (max-width:859px){.tour-help{left:26px;bottom:calc(180px + env(safe-area-inset-bottom,0px))}}
-.tr-root{--bg:#fff;--fg:#181029;--mu:#706689;--bd:rgba(24,16,41,.09);--sf:#f3f1f9;position:fixed;inset:0;z-index:2147483000;direction:rtl;font-family:inherit;opacity:0;transition:opacity .25s}
-body:not(.light-mode) .tr-root{--bg:#211c2d;--fg:#f3f1f9;--mu:#ada4c1;--bd:rgba(255,255,255,.1);--sf:rgba(255,255,255,.07)}
+.tr-root{--bg:#fff;--fg:#0f172a;--mu:#64748b;--bd:rgba(15,23,42,.09);--sf:#f1f5f9;position:fixed;inset:0;z-index:2147483000;direction:rtl;font-family:inherit;opacity:0;transition:opacity .25s}
+body:not(.light-mode) .tr-root{--bg:#1b1d2e;--fg:#f1f5f9;--mu:#a3acc2;--bd:rgba(255,255,255,.1);--sf:rgba(255,255,255,.07)}
 .tr-root.on{opacity:1}
 .tr-shield{position:absolute;inset:0}
-.tr-spot{position:absolute;border-radius:14px;pointer-events:none;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 0 100vmax rgba(14,9,27,.6);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1),width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.tr-spot{position:absolute;border-radius:14px;pointer-events:none;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 0 100vmax rgba(8,12,28,.6);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1),width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
 .tr-card{position:absolute;box-sizing:border-box;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:16px;box-shadow:0 28px 60px -14px rgba(0,0,0,.5);transition:left .4s cubic-bezier(.2,.8,.2,1),top .4s cubic-bezier(.2,.8,.2,1)}
 .tr-root.snap .tr-spot,.tr-root.snap .tr-card,.tr-root.first .tr-spot,.tr-root.first .tr-card{transition:none}
 .tr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bd)}
@@ -24188,8 +24220,8 @@ body:not(.light-mode) .tr-root{--bg:#211c2d;--fg:#f3f1f9;--mu:#ada4c1;--bd:rgba(
 .tr-btns{display:flex;gap:8px}
 .tr-btns button{font:inherit;font-weight:800;font-size:.86rem;border-radius:10px;padding:10px 20px;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s}
 .tr-btns button:active{transform:scale(.95)}
-.tr-next{border:0;background:#6d28d9;color:#fff;box-shadow:0 8px 18px -8px rgba(109,40,217,.8)}
-.tr-next:hover{background:#5b21b6}
+.tr-next{border:0;background:#2563eb;color:#fff;box-shadow:0 8px 18px -8px rgba(37,99,235,.8)}
+.tr-next:hover{background:#1d4ed8}
 .tr-prev{border:1px solid var(--bd);background:transparent;color:var(--fg)}
 .tr-prev:hover{background:var(--sf)}
 .tr-arrow{position:absolute;width:14px;height:14px;background:var(--bg);transform:rotate(45deg);display:none}
