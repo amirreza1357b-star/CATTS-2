@@ -5081,6 +5081,7 @@ body.light-mode .ckg-stat{ background:#fff; }
         <button class="tab-btn" style="--tc:#ceb8fa" data-adm-tab="tab-gallery" onclick="switchTab('tab-gallery', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="9" r="1.6" fill="currentColor" stroke="none"></circle><path d="M21 15l-5.2-5.2a2 2 0 0 0-2.8 0L4 19"></path></svg></span><span class="tab-label">گالری</span></button>
         <button class="tab-btn" style="--tc:#f43f5e" data-adm-tab="tab-trash" onclick="switchTab('tab-trash', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"></path></svg><span id="trash-total-badge" class="trash-badge"></span></span><span class="tab-label">سطل زباله</span></button>
         <button class="tab-btn" style="--tc:#f472b6" data-adm-tab="tab-advice" onclick="switchTab('tab-advice', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></span><span class="tab-label">مشاوره</span></button>
+        <button class="tab-btn" style="--tc:#fb923c" data-adm-tab="tab-manage" onclick="switchTab('tab-manage', this)"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span><span class="tab-label">مدیریت</span></button>
     </div>
 
     <!-- تب اول: تایمر و ثبت -->
@@ -5118,6 +5119,15 @@ body.light-mode .ckg-stat{ background:#fff; }
                 <div class="daily-ring-card"><div class="daily-ring hours" id="daily-hours-ring" style="--p:0%"><div><b id="daily-hours-percent">۰</b><span>ساعت</span></div></div><strong>ساعت مطالعه امروز</strong><small id="daily-hours-caption">هنوز چیزی ثبت نشده</small></div>
             </div>
         </div>
+
+        <div id="bd-cal" class="glass-card bdc" dir="rtl">
+<div class="bdc-head"><div><div class="section-title">🗓️ تقویم و بودجه‌بندی آزمون‌ها</div><div class="goal-subtitle" id="bdc-sub">آزمون‌های بودجه‌بندی روی تقویم نشان داده می‌شوند.</div></div>
+<div class="bdc-nav"><button type="button" class="bdc-b" data-a="next" aria-label="ماه بعد">‹</button><b id="bdc-title"></b><button type="button" class="bdc-b" data-a="prev" aria-label="ماه قبل">›</button><button type="button" class="bdc-b bdc-today" data-a="today">امروز</button></div></div>
+<div class="bdc-body"><div class="bdc-cal"><div class="bdc-wd" id="bdc-wd"></div><div class="bdc-grid" id="bdc-grid"></div>
+<div class="bdc-detail" id="bdc-detail"></div></div>
+<div class="bdc-side"><div class="bdc-up-h"><span>آزمون‌های پیش‌رو</span><button type="button" class="bdc-b bdc-all" data-a="all">📚 بودجه‌بندی کامل</button></div>
+<div id="bdc-up"></div></div></div>
+</div>
 
         <div class="glass-card" id="dashboard-todo-card">
             <div class="section-title">📝 برنامه‌ی امروز من</div>
@@ -5654,11 +5664,6 @@ body.light-mode .ckg-stat{ background:#fff; }
             <div id="goal-empty-state" class="goal-empty-state">هنوز هدفی برای درس‌ها تعیین نکرده‌ای. از «افزودن / ویرایش هدف» شروع کن ✨</div>
         </div>
 
-        <div class="glass-card" style="text-align:center;">
-          <div class="section-title" style="justify-content:center;">🗝️ حساب کاربری</div>
-          <p class="neo-muted" style="margin-bottom:14px;">اطلاعات همگام‌سازی و ورود/ساخت حساب از همین‌جا در دسترس است.</p>
-          <button class="btn btn-primary" onclick="toggleCloudAccountModal(true)" style="width:auto;padding:10px 22px;margin:0 auto;">👤 باز کردن حساب کاربری</button>
-        </div>
 
         <div class="glass-card">
             <div class="section-title">🏅 مدیریت هدف‌های درسی</div>
@@ -5689,6 +5694,18 @@ body.light-mode .ckg-stat{ background:#fff; }
             <div class="reminder-note">این قابلیت برای بررسی و نمایش یادآور به اینترنت نیاز ندارد. نوتیفیکیشن مرورگر فقط بعد از اجازه شما فعال می‌شود و در نسخه تک‌فایلی HTML، وقتی صفحه کاملاً بسته است، نمی‌توان زمان‌بندی سیستم‌عامل را تضمین کرد.</div>
         </div>
 
+    </div>
+
+    <!-- تب پنجم: برنامه هفتگی -->
+    <!-- تب مدیریت -->
+    <div id="tab-manage" class="tab-content">
+        <div id="manage-dev-slot"></div>
+        <div class="glass-card" style="text-align:center;">
+          <div class="section-title" style="justify-content:center;">🗝️ حساب کاربری</div>
+          <p class="neo-muted" style="margin-bottom:14px;">اطلاعات همگام‌سازی و ورود/ساخت حساب از همین‌جا در دسترس است.</p>
+          <button class="btn btn-primary" onclick="toggleCloudAccountModal(true)" style="width:auto;padding:10px 22px;margin:0 auto;">👤 باز کردن حساب کاربری</button>
+        </div>
+
         <div class="glass-card">
             <div class="section-title">💾 پشتیبان‌گیری و بازیابی اطلاعات</div>
             <p style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.9rem;">می‌توانید از تمام اطلاعات سوابق و غلط‌نامه خود فایل خروجی بگیرید یا اطلاعات قبلی را بازیابی کنید.</p>
@@ -5703,7 +5720,6 @@ body.light-mode .ckg-stat{ background:#fff; }
         </div>
     </div>
 
-    <!-- تب پنجم: برنامه هفتگی -->
     <div id="tab-planner" class="tab-content">
         <div class="planner-hero">
             <div class="planner-hero-emoji">🗓️✨</div>
@@ -5712,14 +5728,6 @@ body.light-mode .ckg-stat{ background:#fff; }
                 <div class="planner-hero-sub">هر روز رو خودت بنویس؛ همین‌جا دقیقاً ذخیره می‌مونه.</div>
             </div>
         </div>
-        <div id="bd-cal" class="glass-card bdc" dir="rtl">
-<div class="bdc-head"><div><div class="section-title">🗓️ تقویم و بودجه‌بندی آزمون‌ها</div><div class="goal-subtitle" id="bdc-sub">آزمون‌های بودجه‌بندی روی تقویم نشان داده می‌شوند.</div></div>
-<div class="bdc-nav"><button type="button" class="bdc-b" data-a="next" aria-label="ماه بعد">‹</button><b id="bdc-title"></b><button type="button" class="bdc-b" data-a="prev" aria-label="ماه قبل">›</button><button type="button" class="bdc-b bdc-today" data-a="today">امروز</button></div></div>
-<div class="bdc-body"><div class="bdc-cal"><div class="bdc-wd" id="bdc-wd"></div><div class="bdc-grid" id="bdc-grid"></div>
-<div class="bdc-detail" id="bdc-detail"></div></div>
-<div class="bdc-side"><div class="bdc-up-h"><span>آزمون‌های پیش‌رو</span><button type="button" class="bdc-b bdc-all" data-a="all">📚 بودجه‌بندی کامل</button></div>
-<div id="bdc-up"></div></div></div>
-</div>
 <div class="planner-grid" id="planner-grid"><!-- دکمه‌های روزهای هفته اینجا ساخته می‌شوند --></div>
         <div id="planner-modal" class="planner-modal" onclick="closePlannerModal(event)">
           <div class="planner-modal-box" onclick="event.stopPropagation()">
@@ -9339,7 +9347,7 @@ window.deleteDashTodo = deleteDashTodo;
 function updateDailyVitals(){
     const today = localDateKey(new Date());
     const plan = getWeeklyPlan();
-    const idx = (new Date().getDay() + 6) % 7;
+    const idx = (new Date().getDay() + 1) % 7; /* شنبه=۰ */
     const key = PLANNER_DAYS[idx]?.key;
     const p = normalizePlannerDay(plan[key]);
     const ps = plannerStats(p);
@@ -9347,15 +9355,18 @@ function updateDailyVitals(){
         const d = x.timestamp ? new Date(x.timestamp) : null;
         return d && localDateKey(d) === today ? n + (Number(x.totalTests) || 0) : n;
     }, 0);
+    let asTests = 0;
+    try{ asTests = asGetHistory().reduce((n,x) => { const d = x && x.dateIso ? new Date(x.dateIso) : null; if(!d || localDateKey(d) !== today) return n; const r = x.result || {}; return n + (Number(r.correct)||0) + (Number(r.wrong)||0); }, 0); }catch(e){}
+    const testsAll = tests + asTests;
     const goal = sumGoalTestsToday();
-    const action = goal ? Math.min(100, Math.round(tests / goal * 100)) : ps.percent;
+    const action = goal ? Math.min(100, Math.round(testsAll / goal * 100)) : ps.percent;
     const set = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
     const ring = (id, v) => { const e = document.getElementById(id); if(e) e.style.setProperty('--p', v + '%'); };
     set('daily-study-percent', faNum(ps.percent) + '٪');
     set('daily-study-caption', ps.total ? `${faNum(ps.done)} از ${faNum(ps.total)} پارت انجام شده` : 'هنوز پارتی برای امروز اضافه نشده');
     ring('daily-study-ring', ps.percent);
     set('daily-action-percent', faNum(action) + '٪');
-    set('daily-action-caption', goal ? `${faNum(tests)} از ${faNum(goal)} تست` : `${faNum(tests)} تست ثبت شده`);
+    set('daily-action-caption', goal ? `${faNum(testsAll)} از ${faNum(goal)} تست` : `${faNum(testsAll)} تست ثبت شده`);
     ring('daily-action-ring', action);
     const studySeconds = getTodayStudySeconds() + (typeof studyState !== 'undefined' && studyState === 'running' && studyStartTs ? Math.floor((Date.now() - studyStartTs)/1000) : 0);
     const studyHoursForRing = Math.min(100, (studySeconds / (6*3600)) * 100); // حلقه با ۶ ساعت پر می‌شود
@@ -20077,6 +20088,27 @@ body.focus-mode-active #date-tile{display:none}
     });
     ev.sort(function(a,b){return a.ts-b.ts;});
   }
+  var rev={};
+  function planMap(){
+    var out={},keys=['shanbe','yekshanbe','doshanbe','seshanbe','chahar','panjshanbe','jome'];
+    function add(wk,days){
+      var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(wk||'');if(!m||!days)return;
+      keys.forEach(function(k,i){
+        var v=days[k];if(!v||!Array.isArray(v.parts))return;
+        var parts=v.parts.filter(function(p){return p&&(String(p.subject||'').trim()||p.timeStart);});
+        if(parts.length)out[new Date(+m[1],+m[2]-1,+m[3]-2+i).getTime()]=parts;
+      });
+    }
+    try{var st=JSON.parse(localStorage.getItem('weekly_planner_store_v2')||'{}');add(st.weekKey,st.days);}catch(e){}
+    try{(JSON.parse(localStorage.getItem('weekly_planner_archives_v1')||'[]')||[]).forEach(function(a){add(a.weekKey,a.days);});}catch(e){}
+    return out;
+  }
+  function planOn(y,m,d){var ts=map[key(y,m,d)];return ts==null?[]:(planMap()[ts]||[]);}
+  function ptxt(parts){return parts.slice(0,4).map(function(p){return esc(String(p.subject||'').trim()||'پارت')+(p.timeStart?' ('+esc(p.timeStart)+(p.timeEnd?'–'+esc(p.timeEnd):'')+')':'');}).join(' · ')+(parts.length>4?' …':'');}
+  function prow(ts,parts){
+    var q=jp(new Date(ts)),done=parts.filter(function(p){return p.done;}).length;
+    return '<div class="bdc-it" style="--dc:#34d399"><span class="dot"></span><b>📋 برنامه — '+fa(q.day)+' '+MN[q.month-1]+'<small>'+ptxt(parts)+'</small></b><span class="cd">'+fa(done)+' از '+fa(parts.length)+' انجام شد</span></div>';
+  }
   function evOn(y,m,d){return ev.filter(function(e){return e.y===y&&e.m===m&&e.d===d;});}
   function cdText(ts){var td=map[todayKey],n=Math.round((ts-td)/864e5);return n===0?'امروز':n===1?'فردا':n>1?fa(n)+' روز دیگر':fa(-n)+' روز پیش';}
   function row(e){return '<div class="bdc-it" style="--dc:'+e.c+'"><span class="dot"></span><b>'+esc(e.name)+' — '+esc(e.date)+'<small>'+esc(e.phase)+(e.n?' · '+fa(e.n)+' بخش':'')+'</small></b><span class="cd">'+cdText(e.ts)+'</span><button type="button" class="bdc-b" data-a="open" data-i="'+e.ii+'" data-s="'+e.si+'">بودجه‌بندی</button></div>';}
@@ -20087,17 +20119,19 @@ body.focus-mode-active #date-tile{display:none}
     document.getElementById('bdc-title').textContent=MN[vm-1]+' '+fa(vy);
     document.getElementById('bdc-wd').innerHTML=WD.map(function(w){return '<span>'+w+'</span>';}).join('');
     var h='';if(first!=null){for(var i=0;i<wdIndex(first);i++)h+='<span class="bdc-c e"></span>';
-      for(var d=1;d<=len;d++){var es=evOn(vy,vm,d),k=key(vy,vm,d);
-        h+='<button type="button" class="bdc-c'+(k===todayKey?' t':'')+(es.length?' x':'')+(sel===k?' s':'')+'" data-a="day" data-d="'+d+'">'+fa(d)+'<span class="bdc-dots">'+es.slice(0,3).map(function(e){return '<i style="--dc:'+e.c+'"></i>';}).join('')+'</span></button>';}}
+      for(var d=1;d<=len;d++){var es=evOn(vy,vm,d),pl=planOn(vy,vm,d),k=key(vy,vm,d);
+        h+='<button type="button" class="bdc-c'+(k===todayKey?' t':'')+((es.length||pl.length)?' x':'')+(sel===k?' s':'')+'" data-a="day" data-d="'+d+'">'+fa(d)+'<span class="bdc-dots">'+es.slice(0,3).map(function(e){return '<i style="--dc:'+e.c+'"></i>';}).join('')+(pl.length?'<i style="--dc:#34d399"></i>':'')+'</span></button>';}}
     else h='<div class="bdc-note" style="grid-column:1/-1">این ماه خارج از بازهٔ نمایش است؛ با «امروز» برگرد.</div>';
     document.getElementById('bdc-grid').innerHTML=h;
-    var det='';if(sel){var p=sel.split('-'),es=evOn(+p[0],+p[1],+p[2]);det=es.length?es.map(row).join(''):'<div class="bdc-note">در ‌'+fa(p[2])+' '+MN[p[1]-1]+' آزمونی ثبت نشده است.</div>';}
+    var det='';if(sel){var p=sel.split('-'),es=evOn(+p[0],+p[1],+p[2]);var pp=planOn(+p[0],+p[1],+p[2]);det=(es.length?es.map(row).join(''):'')+(pp.length?prow(map[key(+p[0],+p[1],+p[2])],pp):'');if(!det)det='<div class="bdc-note">در ‌'+fa(p[2])+' '+MN[p[1]-1]+' آزمون یا برنامه‌ای ثبت نشده است.</div>';}
     document.getElementById('bdc-detail').innerHTML=det;
     var td=map[todayKey],up=ev.filter(function(e){return e.ts>=td;}).slice(0,4),note='';
     if(!BD||BD.err||!(BD.institutes||[]).length)note='<div class="bdc-note">بودجه‌بندی هنوز بارگذاری نشده است (فایل <span dir="ltr">library/budget.json</span> باید کنار برنامه باشد). با اضافه‌شدن آن، آزمون‌ها روی تقویم نشان داده می‌شوند.</div>';
     else if(!ev.length)note='<div class="bdc-note">تاریخ آزمون‌ها در داده‌ها قابل‌خواندن نبود؛ فهرست کامل را از «بودجه‌بندی کامل» ببین.</div>';
     else if(!up.length)note='<div class="bdc-note">آزمون پیش‌رویی ثبت نشده است.</div>';
-    document.getElementById('bdc-up').innerHTML=up.map(row).join('')+note;
+    var pm=planMap(),pk=Object.keys(pm).map(Number).filter(function(t){return t>=td&&pm[t].some(function(x){return !x.done;});}).sort(function(a,b){return a-b;}).slice(0,5);
+    var planHtml=pk.length?'<div class="bdc-up-h" style="margin-top:12px"><span>📋 برنامه‌های ثبت‌شده برای انجام</span></div>'+pk.map(function(t){return prow(t,pm[t]);}).join(''):'';
+    document.getElementById('bdc-up').innerHTML=up.map(row).join('')+note+planHtml;
   }
   root.addEventListener('click',function(e){
     var el=e.target.closest('[data-a]');if(!el)return;var a=el.getAttribute('data-a');
@@ -20110,7 +20144,7 @@ body.focus-mode-active #date-tile{display:none}
   function load(){if(window.LibHub&&LibHub.budget)LibHub.budget().then(function(b){BD=b;render();}).catch(function(){render();});else render();}
   render();load();
   document.addEventListener('visibilitychange',function(){if(!document.hidden){var c=jp(new Date());if(key(c.year,c.month,c.day)!==todayKey){vy=0;sel=null;}render();}});
-  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.tab-btn[data-adm-tab="tab-planner"]'))setTimeout(render,0);},true);
+  document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.tab-btn[data-adm-tab="tab-dashboard"]'))setTimeout(render,0);},true);
 })();
 </script>
 <style id="pomo-css">
@@ -23216,12 +23250,12 @@ window.CalmSounds={list:LIST,presets:PRESETS,start:function(id,l){return start(i
   var D=window.__DEV||{type:'desktop',lite:false,mode:'auto'};
   var names={phone:'گوشی',tablet:'تبلت',desktop:'لپ‌تاپ / رایانه'};
   function card(){
-    var tab=document.getElementById('tab-settings'); if(!tab||document.getElementById('dev-card')) return;
+    var tab=document.getElementById('tab-manage'); if(!tab||document.getElementById('dev-card')) return;
     var c=document.createElement('div'); c.className='glass-card'; c.id='dev-card';
     c.innerHTML='<h3 class="section-title">نمایش و سرعت</h3><div class="dev-info"><span class="dev-pill">دستگاه تشخیص‌داده‌شده: '+names[D.type]+'</span><span class="dev-pill">حالت فعلی: '+(document.documentElement.classList.contains('perf-lite')?'سبک':'کامل')+'</span></div>'+
       '<div class="dev-seg" role="group" aria-label="حالت سرعت"><button type="button" data-perf="auto">خودکار</button><button type="button" data-perf="lite">سبک</button><button type="button" data-perf="full">کامل</button></div>'+
       '<div class="dev-note">«خودکار» بر اساس نوع دستگاه و قدرتش خودش تصمیم می‌گیرد. «سبک» افکت‌های سنگین را کم می‌کند تا برنامه روی گوشی یا لپ‌تاپ ضعیف روان بماند. «کامل» همه‌ی افکت‌ها را فعال می‌کند. با تغییر، صفحه یک بار دوباره بارگذاری می‌شود.</div>';
-    tab.insertBefore(c,tab.firstChild);
+    var slot=document.getElementById('manage-dev-slot'); if(slot) slot.appendChild(c); else tab.insertBefore(c,tab.firstChild);
     [].forEach.call(c.querySelectorAll('[data-perf]'),function(b){ b.classList.toggle('on',b.getAttribute('data-perf')===(D.mode||'auto')); b.addEventListener('click',function(){
       var v=b.getAttribute('data-perf'); try{var o=JSON.parse(localStorage.getItem('catts_device')||'{}')||{};o.perf=v;localStorage.setItem('catts_device',JSON.stringify(o));if(v!=='auto')localStorage.removeItem('catts_perf_auto');}catch(e){}
       location.reload(); }); });
