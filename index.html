@@ -4717,6 +4717,8 @@ body.light-mode .ckg-stat{ background:#fff; }
         <button id="gate-signup-btn" class="btn btn-purple" style="flex:1;" onclick="gateSignUp()">✨ ساخت حساب</button>
         <button id="gate-signin-btn" class="btn btn-success" style="flex:1;" onclick="gateSignIn()">🔐 ورود</button>
       </div>
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 8px;color:var(--text-secondary);font-size:.7rem;"><span style="flex:1;height:1px;background:currentColor;opacity:.25;"></span>یا<span style="flex:1;height:1px;background:currentColor;opacity:.25;"></span></div>
+      <button type="button" id="gate-google-btn" class="btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#3c4043;font-weight:700;" onclick="googleSignIn()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.600 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.6-2.1 15.5-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>ورود / ثبت‌نام با گوگل</button>
       <p style="text-align:center;margin-top:8px;margin-bottom:0;"><a href="javascript:void(0)" onclick="gateForgotPassword()" style="font-size:.72rem;color:var(--text-secondary);text-decoration:underline;">رمز عبور را فراموش کرده‌ام</a></p>
       <p class="neo-muted" style="font-size:.66rem;margin-top:6px;margin-bottom:0;">نام و نام‌خانوادگی فقط برای «ساخت حساب» لازم است؛ برای ورود فقط ایمیل و رمز کافی است.</p>
     </div>
@@ -4755,6 +4757,8 @@ body.light-mode .ckg-stat{ background:#fff; }
           <input id="neo-auth-email" type="email" placeholder="ایمیل" style="width:100%;margin-bottom:8px;">
           <input id="neo-auth-password" type="password" placeholder="رمز عبور (حداقل ۶ کاراکتر)" style="width:100%;">
           <div class="neo-cloud-actions" style="margin-top:10px;"><button id="neo-auth-signup-btn" class="btn btn-purple" style="flex:1;" onclick="authSignUp()">✨ ساخت حساب</button><button id="neo-auth-signin-btn" class="btn btn-success" style="flex:1;" onclick="authSignIn()">🔐 ورود</button></div>
+          <div style="display:flex;align-items:center;gap:8px;margin:12px 0 8px;color:var(--text-secondary);font-size:.7rem;"><span style="flex:1;height:1px;background:currentColor;opacity:.25;"></span>یا<span style="flex:1;height:1px;background:currentColor;opacity:.25;"></span></div>
+      <button type="button" id="neo-google-btn" class="btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#3c4043;font-weight:700;" onclick="googleSignIn()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.600 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.6-2.1 15.5-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>ورود / ثبت‌نام با گوگل</button>
           <p style="text-align:center;margin-top:8px;margin-bottom:0;"><a href="javascript:void(0)" onclick="authForgotPassword()" style="font-size:.72rem;color:var(--text-secondary);text-decoration:underline;">رمز عبور را فراموش کرده‌ام</a></p>
           <p class="neo-muted" style="font-size:.66rem;margin-top:6px;margin-bottom:0;">نام و نام‌خانوادگی فقط برای «ساخت حساب» لازم است؛ برای ورود فقط ایمیل و رمز کافی است.</p>
         </div>
@@ -10275,6 +10279,11 @@ async function authRefreshUI(){
     const ub = document.getElementById('neo-user-box'), ab = document.getElementById('neo-auth-box'), em = document.getElementById('neo-auth-user-email');
     const dot = document.getElementById('cloud-account-dot');
     if(session?.user){
+        { const u = session.user; const bad = checkEmailValid(u.email || '');
+          if(!u.email || bad || !u.email_confirmed_at){
+              try{ await client.auth.signOut(); }catch(e){}
+              const m = !u.email ? 'ایمیل حساب شناسایی نشد.' : (bad || 'ایمیل این حساب هنوز تأیید نشده است.');
+              setGateStatus('❌ ' + m); setCloudStatus('❌ ' + m); lockApp(); return; } }
         // رفع باگ اصلی: قبلاً این چک اصلاً بعد از ورود انجام نمی‌شد؛ کاربر
         // مسدودشده می‌تونست دوباره ایمیل/رمزش رو بزنه و کامل وارد برنامه بشه.
         // حالا قبل از unlockApp، هم user_id و هم device_id همین مرورگر چک می‌شه.
@@ -10307,6 +10316,36 @@ async function authRefreshUI(){
     }
 }
 
+/* ---------------------------------------------------------------------- */
+/* اعتبارسنجی ایمیل + ورود با گوگل                                          */
+/* ---------------------------------------------------------------------- */
+const DISPOSABLE_EMAIL_DOMAINS = ['mailinator.com','10minutemail.com','10minutemail.net','guerrillamail.com','guerrillamail.net','guerrillamail.org','sharklasers.com','grr.la','tempmail.com','temp-mail.org','temp-mail.io','tempmail.net','tempmailo.com','throwawaymail.com','yopmail.com','yopmail.net','trashmail.com','trashmail.net','getnada.com','nada.email','maildrop.cc','dispostable.com','fakeinbox.com','mailnesia.com','mintemail.com','mohmal.com','emailondeck.com','moakt.com','tmpmail.org','tmpmail.net','spamgourmet.com','mytemp.email','burnermail.io','inboxkitten.com','harakirimail.com','tempail.com','discard.email','mailcatch.com','33mail.com','anonaddy.com','example.com','test.com'];
+const EMAIL_TYPO_FIXES = {'gmial.com':'gmail.com','gmai.com':'gmail.com','gmail.co':'gmail.com','gmail.con':'gmail.com','gamil.com':'gmail.com','gnail.com':'gmail.com','gmaill.com':'gmail.com','gmil.com':'gmail.com','gmail.ir':'gmail.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','yahoo.con':'yahoo.com','hotmial.com':'hotmail.com','hotmail.con':'hotmail.com','outlok.com':'outlook.com','outlook.con':'outlook.com'};
+function checkEmailValid(email){
+    email = String(email||'').trim().toLowerCase();
+    if(!/^[a-z0-9._%+\-]{1,64}@[a-z0-9\-]+(\.[a-z0-9\-]+)*\.[a-z]{2,24}$/.test(email) || email.includes('..')) return 'ایمیل واردشده معتبر نیست.';
+    const domain = email.split('@')[1];
+    if(EMAIL_TYPO_FIXES[domain]) return 'ایمیل اشتباه تایپ شده؛ منظورت «' + email.split('@')[0] + '@' + EMAIL_TYPO_FIXES[domain] + '» است؟';
+    if(DISPOSABLE_EMAIL_DOMAINS.some(d => domain === d || domain.endsWith('.' + d))) return 'ایمیل‌های موقت/یک‌بارمصرف پذیرفته نمی‌شوند؛ از ایمیل واقعی خودت استفاده کن.';
+    return '';
+}
+window.googleSignIn = async function(){
+    const client = getSupabaseClient();
+    if(!client){ setGateStatus('اتصال ابری در دسترس نیست.'); setCloudStatus('اتصال ابری در دسترس نیست.'); return; }
+    setGateStatus('در حال انتقال به گوگل...'); setCloudStatus('در حال انتقال به گوگل...');
+    setButtonsBusy(['gate-google-btn','neo-google-btn'], true);
+    try{
+        const { error } = await client.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo: window.location.origin + window.location.pathname, queryParams: { prompt: 'select_account' } }
+        });
+        if(error){ setGateStatus('ورود با گوگل ناموفق بود: ' + error.message); setCloudStatus('ورود با گوگل ناموفق بود: ' + error.message); }
+    }catch(err){
+        setGateStatus('❌ ' + (err?.message || 'خطای نامشخص')); 
+    }finally{
+        setTimeout(() => setButtonsBusy(['gate-google-btn','neo-google-btn'], false), 3000);
+    }
+};
 window.gateSignUp = async function(){
     const client = getSupabaseClient();
     const firstName = document.getElementById('gate-firstname')?.value.trim();
@@ -10316,6 +10355,7 @@ window.gateSignUp = async function(){
     if(!client){ setGateStatus('اتصال ابری در دسترس نیست.'); return; }
     if(!firstName || !lastName){ setGateStatus('نام و نام‌خانوادگی را وارد کن.'); return; }
     if(!email || !password || password.length < 6){ setGateStatus('ایمیل و رمز عبور معتبر (حداقل ۶ کاراکتر) وارد کن.'); return; }
+    { const ev = checkEmailValid(email); if(ev){ setGateStatus('❌ ' + ev); return; } }
     setGateStatus('در حال ساخت حساب...');
     setButtonsBusy(['gate-signup-btn','gate-signin-btn'], true);
     try{
@@ -10379,6 +10419,7 @@ window.authSignUp = async function(){
     if(!client){ setCloudStatus('اتصال ابری در دسترس نیست.'); return; }
     if(!firstName || !lastName){ setCloudStatus('نام و نام‌خانوادگی را وارد کن.'); return; }
     if(!email || !password || password.length < 6){ setCloudStatus('ایمیل و رمز عبور معتبر (حداقل ۶ کاراکتر) وارد کن.'); return; }
+    { const ev = checkEmailValid(email); if(ev){ setCloudStatus('❌ ' + ev); return; } }
     setCloudStatus('در حال ساخت حساب...');
     setButtonsBusy(['neo-auth-signup-btn','neo-auth-signin-btn'], true);
     try{
